@@ -15,9 +15,24 @@ export default {
     this.initData()
   },
   methods: {
+    pad0 (num) {
+      return num < 10 ? '0' + num : num
+    },
+    formatTime (timespan) {
+      let date = new Date(timespan)
+      let y = date.getFullYear().toString() + '/'
+      let M = this.pad0(date.getMonth() + 1) + '/'
+      let d = this.pad0(date.getDate()) + ' '
+      let h = this.pad0(date.getHours()) + ':'
+      let m = this.pad0(date.getMinutes()) + ':'
+      let s = this.pad0(date.getSeconds())
+      return y + M + d + h + m + s
+    },
     initData () {
+      let vm = this
       this.sevenDate = []
-      this.sevenDate[0] = [[1525869615000 - 365 * 24 * 60 * 60 * 1000, 20], [1525870515000, 527.65], [1525871415000, 67.55], [1525872315000, 469.12]]
+      // this.sevenDate[0] = [[1525869615000 - 365 * 24 * 60 * 60 * 1000, 20], [1525870515000, 527.65], [1525871415000, 67.55], [1525872315000, 469.12]]
+      this.sevenDate[0] = [[1525869615000, 20], [1525870515000, 527.65], [1525871415000, 67.55], [1525872315000, 469.12]]
       this.sevenDate[1] = [[1525869615000, 4], [1525870515000, 527.65], [1525871415000, 67.55], [1525872315000, 469.12]]
       this.sevenDate[2] = [[1525869615000, 5], [1525870515000, 527.65], [1525871415000, 67.55], [1525872315000, 469.12]]
       this.sevenDate[3] = [[1525869615000, 6], [1525870515000, 527.65], [1525871415000, 67.55], [1525872315000, 469.12]]
@@ -29,10 +44,30 @@ export default {
           subtext: ''
         },
         tooltip: {
-          trigger: 'axis'
+          trigger: 'axis',
+          axisPointer: {
+            animation: !1,
+            lineStyle: {
+              color: '#5793f3'
+            }
+          },
+          enterable: !1,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          borderColor: '#333',
+          padding: 7,
+          textStyle: {
+            fontSize: 12,
+            fontWeight: 'lighter'
+          },
+          formatter: function (params) {
+            return vm.formatTime(params[0].data[0]) + '<br>\n' + '算力: ' + params[0].data[1].toFixed(2)
+          }
         },
-        legend: {
-          data: ['新注册用户', '新增订单', '新增管理员']
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: !0
         },
         toolbox: {
           show: true,
@@ -47,77 +82,78 @@ export default {
         },
         xAxis: {
           type: 'time',
-          boundaryGap: false,
-          data: this.sevenDay
+          data: this.sevenDay,
+          splitLine: {
+            show: !1
+          },
+          boundaryGap: !1,
+          offset: 10,
+          axisLabel: {
+            margin: 2,
+            // formatter: function (timespan) {
+            //   return vm.formatTime(timespan)
+            // },
+            textStyle: {
+              color: '#888'
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: '#aaa'
+            }
+          }
         },
         yAxis: [
           {
             type: 'value',
-            name: '用户',
-            min: 0,
+            name: '算力',
             position: 'left',
+            boundaryGap: !1,
+            splitLine: {
+              show: !1
+            },
             axisLine: {
               lineStyle: {
-                color: '#999'
+                color: '#aaa'
               }
             },
             axisLabel: {
-              formatter: '{value}'
-            }
-          },
-          {
-            type: 'value',
-            name: '订单',
-            min: 0,
-            position: 'right',
-            axisLine: {
-              lineStyle: {
-                color: '#999'
+              formatter: '{value}',
+              textStyle: {
+                color: '#888'
               }
-            },
-            axisLabel: {
-              formatter: '{value}'
             }
           }
         ],
         series: [
           {
-            name: '新注册用户',
+            name: '算力',
             type: 'line',
             smooth: true,
             data: this.sevenDate[0],
-            yAxisIndex: 1,
-            markPoint: {
-              data: [
-                {type: 'max', name: '最大值'},
-                {type: 'min', name: '最小值'}
-              ]
-            }
-          },
-          {
-            name: '新增订单',
-            type: 'line',
-            smooth: true,
-            data: this.sevenDate[1],
-            yAxisIndex: 1,
-            markPoint: {
-              data: [
-                {type: 'max', name: '最大值'},
-                {type: 'min', name: '最小值'}
-              ]
-            }
-          },
-          {
-            name: '新增管理员',
-            type: 'line',
-            smooth: true,
-            data: this.sevenDate[2],
-            yAxisIndex: 1,
-            markPoint: {
-              data: [
-                {type: 'max', name: '最大值'},
-                {type: 'min', name: '最小值'}
-              ]
+            yAxisIndex: 0,
+            symbol: 'emptyCircle',
+            symbolSize: 4,
+            itemStyle: {
+              normal: {
+                color: '#5793f3',
+                areaStyle: {
+                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                    offset: 0,
+                    color: '#C3DCF3'
+                  }, {
+                    offset: 1,
+                    color: '#fff'
+                  }])
+                },
+                lineStyle: {
+                  color: '#5793f3',
+                  width: '2'
+                }
+              },
+              emphasis: {
+                color: '#5793f3'
+              }
             }
           }
         ]
@@ -129,7 +165,7 @@ export default {
 </script>
 
 <style>
-  .chart-container {
+  .flex-center {
     display: flex;
     justify-content: center;
   }
