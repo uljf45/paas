@@ -70,8 +70,20 @@
   background-color: #F2F6FC;
 }
 
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
 .clearfix:after {
   content: "";
   display: block;
   clear: both;
+}
+
+body {
+  background: #f2f2f7;
 }

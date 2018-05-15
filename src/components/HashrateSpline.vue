@@ -1,6 +1,6 @@
 <template>
   <div class="flex-center">
-    <div id="echart-container" class="flex-center" style="width: 90%; height: 450px;">
+    <div id="echart-container" class="flex-center echart-container">
 
     </div>
   </div>
@@ -77,12 +77,13 @@ export default {
             },
             dataView: {readOnly: false},
             magicType: {type: ['bar', 'line']},
-            restore: {}
+            restore: {},
+            saveAsImage: {}
           }
         },
         xAxis: {
           type: 'time',
-          data: this.sevenDay,
+          // data: this.sevenDay,
           splitLine: {
             show: !1
           },
@@ -135,23 +136,23 @@ export default {
             symbol: 'emptyCircle',
             symbolSize: 4,
             itemStyle: {
-              normal: {
-                color: '#5793f3',
-                areaStyle: {
-                  color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
-                    offset: 0,
-                    color: '#C3DCF3'
-                  }, {
-                    offset: 1,
-                    color: '#fff'
-                  }])
-                },
-                lineStyle: {
-                  color: '#5793f3',
-                  width: '2'
-                }
-              },
-              emphasis: {
+              color: '#5793f3'
+            },
+            lineStyle: {
+              color: '#5793f3',
+              width: '2'
+            },
+            areaStyle: {
+              color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                offset: 0,
+                color: '#C3DCF3'
+              }, {
+                offset: 1,
+                color: '#fff'
+              }])
+            },
+            emphasis: {
+              itemStyle: {
                 color: '#5793f3'
               }
             }
@@ -164,9 +165,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .flex-center {
     display: flex;
     justify-content: center;
+  }
+
+  .echart-container {
+    width: 96%;
+    height: 450px;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <el-container id="app">
-    <el-header class="wrap">
+    <el-header class="wrap bg-header">
       <top-header class="innerwrap"></top-header>
     </el-header>
     <el-main class="wrap">
@@ -34,5 +34,8 @@ export default {
   .innerwrap {
     width: 1180px;
     margin: 0 auto;
+  }
+  .bg-header {
+    background: #3192e3;
   }
 </style>
