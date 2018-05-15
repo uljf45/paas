@@ -12,16 +12,16 @@
         </el-row>
       </el-col>
     </el-row>
-    <el-row class="mb spline-wrap">
+    <el-row class="mb30 spline-wrap">
       <hashrate-spline></hashrate-spline>
     </el-row>
     <el-row>
       <el-tabs type="border-card">
         <el-tab-pane label="告警矿机">
-          <miner-table-list :table-data="errorTableData" @search="searchError"></miner-table-list>
+          <miner-table-list :table-data="errorTableData" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange"></miner-table-list>
         </el-tab-pane>
         <el-tab-pane label="所有矿机">
-          <miner-table-list :table-data="fullTableData"></miner-table-list>
+          <miner-table-list :table-data="fullTableData" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange"></miner-table-list>
         </el-tab-pane>
       </el-tabs>
     </el-row>
@@ -154,7 +154,10 @@ export default {
           status: 'active',
           location: 'XX省XX市XX区XX街道456号'
         }
-      ]
+      ],
+      errorMinerAmount: 0,
+      pageSize: 2,
+      allMinerAmount: 0
     }
   },
   components: {
@@ -162,19 +165,74 @@ export default {
     MinerTableList: MinerTableList
   },
   methods: {
-    searchError (text) {
+    getErrorMinerListBy (pageNum, searchText = '') {
       let res = []
-      if (/^\s*$/.test(text)) {
+
+      if (/^\s*$/.test(searchText)) {
         res = this.fakeErrorTableData
       } else {
         this.fakeErrorTableData.forEach((v) => {
-          if (v.ip.indexOf(text) >= 0) {
+          if (v.ip.indexOf(searchText) >= 0) {
             res.push(v)
           }
         })
       }
-      this.errorTableData = res
+      this.errorMinerAmount = res.length
+      let startIndex = this.pageSize * pageNum - this.pageSize
+      let endIndex = Math.min(this.pageSize * pageNum - 1, this.errorMinerAmount - 1)
+
+      let ret = []
+      if (startIndex <= this.errorMinerAmount - 1) {
+        for (let i = startIndex; i <= endIndex; i++) {
+          ret.push(res[i])
+        }
+      }
+
+      return ret
+    },
+    getFullMinerListBy (pageNum, searchText = '') {
+      let res = []
+
+      if (/^\s*$/.test(searchText)) {
+        res = this.fakeFullTableData
+      } else {
+        this.fakeFullTableData.forEach((v) => {
+          if (v.ip.indexOf(searchText) >= 0) {
+            res.push(v)
+          }
+        })
+      }
+      this.allMinerAmount = res.length
+      let startIndex = this.pageSize * pageNum - this.pageSize
+      let endIndex = Math.min(this.pageSize * pageNum - 1, this.allMinerAmount - 1)
+
+      let ret = []
+      if (startIndex <= this.allMinerAmount - 1) {
+        for (let i = startIndex; i <= endIndex; i++) {
+          ret.push(res[i])
+        }
+      }
+
+      return ret
+    },
+    searchError (text) {
+      this.errorTableData = this.getErrorMinerListBy(1, text)
+    },
+    searchFull (text) {
+      this.fullTableData = this.getFullMinerListBy(1, text)
+    },
+    handleErrorCurrentChange (pageNum, searchText) {
+      this.errorTableData = this.getErrorMinerListBy(pageNum, searchText)
+    },
+    handleAllCurrentChange (pageNum, searchText) {
+      this.fullTableData = this.getFullMinerListBy(pageNum, searchText)
     }
+  },
+  created () {
+    this.errorMinerAmount = this.fakeErrorTableData.length
+    this.errorTableData = this.getErrorMinerListBy(1, '')
+    this.allMinerAmount = this.fakeFullTableData.length
+    this.fullTableData = this.getFullMinerListBy(1, '')
   }
 }
 </script>
@@ -185,6 +243,9 @@ export default {
   }
   .mb {
     margin-bottom: 20px;
+  }
+  .mb30 {
+    margin-bottom: 30px;
   }
   .spline-wrap {
     background: #fff;

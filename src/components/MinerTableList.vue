@@ -11,7 +11,7 @@
         <el-button type="primary" @click="exportTable">导出</el-button>
       </div>
     </div>
-    <el-table :data="tableData" stripe style="width: 100%">
+    <el-table :data="tableData" stripe class="table-container">
       <!-- <el-table-column prop="num" label="序号"></el-table-column> -->
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="type" label="型号"></el-table-column>
@@ -28,6 +28,9 @@
         </template>
       </el-table-column>
     </el-table>
+    <div class="pagination-container" v-show="total > 0">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" :page-count="11" layout="prev, pager, next, jumper" :total="total"></el-pagination>
+    </div>
   </div>
 </template>
 
@@ -36,6 +39,14 @@ export default {
   props: {
     tableData: {
       type: Array
+    },
+    pageSize: {
+      type: Number,
+      default: 10
+    },
+    total: {
+      type: Number,
+      default: 0
     }
   },
   data () {
@@ -57,11 +68,23 @@ export default {
     },
     exportTable () {
       console.log(this.tableData)
+    },
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+      this.$emit('handleCurrentChange', val, this.searchText)
     }
   }
 }
 </script>
 
 <style scoped>
-
+  .table-container {
+    margin-bottom: 10px;
+  }
+  .pagination-container {
+    text-align: center;
+  }
 </style>
