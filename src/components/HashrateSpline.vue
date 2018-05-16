@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="chart-title" v-text="title">总算力图表</div>
-    <div class="chart-select-time">
+    <div class="chart-select-time clearfix">
       <el-button-group>
         <el-button size="small" @click="filter('day')" :type="btnTypeBy('day')">天</el-button>
         <el-button size="small" @click="filter('week')" :type="btnTypeBy('week')">周</el-button>
@@ -10,6 +10,9 @@
         <el-button size="small" @click="filter('halfyear')" :type="btnTypeBy('halfyear')">半年</el-button>
         <el-button size="small" @click="filter('year')" :type="btnTypeBy('year')">年</el-button>
       </el-button-group>
+      <div class="toolBox fr">
+        <el-button size="small" @click="exportPic">导出</el-button>
+      </div>
     </div>
     <div class="flex-center">
       <div id="echart-container" class="flex-center echart-container">
@@ -20,6 +23,7 @@
 
 <script>
 import echarts from 'echarts'
+import {getBrowser} from '@/common/browser.js'
 export default {
   name: 'HashrateSpline',
   props: {
@@ -69,10 +73,6 @@ export default {
       const colors = ['#5793f3', '#675bba', '#d14a61']
       const option = {
         color: colors,
-        // title: {
-        //   text: '总算力图表',
-        //   subtext: ''
-        // },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -197,6 +197,50 @@ export default {
       var opt = this.myChart.getOption()
       opt.series[0].data = data
       this.myChart.setOption(opt)
+    },
+    exportPic () {
+      let picInfo = this.myChart.getConnectedDataURL({
+        type: 'png',
+        backgroundColor: '#fff',
+        excludeComponents: [
+          'toolbox'
+        ]
+      })
+
+      let a = document.createElement('a')
+      a.download = 'hashrate-spline.png'
+      a.target = '_blank'
+      a.href = picInfo
+
+      let browserInfo = getBrowser()
+
+      if (typeof MouseEvent === 'function' && browserInfo.browser !== 'IE' && browserInfo.browser !== 'Edge') {
+        console.log(browserInfo)
+        let evt = new MouseEvent('click', {
+          view: window,
+          bubbles: true,
+          cancelable: false
+        })
+        a.dispatchEvent(evt)
+      } else { // IE
+        if (window.navigator.msSaveOrOpenBlob) {
+          var bstr = atob(picInfo.split(',')[1])
+          var n = bstr.length
+          var u8arr = new Uint8Array(n)
+
+          while (n--) {
+            u8arr[n] = bstr.charCodeAt(n)
+          }
+
+          var blob = new Blob([u8arr])
+          window.navigator.msSaveOrOpenBlob(blob, 'hashrate-spline.png')
+        } else {
+          var lang = '右键另存为图片'
+          var html = '' + '<body style="margin:0;">' + '<img src="' + picInfo + '" style="max-width:100%;" title="' + lang + '" />' + '</body>'
+          var tab = window.open()
+          tab.document.write(html)
+        }
+      }
     }
   },
   created () {
@@ -215,7 +259,7 @@ export default {
     justify-content: center;
   }
   .echart-container {
-    width: 96%;
+    width: 100%;
     height: 450px;
   }
   .chart-title {
@@ -227,5 +271,8 @@ export default {
   }
   .chart-select-time {
     margin-left: 2%;
+  }
+  .toolBox {
+    margin-right: 2%;
   }
 </style>
