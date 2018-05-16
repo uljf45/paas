@@ -18,7 +18,7 @@
       <el-table-column prop="ip" label="IP"></el-table-column>
       <el-table-column prop="status" label="状态">
         <template slot-scope="scope">
-          <span :class="{'clr-danger': scope.row.status=='error'}">{{ scope.row.status }}</span>
+          <span :class="{'clr-danger': scope.row.status=='error'}">{{ minerStatusMap[scope.row.status] }}</span>
         </template>
       </el-table-column>
       <el-table-column prop="location" label="位置"></el-table-column>
@@ -51,7 +51,8 @@ export default {
   },
   data () {
     return {
-      searchText: ''
+      searchText: '',
+      minerStatusMap: window.PublicKeys.minerStatus
     }
   },
   methods: {

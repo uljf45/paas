@@ -13,7 +13,7 @@
       </el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <hashrate-spline></hashrate-spline>
+      <hashrate-spline :hashrateList="fakeDatas" title="总算力图表"></hashrate-spline>
     </el-row>
     <el-row>
       <el-tabs type="border-card">
@@ -157,7 +157,8 @@ export default {
       ],
       errorMinerAmount: 0,
       pageSize: 2,
-      allMinerAmount: 0
+      allMinerAmount: 0,
+      fakeDatas: {}
     }
   },
   components: {
@@ -229,28 +230,45 @@ export default {
     }
   },
   created () {
+    console.log('home created')
     this.errorMinerAmount = this.fakeErrorTableData.length
     this.errorTableData = this.getErrorMinerListBy(1, '')
     this.allMinerAmount = this.fakeFullTableData.length
     this.fullTableData = this.getFullMinerListBy(1, '')
+    let vm = this
+    function fakingDatas () {
+      vm.fakeDatas = {
+        day: [],
+        week: [],
+        month: [],
+        season: [],
+        halfyear: [],
+        year: []
+      }
+      let endTimespan = new Date().getTime()
+      for (let i = 0; i < 24; i++) {
+        vm.fakeDatas.day.push([ endTimespan - i * 60 * 60 * 1000, Math.random() * 100 ])
+      }
+      for (let i = 0; i < 28; i++) {
+        vm.fakeDatas.week.push([ endTimespan - i * 6 * 60 * 60 * 1000, Math.random() * 100 ])
+      }
+      for (let i = 0; i < 30; i++) {
+        vm.fakeDatas.month.push([ endTimespan - i * 24 * 60 * 60 * 1000, Math.random() * 100 ])
+      }
+      for (let i = 0; i < 30; i++) {
+        vm.fakeDatas.season.push([ endTimespan - i * 3 * 24 * 60 * 60 * 1000, Math.random() * 100 ])
+      }
+      for (let i = 0; i < 26; i++) {
+        vm.fakeDatas.halfyear.push([ endTimespan - i * 7 * 24 * 60 * 60 * 1000, Math.random() * 100 ])
+      }
+      for (let i = 0; i < 24; i++) {
+        vm.fakeDatas.year.push([ endTimespan - i * 15 * 24 * 60 * 60 * 1000, Math.random() * 100 ])
+      }
+    }
+    fakingDatas()
   }
 }
 </script>
 
 <style scoped>
-  .mr {
-    margin-right: 10px;
-  }
-  .mb {
-    margin-bottom: 20px;
-  }
-  .mb30 {
-    margin-bottom: 30px;
-  }
-  .spline-wrap {
-    background: #fff;
-    padding: 20px 0;
-    border: 1px solid #dcdfe6;
-    box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
-  }
 </style>

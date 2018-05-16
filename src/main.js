@@ -6,9 +6,11 @@ import './assets/css/base.css'
 import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
+import config from './common/config.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+window.PublicKeys = config.keys
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="chart-title">总算力图表</div>
+    <div class="chart-title" v-text="title">总算力图表</div>
     <div class="chart-select-time">
       <el-button-group>
         <el-button size="small" @click="filter('day')" :type="btnTypeBy('day')">天</el-button>
@@ -22,47 +22,26 @@
 import echarts from 'echarts'
 export default {
   name: 'HashrateSpline',
+  props: {
+    hashrateList: {
+      default () {
+        return {
+          day: [],
+          week: [],
+          month: [],
+          season: [],
+          halfyear: [],
+          year: []
+        }
+      }
+    },
+    title: ''
+  },
   data () {
     return {
       filterKey: 'day',
-      myChart: null,
-      fakeDatas: null
+      myChart: null
     }
-  },
-  mounted () {
-    let vm = this
-    function fakingDatas () {
-      vm.fakeDatas = {
-        day: [],
-        week: [],
-        month: [],
-        season: [],
-        halfyear: [],
-        year: []
-      }
-      let endTimespan = new Date().getTime()
-      for (let i = 0; i < 24; i++) {
-        vm.fakeDatas.day.push([ endTimespan - i * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 28; i++) {
-        vm.fakeDatas.week.push([ endTimespan - i * 6 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 30; i++) {
-        vm.fakeDatas.month.push([ endTimespan - i * 24 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 30; i++) {
-        vm.fakeDatas.season.push([ endTimespan - i * 3 * 24 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 26; i++) {
-        vm.fakeDatas.halfyear.push([ endTimespan - i * 7 * 24 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 24; i++) {
-        vm.fakeDatas.year.push([ endTimespan - i * 15 * 24 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-    }
-    fakingDatas()
-    this.myChart = echarts.init(document.getElementById('echart-container'))
-    this.initData()
   },
   methods: {
     btnTypeBy (fk) {
@@ -70,7 +49,7 @@ export default {
     },
     filter (fk) {
       this.filterKey = fk
-      this.refreshData(this.fakeDatas[this.filterKey])
+      this.refreshData(this.hashrateList[this.filterKey])
     },
     pad0 (num) {
       return num < 10 ? '0' + num : num
@@ -183,7 +162,7 @@ export default {
             name: '算力',
             type: 'line',
             smooth: true,
-            data: this.fakeDatas[this.filterKey],
+            data: this.hashrateList[this.filterKey],
             yAxisIndex: 0,
             symbol: 'emptyCircle',
             symbolSize: 4,
@@ -219,6 +198,13 @@ export default {
       opt.series[0].data = data
       this.myChart.setOption(opt)
     }
+  },
+  created () {
+    console.log('hashrate spline created')
+  },
+  mounted () {
+    this.myChart = echarts.init(document.getElementById('echart-container'))
+    this.initData()
   }
 }
 </script>
