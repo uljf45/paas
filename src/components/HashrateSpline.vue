@@ -144,6 +144,12 @@ export default {
             splitLine: {
               show: !1
             },
+            splitArea: {
+              show: true,
+              areaStyle: {
+                color: ['rgba(250,250,250,0.1)', 'rgba(200,200,200,0.05)']
+              }
+            },
             axisLine: {
               lineStyle: {
                 color: '#aaa'
@@ -202,6 +208,7 @@ export default {
       let picInfo = this.myChart.getConnectedDataURL({
         type: 'png',
         backgroundColor: '#fff',
+        pixelRatio: 1,
         excludeComponents: [
           'toolbox'
         ]
