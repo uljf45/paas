@@ -78,37 +78,10 @@ export default {
   },
   created () {
     this.fetchData()
-    let vm = this
-    function fakingDatas () {
-      vm.fakeDatas = {
-        day: [],
-        week: [],
-        month: [],
-        season: [],
-        halfyear: [],
-        year: []
-      }
-      let endTimespan = new Date().getTime()
-      for (let i = 0; i < 24; i++) {
-        vm.fakeDatas.day.push([ endTimespan - i * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 28; i++) {
-        vm.fakeDatas.week.push([ endTimespan - i * 6 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 30; i++) {
-        vm.fakeDatas.month.push([ endTimespan - i * 24 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 30; i++) {
-        vm.fakeDatas.season.push([ endTimespan - i * 3 * 24 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 26; i++) {
-        vm.fakeDatas.halfyear.push([ endTimespan - i * 7 * 24 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-      for (let i = 0; i < 24; i++) {
-        vm.fakeDatas.year.push([ endTimespan - i * 15 * 24 * 60 * 60 * 1000, Math.random() * 100 ])
-      }
-    }
-    fakingDatas()
+    this.$ajax.get('/static/json/totalHashrateList.json')
+      .then((response) => {
+        this.fakeDatas = response.data.list
+      })
   },
   mounted () {
   }

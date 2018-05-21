@@ -250,12 +250,15 @@ export default {
       }
     }
   },
+  watch: {
+    hashrateList () {
+      this.myChart = echarts.init(document.getElementById('echart-container'))
+      this.initData()
+    }
+  },
   created () {
-    console.log('hashrate spline created')
   },
   mounted () {
-    this.myChart = echarts.init(document.getElementById('echart-container'))
-    this.initData()
   }
 }
 </script>
