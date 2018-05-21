@@ -1,9 +1,9 @@
 <template>
   <div>
     <el-row type="flex" class="mb">
-      <el-col><div class="mr">平台状态: <span>正常</span></div></el-col>
-      <el-col><div class="mr">实时算力: <span>587 MH/S</span></div></el-col>
-      <el-col><div class="mr">平均算力: <span>586 MH/S</span></div></el-col>
+      <!-- <el-col><div class="mr">平台状态: <span>正常</span></div></el-col> -->
+      <el-col :span="6"><div class="mr">当前算力: <span>587 MH/S</span></div></el-col>
+      <!-- <el-col><div class="mr">平均算力: <span>586 MH/S</span></div></el-col> -->
       <el-col>
         <el-row type="flex">
           <div class="mr">矿机: <span>20000</span></div>
@@ -35,129 +35,13 @@ export default {
   name: 'Home',
   data () {
     return {
-      errorTableData: [
-        {
-          id: '12',
-          type: 'bwminer2.60a',
-          ip: '192.168.6.13',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道XX号'
-        },
-        {
-          id: '14',
-          type: 'bwminer2.60b',
-          ip: '192.168.6.14',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道123号'
-        },
-        {
-          id: '15',
-          type: 'bwminer2.60c',
-          ip: '192.168.6.15',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道456号'
-        }
-      ],
-      fakeErrorTableData: [
-        {
-          id: '12',
-          type: 'bwminer2.60a',
-          ip: '192.168.6.13',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道XX号'
-        },
-        {
-          id: '14',
-          type: 'bwminer2.60b',
-          ip: '192.168.6.14',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道123号'
-        },
-        {
-          id: '15',
-          type: 'bwminer2.60c',
-          ip: '192.168.6.15',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道456号'
-        }
-      ],
-      fullTableData: [
-        {
-          id: '12',
-          type: 'bwminer2.60a',
-          ip: '192.168.6.13',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道XX号'
-        },
-        {
-          id: '14',
-          type: 'bwminer2.60b',
-          ip: '192.168.6.14',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道123号'
-        },
-        {
-          id: '15',
-          type: 'bwminer2.60c',
-          ip: '192.168.6.15',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道456号'
-        },
-        {
-          id: '16',
-          type: 'bwminer2.60d',
-          ip: '192.168.6.16',
-          status: 'active',
-          location: 'XX省XX市XX区XX街道456号'
-        },
-        {
-          id: '17',
-          type: 'bwminer2.60e',
-          ip: '192.168.6.17',
-          status: 'active',
-          location: 'XX省XX市XX区XX街道456号'
-        }
-      ],
-      fakeFullTableData: [
-        {
-          id: '12',
-          type: 'bwminer2.60a',
-          ip: '192.168.6.13',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道XX号'
-        },
-        {
-          id: '14',
-          type: 'bwminer2.60b',
-          ip: '192.168.6.14',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道123号'
-        },
-        {
-          id: '15',
-          type: 'bwminer2.60c',
-          ip: '192.168.6.15',
-          status: 'error',
-          location: 'XX省XX市XX区XX街道456号'
-        },
-        {
-          id: '16',
-          type: 'bwminer2.60d',
-          ip: '192.168.6.16',
-          status: 'active',
-          location: 'XX省XX市XX区XX街道456号'
-        },
-        {
-          id: '17',
-          type: 'bwminer2.60e',
-          ip: '192.168.6.17',
-          status: 'active',
-          location: 'XX省XX市XX区XX街道456号'
-        }
-      ],
+      errorTableData: [],
+      fakeErrorTableData: [],
+      fullTableData: [],
+      fakeFullTableData: [],
       errorMinerAmount: 0,
-      pageSize: 2,
       allMinerAmount: 0,
+      pageSize: 2,
       fakeDatas: {}
     }
   },
@@ -231,10 +115,22 @@ export default {
   },
   created () {
     console.log('home created')
-    this.errorMinerAmount = this.fakeErrorTableData.length
-    this.errorTableData = this.getErrorMinerListBy(1, '')
-    this.allMinerAmount = this.fakeFullTableData.length
-    this.fullTableData = this.getFullMinerListBy(1, '')
+    this.$ajax.get('/static/json/errorMinerList.json')
+      .then((response) => {
+        console.log(response)
+        this.fakeErrorTableData = response.data.list
+        this.errorTableData = this.getErrorMinerListBy(1, '')
+        this.errorMinerAmount = this.fakeErrorTableData.length
+      })
+
+    this.$ajax.get('/static/json/fullMinerList.json')
+      .then((response) => {
+        console.log(response)
+        this.fakeFullTableData = response.data.list
+        this.fullTableData = this.getFullMinerListBy(1, '')
+        this.allMinerAmount = this.fakeFullTableData.length
+      })
+
     let vm = this
     function fakingDatas () {
       vm.fakeDatas = {
