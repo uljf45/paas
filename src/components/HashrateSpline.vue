@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="chart-title" v-text="title">总算力图表</div>
+    <div class="chart-title" v-text="title"></div>
     <div class="chart-select-time clearfix">
       <el-button-group>
         <el-button size="small" @click="filter('day')" :type="btnTypeBy('day')">天</el-button>
@@ -10,12 +10,12 @@
         <el-button size="small" @click="filter('halfyear')" :type="btnTypeBy('halfyear')">半年</el-button>
         <el-button size="small" @click="filter('year')" :type="btnTypeBy('year')">年</el-button>
       </el-button-group>
-      <div class="toolBox fr">
+      <div class="chart-toolBox fr">
         <el-button size="small" @click="exportPic">导出</el-button>
       </div>
     </div>
     <div class="flex-center">
-      <div id="echart-container" class="flex-center echart-container">
+      <div id="hashratespline-container" class="flex-center echart-container">
       </div>
     </div>
   </div>
@@ -252,7 +252,7 @@ export default {
   },
   watch: {
     hashrateList () {
-      this.myChart = echarts.init(document.getElementById('echart-container'))
+      this.myChart = echarts.init(document.getElementById('hashratespline-container'))
       this.initData()
     }
   },
@@ -264,25 +264,5 @@ export default {
 </script>
 
 <style scoped>
-  .flex-center {
-    display: flex;
-    justify-content: center;
-  }
-  .echart-container {
-    width: 100%;
-    height: 450px;
-  }
-  .chart-title {
-    width: 96%;
-    padding-bottom: 4px;
-    margin: 0 auto 20px;
-    border-bottom: 1px solid #e4e7ed;
-    font-size: 16px;
-  }
-  .chart-select-time {
-    margin-left: 2%;
-  }
-  .toolBox {
-    margin-right: 2%;
-  }
+
 </style>

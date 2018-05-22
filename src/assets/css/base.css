@@ -97,9 +97,32 @@ body {
 .mb30 {
   margin-bottom: 30px;
 }
+
 .spline-wrap {
   background: #fff;
   padding: 20px 0;
   border: 1px solid #dcdfe6;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+}
+.echart-container {
+  width: 100%;
+  height: 450px;
+}
+.chart-title {
+  width: 96%;
+  padding-bottom: 4px;
+  margin: 0 auto 20px;
+  border-bottom: 1px solid #e4e7ed;
+  font-size: 16px;
+}
+.chart-select-time {
+  margin-left: 2%;
+}
+.chart-toolBox {
+  margin-right: 2%;
 }

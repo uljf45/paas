@@ -8,10 +8,12 @@ import App from './App'
 import router from './router'
 import config from './common/config.js'
 import axios from 'axios'
+import util from './common/util.js'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.prototype.$ajax = axios
+Vue.prototype.$util = util
 window.PublicKeys = config.keys
 
 /* eslint-disable no-new */

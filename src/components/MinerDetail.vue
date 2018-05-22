@@ -8,6 +8,9 @@
     <el-row class="mb30 spline-wrap">
       <hashrate-spline :hashrateList="fakeDatas" title="矿机算力图表"></hashrate-spline>
     </el-row>
+    <el-row class="mb30 spline-wrap">
+      <temperature-spline :temperatureList="temperatureList"></temperature-spline>
+    </el-row>
     <el-row>
       <el-tabs type="border-card">
         <el-tab-pane label="矿机信息">
@@ -21,10 +24,12 @@
 <script>
 import MinerTable from '@/components/MinerTable.vue'
 import HashrateSpline from '@/components/HashrateSpline.vue'
+import TemperatureSpline from '@/components/TemperatureSpline.vue'
 
 export default {
   data () {
     return {
+      temperatureList: [[1526957384175, 123], [1524367190076, 110]],
       tableData: null,
       fakeTalbeData: [
         {
@@ -68,7 +73,8 @@ export default {
   },
   components: {
     MinerTable: MinerTable,
-    HashrateSpline: HashrateSpline
+    HashrateSpline: HashrateSpline,
+    TemperatureSpline: TemperatureSpline
   },
   methods: {
     fetchData () {
