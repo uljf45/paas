@@ -2,6 +2,7 @@
   <div>
     <el-row type="flex" class="mb">
       <el-col><div class="mr">矿机状态: <span>正常</span></div></el-col>
+      <el-col><div class="mr">运行时间: <span>1d 4h 42m 33s</span></div></el-col>
       <el-col><div class="mr">实时算力: <span>487 MH/S</span></div></el-col>
       <el-col><div class="mr">平均算力: <span>486 MH/S</span></div></el-col>
     </el-row>
@@ -16,6 +17,18 @@
         <el-tab-pane label="矿机信息">
           <miner-table :table-data="tableData"></miner-table>
         </el-tab-pane>
+        <el-tab-pane label="算力板">
+          <miner-board></miner-board>
+        </el-tab-pane>
+        <el-tab-pane label="风扇">
+          <miner-fan></miner-fan>
+        </el-tab-pane>
+        <el-tab-pane label="矿池">
+          <miner-pool></miner-pool>
+        </el-tab-pane>
+        <el-tab-pane label="网络">
+          <miner-network></miner-network>
+        </el-tab-pane>
       </el-tabs>
     </el-row>
   </div>
@@ -25,6 +38,10 @@
 import MinerTable from '@/components/MinerTable.vue'
 import HashrateSpline from '@/components/HashrateSpline.vue'
 import TemperatureSpline from '@/components/TemperatureSpline.vue'
+import MinerBoard from '@/components/MinerBoard.vue'
+import MinerFan from '@/components/MinerFan.vue'
+import MinerPool from '@/components/MinerPool.vue'
+import MinerNetwork from '@/components/MinerNetwork.vue'
 
 export default {
   data () {
@@ -34,38 +51,43 @@ export default {
       fakeTalbeData: [
         {
           id: '12',
-          type: 'bwminer2.60a',
+          type: 'L21',
+          ver: '0.73c',
           ip: '192.168.6.13',
           status: 'error',
-          location: 'XX省XX市XX区XX街道XX号'
+          location: '1架2层3'
         },
         {
           id: '14',
-          type: 'bwminer2.60b',
+          type: 'L21',
+          ver: '0.73c',
           ip: '192.168.6.14',
           status: 'error',
-          location: 'XX省XX市XX区XX街道123号'
+          location: '1架2层4'
         },
         {
           id: '15',
-          type: 'bwminer2.60c',
+          type: 'L21',
+          ver: '0.73c',
           ip: '192.168.6.15',
           status: 'error',
-          location: 'XX省XX市XX区XX街道456号'
+          location: '1架3层3'
         },
         {
           id: '16',
-          type: 'bwminer2.60d',
+          type: 'L21',
+          ver: '0.73c',
           ip: '192.168.6.16',
           status: 'active',
-          location: 'XX省XX市XX区XX街道456号'
+          location: '1架2层5'
         },
         {
           id: '17',
-          type: 'bwminer2.60e',
+          type: 'L21',
+          ver: '0.73c',
           ip: '192.168.6.17',
           status: 'active',
-          location: 'XX省XX市XX区XX街道456号'
+          location: '1架2层6'
         }
       ],
       fakeDatas: null
@@ -74,7 +96,11 @@ export default {
   components: {
     MinerTable: MinerTable,
     HashrateSpline: HashrateSpline,
-    TemperatureSpline: TemperatureSpline
+    TemperatureSpline: TemperatureSpline,
+    MinerBoard: MinerBoard,
+    MinerFan: MinerFan,
+    MinerPool: MinerPool,
+    MinerNetwork: MinerNetwork
   },
   methods: {
     fetchData () {

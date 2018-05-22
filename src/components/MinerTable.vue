@@ -3,6 +3,7 @@
     <!-- <el-table-column prop="num" label="序号"></el-table-column> -->
     <el-table-column type="index"></el-table-column>
     <el-table-column prop="type" label="型号"></el-table-column>
+    <el-table-column prop="ver" label="版本"></el-table-column>
     <el-table-column prop="ip" label="IP"></el-table-column>
     <el-table-column prop="status" label="状态">
       <template slot-scope="scope">
