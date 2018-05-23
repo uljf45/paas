@@ -15,6 +15,7 @@
       <!-- <el-table-column prop="num" label="序号"></el-table-column> -->
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="type" label="型号"></el-table-column>
+      <el-table-column prop="mac" label="MAC"></el-table-column>
       <el-table-column prop="ip" label="IP"></el-table-column>
       <el-table-column prop="status" label="状态"></el-table-column>
       <!-- <el-table-column prop="status" label="状态">
@@ -25,7 +26,7 @@
       <!-- <el-table-column prop="location" label="位置"></el-table-column> -->
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button @click="viewMiner(scope.row.id)" type="text" size="small">查看</el-button>
+          <el-button @click="viewMiner(scope.row.ip, scope.row.mac)" type="text" size="small">查看</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -57,8 +58,8 @@ export default {
     }
   },
   methods: {
-    viewMiner (id) {
-      this.$router.push('/miner-detail/' + id)
+    viewMiner (ip, mac) {
+      this.$router.push(`/miner-detail?ip=${ip}&mac=${mac}`)
     },
     search () {
       let text = this.searchText

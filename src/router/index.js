@@ -13,7 +13,7 @@ export default new Router({
       component: Home
     },
     {
-      path: '/miner-detail/:id',
+      path: '/miner-detail',
       name: 'MinerDtail',
       component: MinerDetail
     }

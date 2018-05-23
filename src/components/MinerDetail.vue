@@ -104,8 +104,12 @@ export default {
   },
   methods: {
     fetchData () {
-      let id = this.$route.params.id
-      this.tableData = [this.fakeTalbeData.find(elm => elm.id === id)]
+      let ip = this.$route.query.ip
+      let mac = this.$route.query.mac
+      this.$ajax.get(`/v1/miner?ip=${ip}&mac=${mac}`)
+        .then((response) => {
+          this.tableData = [response.data.miner]
+        })
     }
   },
   created () {

@@ -75,6 +75,16 @@ function initApi (app) {
     res.json(result)
   })
 
+  apiRoutes.get('/v1/miner', function (req, res) {
+    let ip = req.query.ip
+    let mac = req.query.mac
+    let miners = getJsonBy('miners.json').list
+    let miner = miners.find((item) => {
+      return item.ip === ip && item.mac === mac
+    })
+    res.json({miner})
+  })
+
   app.use(apiRoutes)
 }
 
