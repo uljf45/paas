@@ -110,7 +110,7 @@ export default {
   },
   created () {
     this.fetchData()
-    this.$ajax.get('/static/json/totalHashrateList.json')
+    this.$ajax.get('./static/json/totalHashrateList.json')
       .then((response) => {
         this.fakeDatas = response.data.list
       })

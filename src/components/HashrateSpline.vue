@@ -251,9 +251,15 @@ export default {
     }
   },
   watch: {
-    hashrateList () {
-      this.myChart = echarts.init(document.getElementById('hashratespline-container'))
-      this.initData()
+    hashrateList (newList) {
+      if (!this.myChart) {
+        this.myChart = echarts.init(document.getElementById('hashratespline-container'))
+        this.initData()
+      } else {
+        var opt = this.myChart.getOption()
+        opt.series[0].data = newList.day
+        this.myChart.setOption(opt)
+      }
     }
   },
   created () {

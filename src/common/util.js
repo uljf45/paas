@@ -13,7 +13,30 @@ function formatTime (timespan) {
   return y + M + d + h + m + s
 }
 
+const pool = {
+  rate: 1000
+}
+
+function formatHashrate (hashrate) {
+  let i = -1
+  var byteUnits = ['KH/S', 'MH/S', 'GH/S', 'TH/S', 'PH/S']
+  do {
+    hashrate = hashrate / pool.rate
+    i++
+  } while (hashrate > pool.rate)
+
+  let value = hashrate.toFixed(2)
+  let unit = byteUnits[i]
+  let text = value + ' ' + unit
+  return {
+    value,
+    unit,
+    text
+  }
+}
+
 export default {
   pad0: pad0,
-  formatTime: formatTime
+  formatTime: formatTime,
+  formatHashrate
 }
