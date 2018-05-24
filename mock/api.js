@@ -2,12 +2,16 @@ const fs = require('fs')
 const path = require('path')
 const express = require('express')
 const apiRoutes = express.Router()
+const bodyParser = require('body-parser')
 
 function getJsonBy (fileName) {
   return JSON.parse(fs.readFileSync(path.join(__dirname, fileName)))
 }
 
 function initApi (app) {
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({extend: false}))
+
   apiRoutes.get('/v1/mining', function (req, res) {
     let data = {
       'mining': [{
@@ -83,6 +87,15 @@ function initApi (app) {
       return item.ip === ip && item.mac === mac
     })
     res.json({miner})
+  })
+
+  apiRoutes.patch('/v1/miner', function (req, res) {
+    let obj = {}
+    obj.result = 'ok'
+    
+    setTimeout(() => {
+      res.json({data: req.body})
+    }, 1000)
   })
 
   app.use(apiRoutes)

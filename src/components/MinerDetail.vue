@@ -15,7 +15,7 @@
     <el-row>
       <el-tabs type="border-card">
         <el-tab-pane label="矿机信息">
-          <miner-table :table-data="tableData"></miner-table>
+          <miner-table :table-data="tableData" @refresh="refreshMinerTable"></miner-table>
         </el-tab-pane>
         <el-tab-pane label="算力板">
           <miner-board></miner-board>
@@ -48,48 +48,6 @@ export default {
     return {
       temperatureList: [[1526957384175, 123], [1524367190076, 110]],
       tableData: null,
-      fakeTalbeData: [
-        {
-          id: '12',
-          type: 'L21',
-          ver: '0.73c',
-          ip: '192.168.6.13',
-          status: 'error',
-          location: '1架2层3'
-        },
-        {
-          id: '14',
-          type: 'L21',
-          ver: '0.73c',
-          ip: '192.168.6.14',
-          status: 'error',
-          location: '1架2层4'
-        },
-        {
-          id: '15',
-          type: 'L21',
-          ver: '0.73c',
-          ip: '192.168.6.15',
-          status: 'error',
-          location: '1架3层3'
-        },
-        {
-          id: '16',
-          type: 'L21',
-          ver: '0.73c',
-          ip: '192.168.6.16',
-          status: 'active',
-          location: '1架2层5'
-        },
-        {
-          id: '17',
-          type: 'L21',
-          ver: '0.73c',
-          ip: '192.168.6.17',
-          status: 'active',
-          location: '1架2层6'
-        }
-      ],
       fakeDatas: null
     }
   },
@@ -109,6 +67,15 @@ export default {
       this.$ajax.get(`/v1/miner?ip=${ip}&mac=${mac}`)
         .then((response) => {
           this.tableData = [response.data.miner]
+        })
+    },
+    refreshMinerTable (doneFn) {
+      let ip = this.$route.query.ip
+      let mac = this.$route.query.mac
+      this.$ajax.get(`/v1/miner?ip=${ip}&mac=${mac}`)
+        .then((response) => {
+          this.tableData = [response.data.miner]
+          doneFn()
         })
     }
   },
