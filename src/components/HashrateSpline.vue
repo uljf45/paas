@@ -7,7 +7,7 @@
         <el-button size="small" @click="filter('week')" :type="btnTypeBy('week')">周</el-button>
         <el-button size="small" @click="filter('month')" :type="btnTypeBy('month')">月</el-button>
         <el-button size="small" @click="filter('season')" :type="btnTypeBy('season')">季</el-button>
-        <el-button size="small" @click="filter('halfyear')" :type="btnTypeBy('halfyear')">半年</el-button>
+        <el-button size="small" @click="filter('half')" :type="btnTypeBy('half')">半年</el-button>
         <el-button size="small" @click="filter('year')" :type="btnTypeBy('year')">年</el-button>
       </el-button-group>
       <div class="chart-toolBox fr">
@@ -23,7 +23,8 @@
 
 <script>
 import echarts from 'echarts'
-import {getBrowser} from '@/common/browser.js'
+import chart from '@/common/chart.js'
+
 export default {
   name: 'HashrateSpline',
   props: {
@@ -34,7 +35,7 @@ export default {
           week: [],
           month: [],
           season: [],
-          halfyear: [],
+          half: [],
           year: []
         }
       }
@@ -44,7 +45,8 @@ export default {
   data () {
     return {
       filterKey: 'day',
-      myChart: null
+      myChart: null,
+      unit: 'MH/S'
     }
   },
   methods: {
@@ -53,7 +55,8 @@ export default {
     },
     filter (fk) {
       this.filterKey = fk
-      this.refreshData(this.hashrateList[this.filterKey])
+      this.$emit('switchTimeInterval', fk)
+      // this.refreshData(this.hashrateList[this.filterKey])
     },
     pad0 (num) {
       return num < 10 ? '0' + num : num
@@ -68,7 +71,7 @@ export default {
       let s = this.pad0(date.getSeconds())
       return y + M + d + h + m + s
     },
-    initData () {
+    initData (data) {
       let vm = this
       const colors = ['#5793f3', '#675bba', '#d14a61']
       const option = {
@@ -138,7 +141,7 @@ export default {
         yAxis: [
           {
             type: 'value',
-            name: '算力',
+            name: `算力(${this.unit})`,
             position: 'left',
             boundaryGap: !1,
             splitLine: {
@@ -168,7 +171,7 @@ export default {
             name: '算力',
             type: 'line',
             smooth: true,
-            data: this.hashrateList[this.filterKey],
+            data: data,
             yAxisIndex: 0,
             symbol: 'emptyCircle',
             symbolSize: 4,
@@ -198,66 +201,38 @@ export default {
       }
       this.myChart.setOption(option)
     },
-    refreshData (data) {
-      if (!this.myChart) return
-      var opt = this.myChart.getOption()
-      opt.series[0].data = data
-      this.myChart.setOption(opt)
-    },
+    // refreshData (data) {
+    //   if (!this.myChart) return
+    //   var opt = this.myChart.getOption()
+    //   opt.series[0].data = data
+    //   this.myChart.setOption(opt)
+    // },
     exportPic () {
-      let picInfo = this.myChart.getConnectedDataURL({
-        type: 'png',
-        backgroundColor: '#fff',
-        pixelRatio: 1,
-        excludeComponents: [
-          'toolbox'
-        ]
-      })
-
-      let a = document.createElement('a')
-      a.download = 'hashrate-spline.png'
-      a.target = '_blank'
-      a.href = picInfo
-
-      let browserInfo = getBrowser()
-
-      if (typeof MouseEvent === 'function' && browserInfo.browser !== 'IE' && browserInfo.browser !== 'Edge') {
-        console.log(browserInfo)
-        let evt = new MouseEvent('click', {
-          view: window,
-          bubbles: true,
-          cancelable: false
-        })
-        a.dispatchEvent(evt)
-      } else { // IE
-        if (window.navigator.msSaveOrOpenBlob) {
-          var bstr = atob(picInfo.split(',')[1])
-          var n = bstr.length
-          var u8arr = new Uint8Array(n)
-
-          while (n--) {
-            u8arr[n] = bstr.charCodeAt(n)
-          }
-
-          var blob = new Blob([u8arr])
-          window.navigator.msSaveOrOpenBlob(blob, 'hashrate-spline.png')
-        } else {
-          var lang = '右键另存为图片'
-          var html = '' + '<body style="margin:0;">' + '<img src="' + picInfo + '" style="max-width:100%;" title="' + lang + '" />' + '</body>'
-          var tab = window.open()
-          tab.document.write(html)
-        }
-      }
+      chart.exportPic(this.myChart, 'hashrate_spline')
     }
   },
   watch: {
     hashrateList (newList) {
+      let data = Object.assign({}, newList)
+      data = data[this.filterKey]
+      let max = 0
+      for (let i = 0; i < data.length; i++) {
+        if (data[i][1] > max) {
+          max = data[i][1]
+        }
+      }
+      let fmtMaxHashrate = this.$util.formatHashrate(max * 1024 * 1024)
+      this.unit = fmtMaxHashrate.unit
+      for (let i = 0; i < data.length; i++) {
+        data[i][1] = data[i][1] * 1024 * 1024 / fmtMaxHashrate.totalRate
+      }
       if (!this.myChart) {
         this.myChart = echarts.init(document.getElementById('hashratespline-container'))
-        this.initData()
+        this.initData(data)
       } else {
         var opt = this.myChart.getOption()
-        opt.series[0].data = newList.day
+        opt.yAxis[0].name = `算力(${this.unit})`
+        opt.series[0].data = data
         this.myChart.setOption(opt)
       }
     }

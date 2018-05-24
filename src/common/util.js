@@ -28,10 +28,12 @@ function formatHashrate (hashrate) {
   let value = hashrate.toFixed(2)
   let unit = byteUnits[i]
   let text = value + ' ' + unit
+  let totalRate = Math.pow(pool.rate, i + 1)
   return {
     value,
     unit,
-    text
+    text,
+    totalRate
   }
 }
 

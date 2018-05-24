@@ -15,7 +15,7 @@
       <el-col>湿度: <span v-text="mining.humidity"></span></el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <hashrate-spline ref="spline" :hashrateList="fakeDatas" title="总算力图表"></hashrate-spline>
+      <hashrate-spline ref="spline" :hashrateList="fakeDatas" @switchTimeInterval="switchTimeInterval" title="总算力图表"></hashrate-spline>
     </el-row>
     <el-row>
       <el-tabs type="border-card">
@@ -49,7 +49,7 @@ export default {
       fakeFullTableData: [],
       errorMinerAmount: 0,
       allMinerAmount: 0,
-      pageSize: 2,
+      pageSize: 50,
       fakeDatas: {}
     }
   },
@@ -135,6 +135,25 @@ export default {
           this.fullTableData = response.data.miners
           this.allMinerAmount = response.data.total
         })
+    },
+    switchTimeInterval (interval) {
+      this.$ajax.get('/v1/mining/mhs?period=' + interval) // 总算力天周月季半年年
+        .then((response) => {
+          let miningMhs = response.data.mining_mhs
+          let res = []
+          for (let i = 0; i < miningMhs.length; i++) {
+            let item = miningMhs[i]
+            res.push([new Date(item.date).getTime(), item.mhs])
+          }
+          this.fakeDatas = { // 暂时都显示一样的数据
+            day: res,
+            week: res,
+            month: res,
+            season: res,
+            half: res,
+            year: res
+          }
+        })
     }
   },
   created () {
@@ -172,7 +191,7 @@ export default {
           week: res,
           month: res,
           season: res,
-          halfyear: res,
+          half: res,
           year: res
         }
       })
