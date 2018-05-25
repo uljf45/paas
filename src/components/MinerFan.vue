@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="fakeTableData" stripe style="width: 100%">
+  <el-table :data="tableData" stripe style="width: 100%">
     <el-table-column type="index"></el-table-column>
     <el-table-column prop="name" label="名称"></el-table-column>
     <el-table-column prop="speed" label="转速"></el-table-column>
@@ -17,14 +17,9 @@ export default {
   },
   data () {
     return {
-      fakeTableData: []
     }
   },
   mounted () {
-    this.fakeTableData = [
-      { name: 'fan1', speed: '2000rpm', status: '正常' },
-      { name: 'fan2', speed: '2000rpm', status: '正常' }
-    ]
   }
 }
 </script>
