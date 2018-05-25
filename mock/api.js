@@ -8,6 +8,12 @@ function getJsonBy (fileName) {
   return JSON.parse(fs.readFileSync(path.join(__dirname, fileName)))
 }
 
+function writeJsonBy (fileName, jsonData) {
+  let filePath = path.join(__dirname, fileName)
+  let jsonStr = JSON.stringify(jsonData)
+  fs.writeFileSync(filePath, jsonStr)
+}
+
 function initApi (app) {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({extend: false}))
@@ -90,9 +96,18 @@ function initApi (app) {
   })
 
   apiRoutes.patch('/v1/miner', function (req, res) {
-    let obj = {}
-    obj.result = 'ok'
-    
+    let body = req.body
+    let id = body.id
+    let ip = body.ip
+    let mac = body.mac
+    let position = body.position
+
+    let miners = getJsonBy('miners.json').list
+    let miner = miners.find((v) => v.id === Number(id) && v.ip === ip && v.mac === mac)
+    miner.position = position
+
+    writeJsonBy('miners.json', {list: miners})
+
     setTimeout(() => {
       res.json({data: req.body})
     }, 1000)
