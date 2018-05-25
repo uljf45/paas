@@ -92,24 +92,27 @@ function initApi (app) {
     let miner = miners.find((item) => {
       return item.ip === ip && item.mac === mac
     })
+
+    let minerList = getJsonBy('miner.json').list
+    let miner2 = minerList.find((v) => v.mac === mac)
+
+    miner = Object.assign(miner, miner2)
     res.json({miner})
   })
 
   apiRoutes.patch('/v1/miner', function (req, res) {
     let body = req.body
-    let id = body.id
-    let ip = body.ip
     let mac = body.mac
     let position = body.position
 
     let miners = getJsonBy('miners.json').list
-    let miner = miners.find((v) => v.id === Number(id) && v.ip === ip && v.mac === mac)
+    let miner = miners.find((v) => v.mac === mac)
     miner.position = position
 
     writeJsonBy('miners.json', {list: miners})
 
     setTimeout(() => {
-      res.json({data: req.body})
+      res.json({data: miner})
     }, 1000)
   })
 
