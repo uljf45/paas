@@ -13,6 +13,8 @@ import util from './common/util.js'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
 Vue.prototype.$ajax = axios
+axios.defaults.xsrfCookieName = 'csrfToken'
+axios.defaults.xsrfHeaderName = 'x-csrf-token'
 Vue.prototype.$util = util
 window.PublicKeys = config.keys
 
