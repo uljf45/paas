@@ -24,10 +24,10 @@
           <miner-fan></miner-fan>
         </el-tab-pane>
         <el-tab-pane label="矿池">
-          <miner-pool></miner-pool>
+          <miner-pool :table-data="poolData"></miner-pool>
         </el-tab-pane>
         <el-tab-pane label="网络">
-          <miner-network></miner-network>
+          <miner-network :table-data="tableData"></miner-network>
         </el-tab-pane>
       </el-tabs>
     </el-row>
@@ -44,6 +44,7 @@ import MinerPool from '@/components/MinerPool.vue'
 import MinerNetwork from '@/components/MinerNetwork.vue'
 
 export default {
+  name: 'MinerDetail',
   data () {
     return {
       temperatureList: [[1526957384175, 123], [1524367190076, 110]],
@@ -59,6 +60,19 @@ export default {
     MinerFan: MinerFan,
     MinerPool: MinerPool,
     MinerNetwork: MinerNetwork
+  },
+  computed: {
+    poolData () {
+      let rtn = []
+      if (this.tableData && this.tableData.length) {
+        let data = this.tableData[0]
+        let pool1 = {name: 'pool1', addr: data.pool1_addr, miner_addr: data.pool1_miner_addr, password: '', status: data.pool1_status}
+        let pool2 = {name: 'pool2', addr: data.pool2_addr, miner_addr: data.pool2_miner_addr, password: '', status: data.pool2_status}
+        let pool3 = {name: 'pool3', addr: data.pool3_addr, miner_addr: data.pool3_miner_addr, password: '', status: data.pool3_status}
+        rtn.push(pool1, pool2, pool3)
+      }
+      return rtn
+    }
   },
   methods: {
     fetchData () {
