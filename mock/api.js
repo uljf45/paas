@@ -103,12 +103,30 @@ function initApi (app) {
   apiRoutes.patch('/v1/miner', function (req, res) {
     let body = req.body
     let mac = body.mac
-    let position = body.position
+    let patchAction = body.patchAction
 
     let miners = getJsonBy('miners.json').list
     let miner = miners.find((v) => v.mac === mac)
-    miner.position = position
+    if (patchAction && patchAction === 'setNetwork') {
+      let ipType = body.ip_type
+      let ip = body.ip
+      let netmask = body.netmask
+      let gateway = body.gateway
+      let dns = body.dns
+      miner.ip_type = ipType
+      miner.ip = ip
+      miner.netmask = netmask
+      miner.gateway = gateway
+      miner.dns = dns
 
+      let miner2list = getJsonBy('miner.json').list
+      let miner2 = miner2list.find(v => v.mac === mac)
+      miner2.ip = ip
+      writeJsonBy('miner.json', {list: miner2list})
+    } else {
+      let position = body.position
+      miner.position = position
+    }
     writeJsonBy('miners.json', {list: miners})
 
     setTimeout(() => {

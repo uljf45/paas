@@ -100,6 +100,7 @@ export default {
       let vm = this
       this.$ajax.patch('/v1/miner', {
         patchAction: 'setNetwork',
+        mac: this.copy.mac,
         ip_type: this.copy.ip_type,
         ip: this.copy.ip,
         netmask: this.copy.netmask,
@@ -107,10 +108,8 @@ export default {
         dns: this.copy.dns
       })
         .then((response) => {
-          this.$emit('refresh', function () {
-            vm.isEdit = false
-            vm.loading = false
-          })
+          vm.isEdit = false
+          vm.loading = false
         })
         .catch(function (error) {
           alert(error)
