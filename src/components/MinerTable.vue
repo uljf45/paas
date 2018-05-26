@@ -15,7 +15,7 @@
     <el-table-column prop="position" label="位置">
       <template slot-scope="scope">
         <span v-show="!isEdit">{{ scope.row.position }}</span>
-        <el-input v-show="isEdit" placeholder="请输入矿机位置" v-model="scope.row.position" size="small"></el-input>
+        <el-input v-show="isEdit" placeholder="请输入矿机位置" v-model.trim="scope.row.position" size="small"></el-input>
       </template>
     </el-table-column>
     <el-table-column label="操作">

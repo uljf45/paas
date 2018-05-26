@@ -59,9 +59,29 @@ function formatDuration (seconds = 0) {
   return days + '天' + h + '小时' + m + '分' + s + '秒'
 }
 
+function checkip (ipaddr) {
+  var re = /^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/
+  if (re.test(ipaddr)) {
+    var parts = ipaddr.split('.')
+    if (Number(parts[0]) === 0) {
+      return false
+    }
+
+    for (var i = 0; i < parts.length; i++) {
+      if (Number(parts[i]) > 255) {
+        return false
+      }
+    }
+    return true
+  } else {
+    return false
+  }
+}
+
 export default {
   pad0,
   formatTime,
   formatHashrate,
-  formatDuration
+  formatDuration,
+  checkip
 }
