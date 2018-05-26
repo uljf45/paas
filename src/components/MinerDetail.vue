@@ -82,9 +82,9 @@ export default {
       let rtn = []
       if (this.tableData && this.tableData.length) {
         let data = this.tableData[0]
-        let pool1 = {name: 'pool1', addr: data.pool1_addr, miner_addr: data.pool1_miner_addr, password: '', status: data.pool1_status}
-        let pool2 = {name: 'pool2', addr: data.pool2_addr, miner_addr: data.pool2_miner_addr, password: '', status: data.pool2_status}
-        let pool3 = {name: 'pool3', addr: data.pool3_addr, miner_addr: data.pool3_miner_addr, password: '', status: data.pool3_status}
+        let pool1 = {name: 'pool1', addr: data.pool1_addr, miner_addr: data.pool1_miner_addr, password: data.pool1_password, status: data.pool1_status}
+        let pool2 = {name: 'pool2', addr: data.pool2_addr, miner_addr: data.pool2_miner_addr, password: data.pool2_password, status: data.pool2_status}
+        let pool3 = {name: 'pool3', addr: data.pool3_addr, miner_addr: data.pool3_miner_addr, password: data.pool3_password, status: data.pool3_status}
         rtn.push(pool1, pool2, pool3)
       }
       return rtn
