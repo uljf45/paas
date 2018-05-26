@@ -37,8 +37,31 @@ function formatHashrate (hashrate) {
   }
 }
 
+function formatDuration (seconds) {
+  if (seconds < 60) {
+    return seconds + '秒'
+  }
+
+  let s = seconds % 60
+  let mins = (seconds - s) / 60
+  if (mins < 60) {
+    return mins + '分' + s + '秒'
+  }
+
+  let m = mins % 60
+  let hours = (mins - m) / 60
+  if (hours < 24) {
+    return hours + '小时' + m + '分' + s + '秒'
+  }
+
+  let h = hours % 24
+  let days = (hours - h) / 24
+  return days + '天' + h + '小时' + m + '分' + s + '秒'
+}
+
 export default {
-  pad0: pad0,
-  formatTime: formatTime,
-  formatHashrate
+  pad0,
+  formatTime,
+  formatHashrate,
+  formatDuration
 }

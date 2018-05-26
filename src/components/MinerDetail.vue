@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-row type="flex" class="mb">
-      <el-col><div class="mr">矿机状态: <span>正常</span></div></el-col>
-      <el-col><div class="mr">运行时间: <span>1d 4h 42m 33s</span></div></el-col>
-      <el-col><div class="mr">实时算力: <span>487 MH/S</span></div></el-col>
-      <el-col><div class="mr">平均算力: <span>486 MH/S</span></div></el-col>
+      <el-col><div class="mr">矿机状态: <span v-text="infoData.status"></span></div></el-col>
+      <el-col><div class="mr">运行时间: <span v-text="infoData.duration"></span></div></el-col>
+      <el-col><div class="mr">实时算力: <span v-text="infoData.curHashrate"></span></div></el-col>
+      <el-col><div class="mr">平均算力: <span v-text="infoData.avgHashrate"></span></div></el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
       <hashrate-spline :hashrateList="fakeDatas" title="矿机算力图表"></hashrate-spline>
@@ -62,6 +62,22 @@ export default {
     MinerNetwork: MinerNetwork
   },
   computed: {
+    infoData () {
+      let rtn = {
+        status: '',
+        duration: '',
+        curHashrate: '',
+        avgHashrate: ''
+      }
+      if (this.tableData && this.tableData.length) {
+        let data = this.tableData[0]
+        rtn.status = data.status
+        rtn.duration = this.$util.formatDuration(data.duration)
+        rtn.curHashrate = this.$util.formatHashrate(data.mhs * 1024 * 1024).text
+        rtn.avgHashrate = this.$util.formatHashrate(data.avg_mhs * 1024 * 1024).text
+      }
+      return rtn
+    },
     poolData () {
       let rtn = []
       if (this.tableData && this.tableData.length) {
