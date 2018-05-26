@@ -37,7 +37,7 @@ function formatHashrate (hashrate) {
   }
 }
 
-function formatDuration (seconds) {
+function formatDuration (seconds = 0) {
   if (seconds < 60) {
     return seconds + '秒'
   }

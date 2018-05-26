@@ -73,8 +73,8 @@ export default {
         let data = this.tableData[0]
         rtn.status = data.status
         rtn.duration = this.$util.formatDuration(data.duration)
-        rtn.curHashrate = this.$util.formatHashrate(data.mhs * 1024 * 1024).text
-        rtn.avgHashrate = this.$util.formatHashrate(data.avg_mhs * 1024 * 1024).text
+        rtn.curHashrate = this.$util.formatHashrate((data.mhs || 0) * 1024 * 1024).text
+        rtn.avgHashrate = this.$util.formatHashrate((data.avg_mhs || 0) * 1024 * 1024).text
       }
       return rtn
     },

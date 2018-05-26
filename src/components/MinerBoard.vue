@@ -4,7 +4,7 @@
     <el-table-column prop="name" label="名称"></el-table-column>
     <el-table-column prop="mhs" label="算力">
       <template slot-scope="scope">
-        <span v-text="$util.formatHashrate(scope.row.mhs * 1024 * 1024).text"></span>
+        <span v-text="$util.formatHashrate((scope.row.mhs || 0) * 1024 * 1024).text"></span>
       </template>
     </el-table-column>
     <el-table-column prop="frequency" label="频率"></el-table-column>
