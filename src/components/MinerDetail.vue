@@ -12,7 +12,7 @@
     <el-row class="mb30 spline-wrap">
       <temperature-spline :temperatureList="temperatureList"></temperature-spline>
     </el-row>
-    <el-row>
+    <el-row style="min-height: 318px">
       <el-tabs type="border-card">
         <el-tab-pane label="矿机信息">
           <miner-table :table-data="tableData" @refresh="refreshMinerTable"></miner-table>
@@ -24,7 +24,7 @@
           <miner-fan :table-data="fanData"></miner-fan>
         </el-tab-pane>
         <el-tab-pane label="矿池">
-          <miner-pool :table-data="poolData"></miner-pool>
+          <miner-pool :table-data="poolData" @refresh="refreshMinerTable"></miner-pool>
         </el-tab-pane>
         <el-tab-pane label="网络">
           <miner-network :table-data="tableData"></miner-network>
@@ -82,9 +82,9 @@ export default {
       let rtn = []
       if (this.tableData && this.tableData.length) {
         let data = this.tableData[0]
-        let pool1 = {name: 'pool1', addr: data.pool1_addr, miner_addr: data.pool1_miner_addr, password: data.pool1_password, status: data.pool1_status}
-        let pool2 = {name: 'pool2', addr: data.pool2_addr, miner_addr: data.pool2_miner_addr, password: data.pool2_password, status: data.pool2_status}
-        let pool3 = {name: 'pool3', addr: data.pool3_addr, miner_addr: data.pool3_miner_addr, password: data.pool3_password, status: data.pool3_status}
+        let pool1 = {name: 'pool1', addr: data.pool1_addr, miner_addr: data.pool1_miner_addr, password: data.pool1_password, status: data.pool1_status, mac: data.mac}
+        let pool2 = {name: 'pool2', addr: data.pool2_addr, miner_addr: data.pool2_miner_addr, password: data.pool2_password, status: data.pool2_status, mac: data.mac}
+        let pool3 = {name: 'pool3', addr: data.pool3_addr, miner_addr: data.pool3_miner_addr, password: data.pool3_password, status: data.pool3_status, mac: data.mac}
         rtn.push(pool1, pool2, pool3)
       }
       return rtn
