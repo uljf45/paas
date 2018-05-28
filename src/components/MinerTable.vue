@@ -59,13 +59,14 @@ export default {
     },
     save (id) {
       console.log(id)
-      if (this.copy.position.trim() === this.tableData[0].position.trim()) {
+      if (this.tableData[0].position && (this.copy.position.trim() === this.tableData[0].position.trim())) {
         this.cancel()
         return
       }
       this.loading = true
       let vm = this
       this.$ajax.patch('/v1/miner', {
+        patchAction: 'setPosition',
         id: this.copy.id,
         ip: this.copy.ip,
         mac: this.copy.mac,
