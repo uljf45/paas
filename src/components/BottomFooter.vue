@@ -1,6 +1,6 @@
 <template>
   <div>
-    PaasVersion0.1
+    PaasVersion0.2
   </div>
 </template>
 
