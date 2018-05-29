@@ -157,8 +157,8 @@ export default {
     }
   },
   watch: {
-    temperatureList () {
-      this.refreshData()
+    temperatureList (newList) {
+      this.refreshData(newList)
     }
   },
   mounted () {

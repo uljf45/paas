@@ -7,7 +7,7 @@
       <el-col><div class="mr">平均算力: <span v-text="infoData.avgHashrate"></span></div></el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <hashrate-spline :hashrateList="fakeDatas" title="矿机算力图表"></hashrate-spline>
+      <hashrate-spline :hashrateList="fakeDatas" @switchTimeInterval="switchTimeInterval" title="矿机算力图表"></hashrate-spline>
     </el-row>
     <el-row class="mb30 spline-wrap">
       <temperature-spline :temperatureList="temperatureList"></temperature-spline>
@@ -27,7 +27,7 @@
           <miner-pool :table-data="poolData" @refresh="refreshMinerTable"></miner-pool>
         </el-tab-pane>
         <el-tab-pane label="网络">
-          <miner-network :table-data="tableData"></miner-network>
+          <miner-network :table-data="tableData" @refresh="refreshMinerTable"></miner-network>
         </el-tab-pane>
       </el-tabs>
     </el-row>
@@ -47,7 +47,7 @@ export default {
   name: 'MinerDetail',
   data () {
     return {
-      temperatureList: [[1526957384175, 123], [1524367190076, 110]],
+      temperatureList: null,
       tableData: null,
       fakeDatas: null
     }
@@ -114,29 +114,58 @@ export default {
   },
   methods: {
     fetchData () {
-      let ip = this.$route.query.ip
+      // let ip = this.$route.query.ip
       let mac = this.$route.query.mac
-      this.$ajax.get(`/v1/miner?ip=${ip}&mac=${mac}`)
+      this.$ajax.get(`/v1/miner?mac=${mac}`)
         .then((response) => {
           this.tableData = [response.data.miner]
         })
     },
     refreshMinerTable (doneFn) {
-      let ip = this.$route.query.ip
+      // let ip = this.$route.query.ip
       let mac = this.$route.query.mac
-      this.$ajax.get(`/v1/miner?ip=${ip}&mac=${mac}`)
+      this.$ajax.get(`/v1/miner?mac=${mac}`)
         .then((response) => {
           this.tableData = [response.data.miner]
           doneFn()
+        })
+    },
+    switchTimeInterval (interval) {
+      this.$ajax.get('/v1/miner/mhs?period=' + interval + '&mac=' + this.$route.query.mac) // 总算力天周月季半年年
+        .then((response) => {
+          let minerMhs = response.data.miner_mhs
+          let res = []
+          for (let i = 0; i < minerMhs.length; i++) {
+            let item = minerMhs[i]
+            res.push([new Date(item.date).getTime(), item.mhs])
+          }
+          this.fakeDatas = { // 暂时都显示一样的数据
+            day: res,
+            week: res,
+            month: res,
+            season: res,
+            half: res,
+            year: res
+          }
+        })
+    },
+    fetchTemperautreList () {
+      this.$ajax.get('/v1/miner/temperature?period=day&mac=' + this.$route.query.mac)
+        .then(response => {
+          let temps = response.data.miner_temperature
+          let res = []
+          for (let i = 0; i < temps.length; i++) {
+            let item = temps[i]
+            res.push([new Date(item.date).getTime(), item.temperature])
+          }
+          this.temperatureList = res
         })
     }
   },
   created () {
     this.fetchData()
-    this.$ajax.get('./static/json/totalHashrateList.json')
-      .then((response) => {
-        this.fakeDatas = response.data.list
-      })
+    this.switchTimeInterval('day')
+    this.fetchTemperautreList()
   },
   mounted () {
   }

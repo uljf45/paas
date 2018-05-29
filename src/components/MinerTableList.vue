@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     viewMiner (ip, mac) {
-      this.$router.push(`/miner-detail?ip=${ip}&mac=${mac}`)
+      this.$router.push(`/miner-detail?mac=${mac}`)
     },
     search () {
       let text = this.searchText

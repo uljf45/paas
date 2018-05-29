@@ -108,8 +108,15 @@ export default {
         dns: this.copy.dns
       })
         .then((response) => {
-          vm.isEdit = false
-          vm.loading = false
+          if (response.data.result === 'success') {
+            this.$emit('refresh', function () {
+              vm.isEdit = false
+              vm.loading = false
+            })
+          } else {
+            alert('保存失败')
+            vm.loading = false
+          }
         })
         .catch(function (error) {
           alert(error)
