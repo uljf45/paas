@@ -86,11 +86,10 @@ function initApi (app) {
   })
 
   apiRoutes.get('/v1/miner', function (req, res) {
-    let ip = req.query.ip
     let mac = req.query.mac
     let miners = getJsonBy('miners.json').list
     let miner = miners.find((item) => {
-      return item.ip === ip && item.mac === mac
+      return item.mac === mac
     })
 
     let minerList = getJsonBy('miner.json').list
@@ -98,6 +97,16 @@ function initApi (app) {
 
     miner = Object.assign(miner, miner2)
     res.json({miner})
+  })
+
+  apiRoutes.get('/v1/miner/mhs', function (req, res) {
+    let hashrates = getJsonBy('minerHashrates.json')
+    res.json(hashrates)
+  })
+
+  apiRoutes.get('/v1/miner/temperature', function (req, res) {
+    let temperatures = getJsonBy('temperatures.json')
+    res.json(temperatures)
   })
 
   apiRoutes.patch('/v1/miner', function (req, res) {
@@ -122,7 +131,14 @@ function initApi (app) {
       let miner2list = getJsonBy('miner.json').list
       let miner2 = miner2list.find(v => v.mac === mac)
       miner2.ip = ip
+      console.log(miner2list)
       writeJsonBy('miner.json', {list: miner2list})
+    } else if (patchAction && patchAction === 'setPool') {
+      for (let i = 1; i <= 3; i++) {
+        miner['pool' + i + '_addr'] = body['pool' + i + '_addr']
+        miner['pool' + i + '_miner_addr'] = body['pool' + i + '_miner_addr']
+        miner['pool' + i + '_password'] = body['pool' + i + '_password']
+      }
     } else {
       let position = body.position
       miner.position = position
@@ -130,7 +146,7 @@ function initApi (app) {
     writeJsonBy('miners.json', {list: miners})
 
     setTimeout(() => {
-      res.json({data: miner})
+      res.json({result: 'success'})
     }, 1000)
   })
 

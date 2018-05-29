@@ -87,7 +87,7 @@ export default {
         mac: this.copy[0].mac
       })
         .then((response) => {
-          if (response.data.result === 'success') {          
+          if (response.data.result === 'success') {
             this.$emit('refresh', function () {
               vm.isEdit = false
               vm.loading = false
