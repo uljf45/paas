@@ -71,6 +71,12 @@ export default {
       this.$nextTick(() => {
         let result = e.replace(/[^\d]/g, '')
         result = result.replace(/\s+/g, '')
+        if (result.length >= 2) {
+          result = result.replace(/^0+/, '')
+          if (result === '') {
+            result = '0'
+          }
+        }
         if (result.length > 3) {
           result = result.substr(0, 3)
         }
