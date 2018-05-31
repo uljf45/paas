@@ -6,6 +6,9 @@
           <a @click="home" class="link-btn">首页</a>
         </li>
         <li class="fl nav-item">
+          <a @click="batchConfiguration" class="link-btn">批量配置</a>
+        </li>
+        <li class="fl nav-item">
           <a class="link-btn">登录</a>
         </li>
         <li class="fl nav-item">
@@ -21,6 +24,9 @@ export default {
   methods: {
     home () {
       this.$router.push('/')
+    },
+    batchConfiguration () {
+      this.$router.push('/batch-configuration')
     }
   }
 }

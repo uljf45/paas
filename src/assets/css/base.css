@@ -98,7 +98,7 @@ body {
   margin-bottom: 30px;
 }
 
-.spline-wrap {
+.common-box, .spline-wrap {
   background: #fff;
   padding: 20px 0;
   border: 1px solid #dcdfe6;
