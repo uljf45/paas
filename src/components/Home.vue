@@ -15,7 +15,7 @@
       <el-col>湿度: <span v-text="mining.humidity"></span></el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <hashrate-spline ref="spline" :hashrateList="fakeDatas" @switchTimeInterval="switchTimeInterval" title="总算力图表"></hashrate-spline>
+      <hashrate-spline ref="spline" :hashrateList="fakeDatas" @switchTimeInterval="getHashrateListBy" title="总算力图表"></hashrate-spline>
     </el-row>
     <el-row>
       <el-tabs type="border-card">
@@ -44,9 +44,7 @@ export default {
         abnormal: 0
       },
       errorTableData: [],
-      fakeErrorTableData: [],
       fullTableData: [],
-      fakeFullTableData: [],
       errorMinerAmount: 0,
       allMinerAmount: 0,
       pageSize: 50,
@@ -64,79 +62,41 @@ export default {
   },
   methods: {
     getErrorMinerListBy (pageNum, searchText = '') {
-      let res = []
-
-      if (/^\s*$/.test(searchText)) {
-        res = this.fakeErrorTableData
-      } else {
-        this.fakeErrorTableData.forEach((v) => {
-          if (v.ip.indexOf(searchText) >= 0) {
-            res.push(v)
-          }
-        })
+      let url = '/v1/miners/alerts?offset=' + ((pageNum - 1) * this.pageSize) + '&size=' + this.pageSize
+      if (searchText) {
+        url += '&' + searchText
       }
-      this.errorMinerAmount = res.length
-      let startIndex = this.pageSize * pageNum - this.pageSize
-      let endIndex = Math.min(this.pageSize * pageNum - 1, this.errorMinerAmount - 1)
-
-      let ret = []
-      if (startIndex <= this.errorMinerAmount - 1) {
-        for (let i = startIndex; i <= endIndex; i++) {
-          ret.push(res[i])
-        }
-      }
-
-      return ret
-    },
-    getFullMinerListBy (pageNum, searchText = '') {
-      let res = []
-
-      if (/^\s*$/.test(searchText)) {
-        res = this.fakeFullTableData
-      } else {
-        this.fakeFullTableData.forEach((v) => {
-          if (v.ip.indexOf(searchText) >= 0) {
-            res.push(v)
-          }
-        })
-      }
-      this.allMinerAmount = res.length
-      let startIndex = this.pageSize * pageNum - this.pageSize
-      let endIndex = Math.min(this.pageSize * pageNum - 1, this.allMinerAmount - 1)
-
-      let ret = []
-      if (startIndex <= this.allMinerAmount - 1) {
-        for (let i = startIndex; i <= endIndex; i++) {
-          ret.push(res[i])
-        }
-      }
-
-      return ret
-    },
-    searchError (text) {
-      // this.errorTableData = this.getErrorMinerListBy(1, text)
-    },
-    searchFull (text) {
-      // this.fullTableData = this.getFullMinerListBy(1, text)
-    },
-    handleErrorCurrentChange (pageNum, searchText) {
-      // this.errorTableData = this.getErrorMinerListBy(pageNum, searchText)
-      this.$ajax.get('/v1/miners/alerts?offset=' + ((pageNum - 1) * this.pageSize) + '&size=' + this.pageSize) // 告警矿机
+      this.$ajax.get(url) // 告警矿机
         .then((response) => {
-          console.log(response)
           this.errorTableData = response.data.miners_alerts
           this.errorMinerAmount = response.data.total
         })
     },
-    handleAllCurrentChange (pageNum, searchText) {
-      this.$ajax.get('/v1/miners?offset=' + ((pageNum - 1) * this.pageSize) + '&size=' + this.pageSize) // 所有矿机
+    getFullMinerListBy (pageNum, searchText = '') {
+      let url = '/v1/miners?offset=' + ((pageNum - 1) * this.pageSize) + '&size=' + this.pageSize
+      if (searchText) {
+        url += '&' + searchText
+      }
+      this.$ajax.get(url) // 所有矿机
         .then((response) => {
           console.log(response)
           this.fullTableData = response.data.miners
           this.allMinerAmount = response.data.total
         })
     },
-    switchTimeInterval (interval) {
+    searchError (text) {
+      this.getErrorMinerListBy(1, text)
+    },
+    searchFull (text) {
+      this.getFullMinerListBy(1, text)
+    },
+    handleErrorCurrentChange (pageNum, searchText) {
+      this.getErrorMinerListBy(pageNum, searchText)
+    },
+    handleAllCurrentChange (pageNum, searchText) {
+      this.getFullMinerListBy(pageNum, searchText)
+    },
+    getHashrateListBy (interval) {
       this.$ajax.get('/v1/mining/mhs?period=' + interval) // 总算力天周月季半年年
         .then((response) => {
           let miningMhs = response.data.mining_mhs
@@ -154,47 +114,22 @@ export default {
             year: res
           }
         })
+    },
+    getMiningInfo () {
+      this.$ajax.get('/v1/mining') // 平台信息
+        .then((response) => {
+          this.mining = response.data.mining[0]
+        })
     }
   },
   created () {
-    this.$ajax.get('/v1/mining') // 平台信息
-      .then((response) => {
-        console.log(response)
-        this.mining = response.data.mining[0]
-      })
+    this.getMiningInfo()
 
-    this.$ajax.get('/v1/miners/alerts?offset=0&size=' + this.pageSize) // 告警矿机
-      .then((response) => {
-        console.log(response)
-        this.errorTableData = response.data.miners_alerts
-        this.errorMinerAmount = response.data.total
-      })
+    this.getErrorMinerListBy(1, '')
 
-    this.$ajax.get('/v1/miners?offset=0&size=' + this.pageSize) // 所有矿机
-      .then((response) => {
-        console.log(response)
-        this.fakeFullTableData = response.data.miners
-        this.fullTableData = this.getFullMinerListBy(1, '')
-        this.allMinerAmount = response.data.total
-      })
+    this.getFullMinerListBy(1, '')
 
-    this.$ajax.get('/v1/mining/mhs') // 总算力天周月季半年年
-      .then((response) => {
-        let miningMhs = response.data.mining_mhs
-        let res = []
-        for (let i = 0; i < miningMhs.length; i++) {
-          let item = miningMhs[i]
-          res.push([new Date(item.date).getTime(), item.mhs])
-        }
-        this.fakeDatas = { // 暂时都显示一样的数据
-          day: res,
-          week: res,
-          month: res,
-          season: res,
-          half: res,
-          year: res
-        }
-      })
+    this.getHashrateListBy('day')
   }
 }
 </script>

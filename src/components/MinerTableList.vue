@@ -2,7 +2,11 @@
   <div>
     <div class="clearfix">
       <div class="fl">
-        <el-input placeholder="请输入搜索内容" v-model="searchText">
+        <el-input placeholder="请输入搜索内容" v-model.trim="searchText" class="input-with-select">
+          <el-select v-model="select" slot="prepend" class="search-select">
+            <el-option label="IP" value="ip"></el-option>
+            <!-- <el-option label="型号" value="type"></el-option> -->
+          </el-select>
           <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
         </el-input>
       </div>
@@ -11,7 +15,7 @@
         <el-button type="primary" @click="exportTable">导出</el-button>
       </div>
     </div>
-    <el-table :data="tableData" stripe class="table-container">
+    <el-table :data="tableData" stripe class="mtl-table-container">
       <!-- <el-table-column prop="num" label="序号"></el-table-column> -->
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="type" label="型号"></el-table-column>
@@ -30,8 +34,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagination-container" v-show="total > 0">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" :page-count="11" layout="prev, pager, next, jumper" :total="total"></el-pagination>
+    <div class="mtl-pagination-container" v-show="total > 0">
+      <el-pagination :current-page="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" :page-count="11" layout="prev, pager, next, jumper" :total="total"></el-pagination>
     </div>
   </div>
 </template>
@@ -54,7 +58,17 @@ export default {
   data () {
     return {
       searchText: '',
-      minerStatusMap: window.PublicKeys.minerStatus
+      minerStatusMap: window.PublicKeys.minerStatus,
+      select: 'ip',
+      currentPage: 1
+    }
+  },
+  computed: {
+    searchQueryText () {
+      if (this.searchText) {
+        return this.select + '=' + this.searchText
+      }
+      return ''
     }
   },
   methods: {
@@ -62,8 +76,12 @@ export default {
       this.$router.push(`/miner-detail?mac=${mac}`)
     },
     search () {
-      let text = this.searchText
-      this.$emit('search', text)
+      // if (!this.searchText) {
+      //   console.log('empty')
+      //   return
+      // }
+      this.currentPage = 1
+      this.$emit('search', this.searchQueryText)
     },
     reset () {
       this.searchText = ''
@@ -77,17 +95,24 @@ export default {
     },
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
-      this.$emit('handleCurrentChange', val, this.searchText)
+      this.currentPage = val
+      this.$emit('handleCurrentChange', val, this.searchQueryText)
     }
   }
 }
 </script>
 
-<style scoped>
-  .table-container {
+<style>
+  .mtl-table-container {
     margin-bottom: 10px;
   }
-  .pagination-container {
+  .mtl-pagination-container {
     text-align: center;
+  }
+  .input-with-select .el-input-group__prepend {
+    background: #fff;
+  }
+  .search-select {
+    width: 80px;
   }
 </style>

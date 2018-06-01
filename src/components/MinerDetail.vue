@@ -166,7 +166,7 @@ export default {
     this.fetchData()
     this.switchTimeInterval('day')
     setTimeout(() => {
-      this.fetchTemperautreList()      
+      this.fetchTemperautreList()
     }, 1000)
   },
   mounted () {

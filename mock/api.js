@@ -77,7 +77,7 @@ function initApi (app) {
     let size = req.query.size
     let miners = getJsonBy('miners.json').list
     let total = miners.length
-    miners = miners.slice(offset, offset + size)
+    miners = miners.slice(offset, Number(offset) + Number(size))
     let result = {
       miners,
       total
