@@ -33,14 +33,16 @@
     </div>
     <div>
       <div style="padding-left: 40px;">
-        <el-button type="primary" size="mini">批量配置矿池</el-button>
+        <el-button type="primary" size="mini" @click="openDialogBatchPools">批量配置矿池</el-button>
       </div>
     </div>
   </el-row>
+  <batch-pools-dialog :visible="dialogBatchPoolsVisible" @cancel="closeDialogBatchPools" @save="saveBatchPools"></batch-pools-dialog>
 </div>
 </template>
 
 <script>
+import BatchPoolsDialog from '@/components/BatchPoolsDialog.vue'
 export default {
   data () {
     return {
@@ -55,8 +57,12 @@ export default {
       ipList: [],
       checkedIps: [],
       checkAll: false,
-      isIndeterminate: false
+      isIndeterminate: false,
+      dialogBatchPoolsVisible: false
     }
+  },
+  components: {
+    BatchPoolsDialog
   },
   computed: {
     ips () {
@@ -110,6 +116,33 @@ export default {
       let checkedCount = value.length
       this.checkAll = checkedCount === this.ipList.length
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.ipList.length
+    },
+    openDialogBatchPools () {
+      if (this.checkedIps.length === 0) {
+        alert('请添加 IP 范围')
+        return
+      }
+      this.dialogBatchPoolsVisible = true
+    },
+    closeDialogBatchPools () {
+      this.dialogBatchPoolsVisible = false
+    },
+    saveBatchPools (pools) {
+      this.$ajax.put('/v1/batch/pools', {
+        ips: this.checkedIps,
+        pools
+      })
+        .then((response) => {
+          if (response.data.result === 'success') {
+            alert('已发送批量配置矿池请求')
+            this.dialogBatchPoolsVisible = false
+          } else {
+            alert('发送批量配置矿池请求失败')
+          }
+        })
+        .catch(function (error) {
+          alert(error)
+        })
     }
   }
 }
