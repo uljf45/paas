@@ -23,12 +23,12 @@ function initApi (app) {
       'mining': [{
         'id': 20701,
         'date': '2018-05-23T02:18:06.000Z',
-        'mhs': 11681500,
+        'mhs': 11681500 + Math.random(0, 1) * 1000000,
         'normal': 3,
         'abnormal': 1,
-        'total': 30,
-        'temperature': 37,
-        'humidity': 10
+        'total': 30 + Math.random(0, 1) * 10,
+        'temperature': 37 + Math.random(0, 1) * 10,
+        'humidity': 10 + Math.random(0, 1) * 10
       }]
     }
     res.json(data)

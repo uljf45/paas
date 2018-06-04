@@ -73,15 +73,18 @@ export default {
     },
     initData (data) {
       let vm = this
-      const colors = ['#5793f3', '#675bba', '#d14a61']
+      const colors = ['#ffcd03', '#675bba', '#d14a61']
       const option = {
         color: colors,
+        title: {
+          show: false
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: {
             animation: !1,
             lineStyle: {
-              color: '#5793f3'
+              color: '#ffcd03'
             }
           },
           enterable: !1,
@@ -100,24 +103,11 @@ export default {
           left: '3%',
           right: '4%',
           bottom: '3%',
+          top: '40',
           containLabel: !0
         },
-        // toolbox: {
-        //   show: true,
-        //   feature: {
-        //     dataZoom: {
-        //       yAxisIndex: 'none'
-        //     },
-        //     dataView: {readOnly: false},
-        //     magicType: {type: ['bar', 'line']},
-        //     restore: {},
-        //     saveAsImage: {}
-        //   },
-        //   right: 3
-        // },
         xAxis: {
           type: 'time',
-          // data: this.sevenDay,
           splitLine: {
             show: !1
           },
@@ -125,9 +115,6 @@ export default {
           offset: 10,
           axisLabel: {
             margin: 2,
-            // formatter: function (timespan) {
-            //   return vm.formatTime(timespan)
-            // },
             textStyle: {
               color: '#888'
             }
@@ -176,16 +163,17 @@ export default {
             symbol: 'emptyCircle',
             symbolSize: 4,
             itemStyle: {
-              color: '#5793f3'
+              color: '#ffcd03',
+              borderWidth: 1
             },
             lineStyle: {
-              color: '#5793f3',
+              color: '#ffcd03',
               width: '2'
             },
             areaStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                 offset: 0,
-                color: '#C3DCF3'
+                color: '#ffcd03'
               }, {
                 offset: 1,
                 color: '#fff'
@@ -193,7 +181,7 @@ export default {
             },
             emphasis: {
               itemStyle: {
-                color: '#5793f3'
+                color: '#ffcd03'
               }
             }
           }
@@ -201,12 +189,6 @@ export default {
       }
       this.myChart.setOption(option)
     },
-    // refreshData (data) {
-    //   if (!this.myChart) return
-    //   var opt = this.myChart.getOption()
-    //   opt.series[0].data = data
-    //   this.myChart.setOption(opt)
-    // },
     exportPic () {
       chart.exportPic(this.myChart, 'hashrate_spline')
     }

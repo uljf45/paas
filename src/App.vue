@@ -1,8 +1,9 @@
 <template>
   <el-container id="app">
-    <el-header class="wrap bg-header">
+    <el-header class="wrap bg-header" style="height: 52px;">
       <top-header class="innerwrap"></top-header>
     </el-header>
+    <top-navigation class="innerwrap top-navigation"></top-navigation>
     <el-main class="wrap">
       <div class="innerwrap">
         <router-view/>
@@ -16,12 +17,15 @@
 
 <script>
 import TopHeader from '@/components/TopHeader.vue'
+import TopNavigation from '@/components/TopNavigation.vue'
 import BottomFooter from '@/components/BottomFooter.vue'
+
 export default {
   name: 'App',
   components: {
-    TopHeader: TopHeader,
-    BottomFooter: BottomFooter
+    TopHeader,
+    BottomFooter,
+    TopNavigation
   }
 }
 </script>
@@ -36,6 +40,9 @@ export default {
     margin: 0 auto;
   }
   .bg-header {
-    background: #3192e3;
+    background: #111;
+  }
+  .top-navigation {
+    padding-top: 10px;
   }
 </style>

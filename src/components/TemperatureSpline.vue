@@ -31,7 +31,7 @@ export default {
   methods: {
     initData () {
       let vm = this
-      const colors = ['#5793f3', '#675bba', '#d14a61']
+      const colors = ['#df2639', '#675bba', '#d14a61']
       const option = {
         color: colors,
         tooltip: {
@@ -39,7 +39,7 @@ export default {
           axisPointer: {
             animation: !1,
             lineStyle: {
-              color: '#5793f3'
+              color: '#df2639'
             }
           },
           enterable: !1,
@@ -58,6 +58,7 @@ export default {
           left: '3%',
           right: '4%',
           bottom: '3%',
+          top: 40,
           containLabel: !0
         },
         xAxis: {
@@ -117,16 +118,16 @@ export default {
             symbol: 'emptyCircle',
             symbolSize: 4,
             itemStyle: {
-              color: '#5793f3'
+              color: '#df2639'
             },
             lineStyle: {
-              color: '#5793f3',
+              color: '#df2639',
               width: '2'
             },
             areaStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                 offset: 0,
-                color: '#C3DCF3'
+                color: '#df2639'
               }, {
                 offset: 1,
                 color: '#fff'
@@ -134,7 +135,7 @@ export default {
             },
             emphasis: {
               itemStyle: {
-                color: '#5793f3'
+                color: '#df2639'
               }
             }
           }
@@ -168,5 +169,7 @@ export default {
 </script>
 
 <style>
-
+#temperaturespline-container {
+  height: 260px;
+}
 </style>

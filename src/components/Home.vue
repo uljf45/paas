@@ -1,18 +1,16 @@
 <template>
   <div>
     <el-row type="flex" class="mb">
-      <!-- <el-col><div class="mr">平台状态: <span>正常</span></div></el-col> -->
-      <el-col><div class="mr">当前算力: <span v-text="curHashrate"></span></div></el-col>
-      <!-- <el-col><div class="mr">平均算力: <span>586 MH/S</span></div></el-col> -->
+      <el-col><div class="mr">当前算力: <tween-number :precision="2" :number="Number(curHashrate.value)"></tween-number> <span v-text="curHashrate.unit"></span></div></el-col>
       <el-col>
         <el-row type="flex">
-          <div class="mr">矿机: <span v-text="mining.total"></span></div>
-          <div class="mr">正常: <span v-text="mining.normal"></span></div>
-          <div>异常: <span class="clr-danger" v-text="mining.abnormal"></span></div>
+          <div class="mr">矿机: <tween-number :number="mining.total"></tween-number></div>
+          <div class="mr">正常: <tween-number :number="mining.normal"></tween-number></div>
+          <div>异常: <tween-number class="clr-danger" :number="mining.abnormal"></tween-number></div>
         </el-row>
       </el-col>
-      <el-col>温度: <span v-text="mining.temperature"></span><span style="font-size: 14px;">℃</span></el-col>
-      <el-col>湿度: <span v-text="mining.humidity"></span></el-col>
+      <el-col>温度: <tween-number :number="mining.temperature"></tween-number></el-col>
+      <el-col>湿度: <tween-number :number="mining.humidity"></tween-number></el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
       <hashrate-spline ref="spline" :hashrateList="fakeDatas" @switchTimeInterval="getHashrateListBy" title="总算力图表"></hashrate-spline>
@@ -31,6 +29,7 @@
 </template>
 
 <script>
+import TweenNumber from '@/components/TweenNumber.vue'
 import HashrateSpline from '@/components/HashrateSpline.vue'
 import MinerTableList from '@/components/MinerTableList.vue'
 export default {
@@ -53,12 +52,13 @@ export default {
   },
   computed: {
     curHashrate () {
-      return this.$util.formatHashrate(this.mining.mhs * 1024 * 1024).text
+      return this.$util.formatHashrate(this.mining.mhs * 1024 * 1024)
     }
   },
   components: {
-    HashrateSpline: HashrateSpline,
-    MinerTableList: MinerTableList
+    HashrateSpline,
+    MinerTableList,
+    TweenNumber
   },
   methods: {
     getErrorMinerListBy (pageNum, searchText = '') {
@@ -124,6 +124,9 @@ export default {
   },
   created () {
     this.getMiningInfo()
+    setInterval(() => {
+      this.getMiningInfo()
+    }, 5000)
 
     this.getErrorMinerListBy(1, '')
 
