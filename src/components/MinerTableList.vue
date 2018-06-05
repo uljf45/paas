@@ -7,7 +7,7 @@
             <el-option label="IP" value="ip"></el-option>
             <el-option label="位置" value="position"></el-option>
             <el-option label="编号" value="number"></el-option>
-            <el-option label="状态" value="running"></el-option>
+            <el-option label="状态" value="status"></el-option>
             <el-option label="版本" value="version"></el-option>
           </el-select>
           <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
