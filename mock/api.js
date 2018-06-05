@@ -139,12 +139,13 @@ function initApi (app) {
         miner['pool' + i + '_miner_addr'] = body['pool' + i + '_miner_addr']
         miner['pool' + i + '_password'] = body['pool' + i + '_password']
       }
-    } else {
+    } else if (patchAction && patchAction === 'setPosition') {
       let position = body.position
-      let number = body.number
       if (typeof position !== 'undefined') {
         miner.position = position
       }
+    } else if (patchAction && patchAction === 'setNumber') {
+      let number = body.number
       if (typeof number !== 'undefined') {
         miner.number = number
       }

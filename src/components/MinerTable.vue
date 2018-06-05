@@ -68,7 +68,7 @@ export default {
       this.loading = true
       let vm = this
       let params = {
-        patchAction: 'setPositionAndNumber',
+        patchAction: 'setPosition',
         id: this.copy.id,
         ip: this.copy.ip,
         mac: this.copy.mac
@@ -80,17 +80,49 @@ export default {
         params.number = this.copy.number.trim()
       }
 
-      this.$ajax.patch('/v1/miner', params)
-        .then((response) => {
-          this.$emit('refresh', function () {
-            vm.isEdit = false
+      if (!isPositionNotChange && isNumberNotChange) { // 只修改了位置
+        this.$ajax.patch('/v1/miner', params)
+          .then((response) => {
+            this.$emit('refresh', function () {
+              vm.isEdit = false
+              vm.loading = false
+            })
+          })
+          .catch(function (error) {
+            alert(error)
             vm.loading = false
           })
-        })
-        .catch(function (error) {
-          alert(error)
-          vm.loading = false
-        })
+      }
+
+      if (!isNumberNotChange && isPositionNotChange) { // 只修改了编号
+        params.patchAction = 'setNumber'
+        this.$ajax.patch('/v1/miner', params)
+          .then((response) => {
+            this.$emit('refresh', function () {
+              vm.isEdit = false
+              vm.loading = false
+            })
+          })
+          .catch(function (error) {
+            alert(error)
+            vm.loading = false
+          })
+      }
+
+      if (!isNumberNotChange && !isPositionNotChange) { // 都改了
+        let vm = this
+        this.$ajax.all([this.$ajax.patch('/v1/miner', params), this.$ajax.patch('/v1/miner', Object.assign({}, params, {patchAction: 'setNumber'}))])
+          .then(this.$ajax.spread((positionResp, numberResp) => {
+            vm.$emit('refresh', function () {
+              vm.isEdit = false
+              vm.loading = false
+            })
+          }))
+          .catch(function (error) {
+            alert(error)
+            vm.loading = false
+          })
+      }
     }
   }
 }
