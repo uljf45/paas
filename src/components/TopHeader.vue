@@ -1,5 +1,8 @@
 <template>
   <div class="clearfix"  style="height: 52px;">
+    <a class="fl logo">
+      <img src="static/logo.png" alt="">
+    </a>
     <nav class="fr">
       <ul class="clearfix">
         <li class="fl nav-item">
@@ -39,6 +42,9 @@ export default {
 </script>
 
 <style scoped>
+  .logo {
+    margin-top: 13px;
+  }
   .nav-item {
     line-height: 52px;
   }

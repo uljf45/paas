@@ -1,16 +1,31 @@
 <template>
   <div>
-    <el-row type="flex" class="mb">
-      <el-col><div class="mr">当前算力: <tween-number :precision="2" :number="Number(curHashrate.value)"></tween-number> <span v-text="curHashrate.unit"></span></div></el-col>
-      <el-col>
-        <el-row type="flex">
-          <div class="mr">矿机: <tween-number :number="mining.total"></tween-number></div>
-          <div class="mr">正常: <tween-number :number="mining.normal"></tween-number></div>
-          <div>异常: <tween-number class="clr-danger" :number="mining.abnormal"></tween-number></div>
-        </el-row>
+    <el-row type="flex" class="mb" justify="space-between">
+      <el-col :span="16">
+        <div class="fl mr">当前算力:
+          <tween-number :precision="2" :number="Number(curHashrate.value)"></tween-number>
+          <span v-text="curHashrate.unit"></span>
+        </div>
+        <div class="fl mr">矿机:
+          <tween-number :number="mining.total"></tween-number>
+        </div>
+        <div class="fl mr">正常:
+          <tween-number :number="mining.normal"></tween-number>
+        </div>
+        <div>异常:
+          <tween-number class="clr-danger" :number="mining.abnormal"></tween-number>
+        </div>
       </el-col>
-      <el-col>温度: <tween-number :number="mining.temperature"></tween-number></el-col>
-      <el-col>湿度: <tween-number :number="mining.humidity"></tween-number></el-col>
+      <el-col :span="8">
+        <div class="fr">
+          <div class="fl mr">温度:
+            <tween-number :number="mining.temperature"></tween-number>
+          </div>
+          <div class="fl">湿度:
+            <tween-number :number="mining.humidity"></tween-number>
+          </div>
+        </div>
+      </el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
       <hashrate-spline ref="spline" :hashrateList="fakeDatas" @switchTimeInterval="getHashrateListBy" title="总算力图表"></hashrate-spline>
