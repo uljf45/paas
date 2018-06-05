@@ -4,14 +4,14 @@
     <el-table-column type="index"></el-table-column>
     <el-table-column prop="type" label="型号"></el-table-column>
     <el-table-column prop="version" label="版本"></el-table-column>
-    <el-table-column prop="mac" label="MAC"></el-table-column>
     <el-table-column prop="ip" label="IP"></el-table-column>
-    <!-- <el-table-column prop="status" label="状态">
-      <template slot-scope="scope">
-        <span :class="{'clr-danger': scope.row.status=='error'}">{{ minerStatusMap[scope.row.status] }}</span>
-      </template>
-    </el-table-column> -->
     <el-table-column prop="status" label="状态"></el-table-column>
+    <el-table-column prop="number" label="编号">
+      <template slot-scope="scope">
+        <span v-show="!isEdit">{{ scope.row.number }}</span>
+        <el-input v-show="isEdit" placeholder="请输入矿机编号" v-model.trim="scope.row.number" size="small"></el-input>
+      </template>
+    </el-table-column>
     <el-table-column prop="position" label="位置">
       <template slot-scope="scope">
         <span v-show="!isEdit">{{ scope.row.position }}</span>
@@ -52,26 +52,35 @@ export default {
     editMiner (id) {
       this.copy = Object.assign({}, this.tableData[0])
       this.isEdit = true
-      console.log(id)
     },
     cancel () {
       this.isEdit = false
     },
     save (id) {
-      console.log(id)
-      if (this.tableData[0].position && (this.copy.position.trim() === this.tableData[0].position.trim())) {
+      let isPositionNotChange = this.tableData[0].position && (this.copy.position.trim() === this.tableData[0].position.trim())
+      let isNumberNotChange = this.tableData[0].number && (this.copy.number.trim() === this.tableData[0].number.trim())
+
+      if (isPositionNotChange && isNumberNotChange) {
         this.cancel()
         return
       }
+
       this.loading = true
       let vm = this
-      this.$ajax.patch('/v1/miner', {
-        patchAction: 'setPosition',
+      let params = {
+        patchAction: 'setPositionAndNumber',
         id: this.copy.id,
         ip: this.copy.ip,
-        mac: this.copy.mac,
-        position: this.copy.position.trim()
-      })
+        mac: this.copy.mac
+      }
+      if (!isPositionNotChange) {
+        params.position = this.copy.position.trim()
+      }
+      if (!isNumberNotChange) {
+        params.number = this.copy.number.trim()
+      }
+
+      this.$ajax.patch('/v1/miner', params)
         .then((response) => {
           this.$emit('refresh', function () {
             vm.isEdit = false

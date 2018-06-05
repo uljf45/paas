@@ -141,7 +141,13 @@ function initApi (app) {
       }
     } else {
       let position = body.position
-      miner.position = position
+      let number = body.number
+      if (typeof position !== 'undefined') {
+        miner.position = position
+      }
+      if (typeof number !== 'undefined') {
+        miner.number = number
+      }
     }
     writeJsonBy('miners.json', {list: miners})
 

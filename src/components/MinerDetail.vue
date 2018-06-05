@@ -1,18 +1,12 @@
 <template>
   <div>
-    <el-row type="flex" class="mb">
-      <el-col><div class="mr">矿机状态: <span v-text="infoData.status"></span></div></el-col>
-      <el-col><div class="mr">运行时间: <span v-text="infoData.duration"></span></div></el-col>
-      <el-col><div class="mr">实时算力: <span v-text="infoData.curHashrate"></span></div></el-col>
-      <el-col><div class="mr">平均算力: <span v-text="infoData.avgHashrate"></span></div></el-col>
+    <el-row type="flex" class="mb" justify="space-between">
+      <el-col><div class="">矿机状态: <span v-text="infoData.status"></span></div></el-col>
+      <el-col><div class="">实时算力: <span v-text="infoData.curHashrate"></span></div></el-col>
+      <el-col><div class="">平均算力: <span v-text="infoData.avgHashrate"></span></div></el-col>
+      <el-col><div class="">运行时间: <span v-text="infoData.duration"></span></div></el-col>
     </el-row>
-    <el-row class="mb30 spline-wrap">
-      <hashrate-spline :hashrateList="fakeDatas" @switchTimeInterval="switchTimeInterval" title="矿机算力图表"></hashrate-spline>
-    </el-row>
-    <el-row class="mb30 spline-wrap">
-      <temperature-spline :temperatureList="temperatureList"></temperature-spline>
-    </el-row>
-    <el-row style="min-height: 318px">
+    <el-row style="margin-bottom: 20px;">
       <el-tabs type="border-card">
         <el-tab-pane label="矿机信息">
           <miner-table :table-data="tableData" @refresh="refreshMinerTable"></miner-table>
@@ -30,6 +24,12 @@
           <miner-network :table-data="tableData" @refresh="refreshMinerTable"></miner-network>
         </el-tab-pane>
       </el-tabs>
+    </el-row>
+    <el-row class="mb30 spline-wrap">
+      <hashrate-spline :hashrateList="fakeDatas" @switchTimeInterval="switchTimeInterval" title="矿机算力图表"></hashrate-spline>
+    </el-row>
+    <el-row class="mb30 spline-wrap">
+      <temperature-spline :temperatureList="temperatureList"></temperature-spline>
     </el-row>
   </div>
 </template>
@@ -49,7 +49,8 @@ export default {
     return {
       temperatureList: null,
       tableData: null,
-      fakeDatas: null
+      fakeDatas: null,
+      timerInfo: null
     }
   },
   components: {
@@ -164,12 +165,18 @@ export default {
   },
   created () {
     this.fetchData()
+    this.timerInfo = setInterval(() => {
+      this.fetchData()
+    }, 5000)
     this.switchTimeInterval('day')
     setTimeout(() => {
       this.fetchTemperautreList()
     }, 1000)
   },
   mounted () {
+  },
+  beforeDestroy () {
+    clearInterval(this.timerInfo)
   }
 }
 </script>
