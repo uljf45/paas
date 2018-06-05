@@ -1,9 +1,19 @@
 <template>
   <div>
-    <el-row type="flex" class="mb" justify="space-between">
+    <el-row type="flex" class="mb" justify="space-between" align="baseline">
       <el-col><div class="">矿机状态: <span v-text="infoData.status"></span></div></el-col>
-      <el-col><div class="">实时算力: <span v-text="infoData.curHashrate"></span></div></el-col>
-      <el-col><div class="">平均算力: <span v-text="infoData.avgHashrate"></span></div></el-col>
+      <el-col>
+        <div class="">实时算力:
+          <tween-number :precision="2" :number="Number(infoData.curHashrate.value)"></tween-number>
+          <span v-text="infoData.curHashrate.unit"></span>
+        </div>
+      </el-col>
+      <el-col>
+        <div class="">平均算力:
+          <tween-number :precision="2" :number="Number(infoData.avgHashrate.value)"></tween-number>
+          <span v-text="infoData.avgHashrate.unit"></span>
+        </div>
+      </el-col>
       <el-col><div class="">运行时间: <span v-text="infoData.duration"></span></div></el-col>
     </el-row>
     <el-row style="margin-bottom: 20px;">
@@ -42,6 +52,7 @@ import MinerBoard from '@/components/MinerBoard.vue'
 import MinerFan from '@/components/MinerFan.vue'
 import MinerPool from '@/components/MinerPool.vue'
 import MinerNetwork from '@/components/MinerNetwork.vue'
+import TweenNumber from '@/components/TweenNumber.vue'
 
 export default {
   name: 'MinerDetail',
@@ -54,13 +65,14 @@ export default {
     }
   },
   components: {
-    MinerTable: MinerTable,
-    HashrateSpline: HashrateSpline,
-    TemperatureSpline: TemperatureSpline,
-    MinerBoard: MinerBoard,
-    MinerFan: MinerFan,
-    MinerPool: MinerPool,
-    MinerNetwork: MinerNetwork
+    MinerTable,
+    HashrateSpline,
+    TemperatureSpline,
+    MinerBoard,
+    MinerFan,
+    MinerPool,
+    MinerNetwork,
+    TweenNumber
   },
   computed: {
     infoData () {
@@ -74,8 +86,8 @@ export default {
         let data = this.tableData[0]
         rtn.status = data.status
         rtn.duration = this.$util.formatDuration(data.duration)
-        rtn.curHashrate = this.$util.formatHashrate((data.mhs || 0) * 1024 * 1024).text
-        rtn.avgHashrate = this.$util.formatHashrate((data.avg_mhs || 0) * 1024 * 1024).text
+        rtn.curHashrate = this.$util.formatHashrate((data.mhs || 0) * 1024 * 1024)
+        rtn.avgHashrate = this.$util.formatHashrate((data.avg_mhs || 0) * 1024 * 1024)
       }
       return rtn
     },
