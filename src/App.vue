@@ -3,7 +3,9 @@
     <el-header class="wrap bg-header" style="height: 52px;">
       <top-header class="innerwrap"></top-header>
     </el-header>
-    <top-navigation class="innerwrap top-navigation"></top-navigation>
+    <div class="wrap">
+      <top-navigation class="innerwrap top-navigation"></top-navigation>
+    </div>
     <el-main class="wrap">
       <div class="innerwrap">
         <router-view/>

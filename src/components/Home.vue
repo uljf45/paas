@@ -62,7 +62,8 @@ export default {
       errorMinerAmount: 0,
       allMinerAmount: 0,
       pageSize: 50,
-      fakeDatas: {}
+      fakeDatas: {},
+      timerGetMining: null
     }
   },
   computed: {
@@ -139,7 +140,7 @@ export default {
   },
   created () {
     this.getMiningInfo()
-    setInterval(() => {
+    this.timerGetMining = setInterval(() => {
       this.getMiningInfo()
     }, 5000)
 
@@ -148,6 +149,9 @@ export default {
     this.getFullMinerListBy(1, '')
 
     this.getHashrateListBy('day')
+  },
+  beforeDestroy () {
+    clearInterval(this.timerGetMining)
   }
 }
 </script>
