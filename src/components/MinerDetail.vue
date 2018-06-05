@@ -194,27 +194,5 @@ export default {
 </script>
 
 <style>
-.miner-detail .el-tabs--border-card>.el-tabs__header {
-    background-color: #5e5e5e;
-    border-bottom: 1px solid #e4e7ed;
-    margin: 0;
-}
 
-.miner-detail .el-tabs--border-card>.el-tabs__header .el-tabs__item {
-  color: #fff;
-}
-
-.miner-detail .el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.miner-detail .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
-  color: #fff;
-  background-color: #df2639;
-  border-right-color: transparent;
-  border-left-color: transparent;
-}
-.miner-detail .el-tabs__nav-wrap {
-  margin-bottom: 0;
-}
 </style>

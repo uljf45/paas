@@ -48,3 +48,33 @@ export default {
     padding-top: 10px;
   }
 </style>
+
+<style>
+  #app .el-tabs--border-card>.el-tabs__header {
+    background-color: #5e5e5e;
+    border-bottom: 1px solid #e4e7ed;
+    margin: 0;
+  }
+  #app .el-tabs--border-card>.el-tabs__header .el-tabs__item {
+    color: #fff;
+  }
+
+  #app .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
+    color: #fff;
+    background-color: #df2639;
+    border-right-color: transparent;
+    border-left-color: transparent;
+  }
+
+  #app .el-tabs--border-card>.el-tabs__header .el-tabs__item:not(.is-disabled):hover {
+    color: rgba(255, 255, 255, 0.8);
+  }
+
+  #app .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active:hover {
+    color: #fff;
+  }
+
+  #app .el-tabs__nav-wrap {
+    margin-bottom: 0;
+  }
+</style>

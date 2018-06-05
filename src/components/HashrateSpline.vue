@@ -73,7 +73,7 @@ export default {
     },
     initData (data) {
       let vm = this
-      const colors = ['#ffcd03', '#675bba', '#d14a61']
+      const colors = ['#5793f3', '#675bba', '#d14a61']
       const option = {
         color: colors,
         title: {
@@ -84,7 +84,7 @@ export default {
           axisPointer: {
             animation: !1,
             lineStyle: {
-              color: '#ffcd03'
+              color: '#5793f3'
             }
           },
           enterable: !1,
@@ -163,17 +163,17 @@ export default {
             symbol: 'emptyCircle',
             symbolSize: 4,
             itemStyle: {
-              color: '#ffcd03',
+              color: '#5793f3',
               borderWidth: 1
             },
             lineStyle: {
-              color: '#ffcd03',
+              color: '#5793f3',
               width: '2'
             },
             areaStyle: {
               color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
                 offset: 0,
-                color: '#ffcd03'
+                color: '#C3DCF3'
               }, {
                 offset: 1,
                 color: '#fff'
@@ -181,7 +181,7 @@ export default {
             },
             emphasis: {
               itemStyle: {
-                color: '#ffcd03'
+                color: '#5793f3'
               }
             }
           }
