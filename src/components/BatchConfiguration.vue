@@ -43,6 +43,8 @@
 
 <script>
 import BatchPoolsDialog from '@/components/BatchPoolsDialog.vue'
+import MinerTableList from '@/components/MinerTableList'
+
 export default {
   data () {
     return {
@@ -62,7 +64,8 @@ export default {
     }
   },
   components: {
-    BatchPoolsDialog
+    BatchPoolsDialog,
+    MinerTableList
   },
   computed: {
     ips () {

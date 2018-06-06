@@ -30,6 +30,7 @@
 
 <script>
 export default {
+  name: 'MinerInfo',
   props: {
     tableData: {
       type: Array

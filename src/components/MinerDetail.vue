@@ -45,7 +45,7 @@
 </template>
 
 <script>
-import MinerTable from '@/components/MinerTable.vue'
+import MinerInfo from '@/components/MinerInfo.vue'
 import HashrateSpline from '@/components/HashrateSpline.vue'
 import TemperatureSpline from '@/components/TemperatureSpline.vue'
 import MinerBoard from '@/components/MinerBoard.vue'
@@ -65,7 +65,7 @@ export default {
     }
   },
   components: {
-    MinerTable,
+    MinerInfo,
     HashrateSpline,
     TemperatureSpline,
     MinerBoard,
