@@ -86,8 +86,8 @@ function compareIP (ipStr, ipNextStr) {
   let ipsNextList = ipsNext[0].split('.')
 
   for (let i = 0; i < 4; i++) {
-    if (ipsList[i] > ipsNextList[i]) return 1
-    if (ipsList[i] < ipsNextList[i]) return -1
+    if (Number(ipsList[i]) > Number(ipsNextList[i])) return 1
+    if (Number(ipsList[i]) < Number(ipsNextList[i])) return -1
   }
 
   if (ips.length > ipsNext.length) return 1
@@ -98,8 +98,8 @@ function compareIP (ipStr, ipNextStr) {
   ipsNextList = ipsNextList[1].split('.')
 
   for (let i = 0; i < 4; i++) {
-    if (ipsList[i] > ipsNextList[i]) return 1
-    if (ipsList[i] < ipsNextList[i]) return -1
+    if (Number(ipsList[i]) > Number(ipsNextList[i])) return 1
+    if (Number(ipsList[i]) < Number(ipsNextList[i])) return -1
   }
 
   return 0
