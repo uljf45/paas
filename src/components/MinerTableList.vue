@@ -14,6 +14,7 @@
         </el-input>
       </div>
       <div class="fr">
+        <slot name="operation"></slot>
         <el-button type="primary" @click="reset">重置</el-button>
         <el-button type="primary" @click="exportTable">导出</el-button>
       </div>

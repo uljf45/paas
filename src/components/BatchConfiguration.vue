@@ -1,6 +1,6 @@
 <template>
 <div class="batch-container">
-  <miner-list class="mb"></miner-list>
+  <miner-list class="mb" @addIps="addSelectedIps"></miner-list>
   <el-row type="flex" class="common-box">
     <div class="batch-ip-range">
       <el-row type="flex" style="margin-bottom: 10px;" align="middle">
@@ -14,16 +14,16 @@
         <div>
           起始IP:
           <el-input class="input--ip" @change="handleIpChanged($event, 'startIP0')" @input="handleIpInput($event, 'startIP0')" v-model="startIP0" size="mini"></el-input> .
-          <el-input class="input--ip" @input="handleIpInput($event, 'startIP1')" v-model="startIP1" size="mini"></el-input> .
-          <el-input class="input--ip" @input="handleIpInput($event, 'startIP2')" v-model="startIP2" size="mini"></el-input> .
-          <el-input class="input--ip" @input="handleIpInput($event, 'startIP3')" v-model="startIP3" size="mini"></el-input>
+          <el-input class="input--ip" @change="handleIpChanged($event, 'startIP1')" @input="handleIpInput($event, 'startIP1')" v-model="startIP1" size="mini"></el-input> .
+          <el-input class="input--ip" @change="handleIpChanged($event, 'startIP2')" @input="handleIpInput($event, 'startIP2')" v-model="startIP2" size="mini"></el-input> .
+          <el-input class="input--ip" @change="handleIpChanged($event, 'startIP3')" @input="handleIpInput($event, 'startIP3')" v-model="startIP3" size="mini"></el-input>
         </div>
         <div style="margin-left: 20px">
           结束IP:
-          <el-input class="input--ip" @input="handleIpInput($event, 'endIP0')" v-model="endIP0" size="mini"></el-input> .
-          <el-input class="input--ip" @input="handleIpInput($event, 'endIP1')" v-model="endIP1" size="mini"></el-input> .
-          <el-input class="input--ip" @input="handleIpInput($event, 'endIP2')" v-model="endIP2" size="mini"></el-input> .
-          <el-input class="input--ip" @input="handleIpInput($event, 'endIP3')" v-model="endIP3" size="mini"></el-input>
+          <el-input class="input--ip" @change="handleIpChanged($event, 'startIP0')" @input="handleIpInput($event, 'endIP0')" v-model="endIP0" size="mini"></el-input> .
+          <el-input class="input--ip" @change="handleIpChanged($event, 'startIP1')" @input="handleIpInput($event, 'endIP1')" v-model="endIP1" size="mini"></el-input> .
+          <el-input class="input--ip" @change="handleIpChanged($event, 'startIP2')" @input="handleIpInput($event, 'endIP2')" v-model="endIP2" size="mini"></el-input> .
+          <el-input class="input--ip" @change="handleIpChanged($event, 'startIP3')" @input="handleIpInput($event, 'endIP3')" v-model="endIP3" size="mini"></el-input>
         </div>
       </el-row>
       <el-checkbox-group class="batch-ip-range-list clearfix" v-model="checkedIps" @change="handleCheckedIpsChange">
@@ -45,6 +45,7 @@
 <script>
 import BatchPoolsDialog from '@/components/BatchPoolsDialog.vue'
 import MinerList from '@/components/MinerList'
+import {mapGetters} from 'vuex'
 
 export default {
   data () {
@@ -72,8 +73,16 @@ export default {
     ips () {
       let startip = this.startIP0 + '.' + this.startIP1 + '.' + this.startIP2 + '.' + this.startIP3
       let endip = this.endIP0 + '.' + this.endIP1 + '.' + this.endIP2 + '.' + this.endIP3
-      return startip + '~' + endip
-    }
+      let compareResult = this.$util.compareIP(startip, endip)
+      let result = startip
+      if (compareResult < 0) result += '~' + endip
+      else if (compareResult > 0) result = endip + '~' + startip
+      return result
+    },
+    ...mapGetters({
+      batchAlertSelection: 'batchAlertSelection',
+      batchAllSelection: 'batchAllSelection'
+    })
   },
   methods: {
     handleIpInput (e, key) {
@@ -97,6 +106,7 @@ export default {
       })
     },
     handleIpChanged (e, key) {
+      console.log('ipchanged')
       if (e === '') {
         this[key] = '0'
       }
@@ -104,7 +114,34 @@ export default {
     addips () {
       if (!this.ipList.includes(this.ips)) {
         this.ipList.push(this.ips)
-        // this.checkedIps.push(this.ips)
+        this.ipList.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
+      }
+    },
+    addSelectedIps (type) {
+      let ipList = []
+
+      if (type === 'alert') {
+        ipList = this.batchAlertSelection
+      }
+      if (type === 'all') {
+        ipList = this.batchAllSelection
+      }
+
+      ipList = ipList.map((value, index) => {
+        return value.ip
+      })
+
+      let isChange = false
+
+      ipList.forEach((value, index) => {
+        if (!this.ipList.includes(value)) {
+          this.ipList.push(value)
+          isChange = true
+        }
+      })
+
+      if (isChange) {
+        this.ipList.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
       }
     },
     removeips () {
@@ -157,7 +194,7 @@ export default {
     padding: 20px;
   }
   .batch-ip-range-list {
-    height: 66px;
+    height: 120px;
     border: 1px solid #dcdfe6;
     width: 618px;
     padding-left: 2px;

@@ -78,10 +78,38 @@ function checkip (ipaddr) {
   }
 }
 
+function compareIP (ipStr, ipNextStr) {
+  let ips = ipStr.split('~')
+  let ipsNext = ipNextStr.split('~')
+
+  let ipsList = ips[0].split('.')
+  let ipsNextList = ipsNext[0].split('.')
+
+  for (let i = 0; i < 4; i++) {
+    if (ipsList[i] > ipsNextList[i]) return 1
+    if (ipsList[i] < ipsNextList[i]) return -1
+  }
+
+  if (ips.length > ipsNext.length) return 1
+  if (ips.length < ipsNext.length) return -1
+  if ((ips.length === ipsNext.length) && ips.length === 1) return 0
+
+  ipsList = ips[1].split('.')
+  ipsNextList = ipsNextList[1].split('.')
+
+  for (let i = 0; i < 4; i++) {
+    if (ipsList[i] > ipsNextList[i]) return 1
+    if (ipsList[i] < ipsNextList[i]) return -1
+  }
+
+  return 0
+}
+
 export default {
   pad0,
   formatTime,
   formatHashrate,
   formatDuration,
-  checkip
+  checkip,
+  compareIP
 }

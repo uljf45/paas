@@ -1,10 +1,18 @@
 <template>
   <el-tabs type="border-card">
     <el-tab-pane label="告警矿机">
-      <miner-table-list miner-type="alert" :multiple-select="true" :table-data="errorTableData" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange"></miner-table-list>
+      <miner-table-list miner-type="alert" :multiple-select="true" :table-data="errorTableData" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange">
+        <template slot="operation">
+          <el-button type="primary" @click="addIps('alert')">加入选择列表</el-button>
+        </template>
+      </miner-table-list>
     </el-tab-pane>
     <el-tab-pane label="所有矿机">
-      <miner-table-list miner-type="all" :multiple-select="true" :table-data="fullTableData" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange"></miner-table-list>
+      <miner-table-list miner-type="all" :multiple-select="true" :table-data="fullTableData" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange">
+        <template slot="operation">
+          <el-button type="primary" @click="addIps('all')">加入选择列表</el-button>
+        </template>
+      </miner-table-list>
     </el-tab-pane>
   </el-tabs>
 </template>
@@ -61,6 +69,10 @@ export default {
     },
     handleAllCurrentChange (pageNum, searchText) {
       this.getFullMinerListBy(pageNum, searchText)
+    },
+    addIps (type) {
+      console.log(type)
+      this.$emit('addIps', type)
     }
   },
   created () {
