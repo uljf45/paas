@@ -19,7 +19,7 @@
     <el-row style="margin-bottom: 20px;">
       <el-tabs type="border-card">
         <el-tab-pane label="矿机信息">
-          <miner-table :table-data="tableData" @refresh="refreshMinerTable"></miner-table>
+          <miner-info :table-data="tableData" @refresh="refreshMinerTable"></miner-info>
         </el-tab-pane>
         <el-tab-pane label="算力板">
           <miner-board :table-data="boardData"></miner-board>

@@ -1,5 +1,6 @@
 <template>
 <div class="batch-container">
+  <miner-list class="mb"></miner-list>
   <el-row type="flex" class="common-box">
     <div class="batch-ip-range">
       <el-row type="flex" style="margin-bottom: 10px;" align="middle">
@@ -43,7 +44,7 @@
 
 <script>
 import BatchPoolsDialog from '@/components/BatchPoolsDialog.vue'
-import MinerTableList from '@/components/MinerTableList'
+import MinerList from '@/components/MinerList'
 
 export default {
   data () {
@@ -65,7 +66,7 @@ export default {
   },
   components: {
     BatchPoolsDialog,
-    MinerTableList
+    MinerList
   },
   computed: {
     ips () {

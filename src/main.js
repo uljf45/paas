@@ -9,6 +9,7 @@ import router from './router'
 import config from './common/config.js'
 import axios from 'axios'
 import util from './common/util.js'
+import store from './store'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -22,6 +23,7 @@ window.PublicKeys = config.keys
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

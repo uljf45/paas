@@ -18,8 +18,9 @@
         <el-button type="primary" @click="exportTable">导出</el-button>
       </div>
     </div>
-    <el-table :data="tableData" stripe class="mtl-table-container">
-      <!-- <el-table-column prop="num" label="序号"></el-table-column> -->
+
+    <el-table :data="tableData" stripe class="mtl-table-container" @selection-change="handleSelectionChange">
+      <el-table-column v-if="multipleSelect" type="selection" width="55"></el-table-column>
       <el-table-column type="index"></el-table-column>
       <el-table-column prop="type" label="型号"></el-table-column>
       <el-table-column prop="version" label="版本"></el-table-column>
@@ -40,8 +41,14 @@
 </template>
 
 <script>
+import {mapActions} from 'vuex'
+
 export default {
   props: {
+    minerType: { // alert all
+      type: String,
+      default: ''
+    },
     tableData: {
       type: Array
     },
@@ -52,6 +59,10 @@ export default {
     total: {
       type: Number,
       default: 0
+    },
+    multipleSelect: {
+      type: Boolean,
+      default: false
     }
   },
   data () {
@@ -59,7 +70,8 @@ export default {
       searchText: '',
       minerStatusMap: window.PublicKeys.minerStatus,
       select: 'ip',
-      currentPage: 1
+      currentPage: 1,
+      multipleSelection: []
     }
   },
   computed: {
@@ -71,6 +83,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      setBatchSelection: 'setBatchSelection'
+    }),
     viewMiner (ip, mac) {
       this.$router.push(`/miner-detail?mac=${mac}`)
     },
@@ -96,6 +111,15 @@ export default {
       console.log(`当前页: ${val}`)
       this.currentPage = val
       this.$emit('handleCurrentChange', val, this.searchQueryText)
+    },
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+      this.setBatchSelection({type: this.minerType, selection: this.multipleSelection})
+    }
+  },
+  beforeDestroy () {
+    if (this.multipleSelect) {
+      this.setBatchSelection({type: this.minerType, selection: []})
     }
   }
 }
