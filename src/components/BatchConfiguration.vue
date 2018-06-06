@@ -100,7 +100,7 @@ export default {
     addips () {
       if (!this.ipList.includes(this.ips)) {
         this.ipList.push(this.ips)
-        this.checkedIps.push(this.ips)
+        // this.checkedIps.push(this.ips)
       }
     },
     removeips () {
