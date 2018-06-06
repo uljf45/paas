@@ -1,7 +1,7 @@
 <template>
 <div class="batch-container">
   <miner-list class="mb" @addIps="addSelectedIps"></miner-list>
-  <el-row type="flex" class="common-box">
+  <el-row type="flex" class="common-box mb">
     <div class="batch-ip-range">
       <el-row type="flex" style="margin-bottom: 10px;" align="middle">
         <div class="mr">
@@ -38,6 +38,12 @@
       </div>
     </div>
   </el-row>
+  <el-card>
+    <div slot="header" class="clearfix">
+        <el-checkbox v-model="batchPoosChecked"></el-checkbox>
+        <span class="batch-card-title" >批量配置矿池</span>
+    </div>
+  </el-card>
   <batch-pools-dialog :visible="dialogBatchPoolsVisible" @cancel="closeDialogBatchPools" @save="saveBatchPools"></batch-pools-dialog>
 </div>
 </template>
@@ -62,7 +68,8 @@ export default {
       checkedIps: [],
       checkAll: false,
       isIndeterminate: false,
-      dialogBatchPoolsVisible: false
+      dialogBatchPoolsVisible: false,
+      batchPoosChecked: false
     }
   },
   components: {
@@ -86,7 +93,6 @@ export default {
   },
   methods: {
     handleIpInput (e, key) {
-      console.log(e)
       this.$nextTick(() => {
         let result = e.replace(/[^\d]/g, '')
         result = result.replace(/\s+/g, '')
@@ -106,7 +112,6 @@ export default {
       })
     },
     handleIpChanged (e, key) {
-      console.log('ipchanged')
       if (e === '') {
         this[key] = '0'
       }
@@ -115,8 +120,8 @@ export default {
       if (!this.ipList.includes(this.ips)) {
         this.ipList.push(this.ips)
         this.checkedIps.push(this.ips)
-        this.ipList.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
-        this.checkedIps.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
+        this.ipList.sort((a, b) => { return this.$util.compareIP(a, b) })
+        this.checkedIps.sort((a, b) => { return this.$util.compareIP(a, b) })
       }
     },
     addSelectedIps (type) {
@@ -144,8 +149,8 @@ export default {
       })
 
       if (isChange) {
-        this.ipList.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
-        this.checkedIps.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
+        this.ipList.sort((a, b) => { return this.$util.compareIP(a, b) })
+        this.checkedIps.sort((a, b) => { return this.$util.compareIP(a, b) })
       }
     },
     removeips () {
@@ -213,5 +218,8 @@ export default {
   }
   .input--ip .el-input__inner{
     text-align:  center;
+  }
+  .batch-card-title {
+    margin-left: 4px;
   }
 </style>
