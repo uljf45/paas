@@ -95,7 +95,7 @@ function compareIP (ipStr, ipNextStr) {
   if ((ips.length === ipsNext.length) && ips.length === 1) return 0
 
   ipsList = ips[1].split('.')
-  ipsNextList = ipsNextList[1].split('.')
+  ipsNextList = ipsNext[1].split('.')
 
   for (let i = 0; i < 4; i++) {
     if (Number(ipsList[i]) > Number(ipsNextList[i])) return 1

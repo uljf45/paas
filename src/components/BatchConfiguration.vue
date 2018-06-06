@@ -114,7 +114,9 @@ export default {
     addips () {
       if (!this.ipList.includes(this.ips)) {
         this.ipList.push(this.ips)
+        this.checkedIps.push(this.ips)
         this.ipList.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
+        this.checkedIps.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
       }
     },
     addSelectedIps (type) {
@@ -136,12 +138,14 @@ export default {
       ipList.forEach((value, index) => {
         if (!this.ipList.includes(value)) {
           this.ipList.push(value)
+          this.checkedIps.push(value)
           isChange = true
         }
       })
 
       if (isChange) {
         this.ipList.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
+        this.checkedIps.sort((a, b) => { console.log(a); return this.$util.compareIP(a, b) })
       }
     },
     removeips () {
@@ -150,7 +154,7 @@ export default {
       this.checkedIps.splice(index, 1)
     },
     handleCheckAllChange (val) {
-      this.checkedIps = val ? this.ipList : []
+      this.checkedIps = val ? this.ipList.concat() : []
       this.isIndeterminate = false
     },
     handleCheckedIpsChange (value) {
