@@ -38,7 +38,7 @@
       </div>
     </div>
   </el-row>
-  <el-card>
+  <el-card class="batch-pools-card">
     <div slot="header" class="clearfix">
       <el-checkbox v-model="batchPoolsChecked">批量配置矿池</el-checkbox>
     </div>
@@ -236,5 +236,8 @@ export default {
   }
   .batch-card-title {
     margin-left: 4px;
+  }
+  .batch-pools-card .el-card__body {
+    padding-top: 2px;
   }
 </style>
