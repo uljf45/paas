@@ -54,7 +54,7 @@ export default {
     },
     openDialogBatchPools () {
       if (this.checkedIps.length === 0) {
-        alert('请添加 IP 范围')
+        this.$alert('请添加 IP 范围')
         return
       }
       this.dialogBatchPoolsVisible = true
@@ -67,11 +67,11 @@ export default {
     },
     saveBatchPools (pools, openByDialog) {
       if (!openByDialog && !this.batchPoolsChecked) {
-        alert('请选中批量配置矿池')
+        this.$alert('请选中批量配置矿池')
         return
       }
       if (this.checkedIps.length === 0) {
-        alert('请添加 IP 范围')
+        this.$alert('请添加 IP 范围')
         return
       }
       this.$ajax.put('/v1/batch/pools', {
@@ -80,14 +80,14 @@ export default {
       })
         .then((response) => {
           if (response.data.result === 'success') {
-            alert('已发送批量配置矿池请求')
+            this.$alert('已发送批量配置矿池请求')
             this.dialogBatchPoolsVisible = false
           } else {
-            alert('发送批量配置矿池请求失败')
+            this.$alert('发送批量配置矿池请求失败')
           }
         })
         .catch(function (error) {
-          alert(error)
+          this.$alert(error)
         })
     }
   }

@@ -93,12 +93,12 @@ export default {
               vm.loading = false
             })
           } else {
-            alert('保存失败')
+            this.$alert('保存失败')
             vm.loading = false
           }
         })
         .catch(function (error) {
-          alert(error)
+          this.$alert(error)
           vm.loading = false
         })
     }

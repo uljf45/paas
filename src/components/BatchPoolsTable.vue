@@ -85,10 +85,10 @@ export default {
     },
     save () {
       if (this.pools[0].addr === '') {
-        alert('pool1的矿池地址不能为空!')
+        this.$alert('pool1的矿池地址不能为空!')
         return
       } else if (this.pools[0].minerAddr === '') {
-        alert('pool1的矿工名不能为空!')
+        this.$alert('pool1的矿工名不能为空!')
         return
       }
       this.$emit('save', this.pools)

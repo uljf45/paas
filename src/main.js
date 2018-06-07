@@ -13,6 +13,7 @@ import store from './store'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+
 Vue.prototype.$ajax = axios
 axios.defaults.xsrfCookieName = 'csrfToken'
 axios.defaults.xsrfHeaderName = 'x-csrf-token'

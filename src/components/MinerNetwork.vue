@@ -80,19 +80,19 @@ export default {
       const checkip = this.$util.checkip
       if (this.copy.ip_type === 'static') {
         if (!checkip(this.copy.ip)) {
-          alert('请输入正确的 IP 地址')
+          this.$alert('请输入正确的 IP 地址')
           return
         }
         if (!checkip(this.copy.netmask)) {
-          alert('请输入正确的 netmask')
+          this.$alert('请输入正确的 netmask')
           return
         }
         if (!checkip(this.copy.gateway)) {
-          alert('请输入正确的 gateway')
+          this.$alert('请输入正确的 gateway')
           return
         }
         if (!checkip(this.copy.dns)) {
-          alert('请输入正确的 dns')
+          this.$alert('请输入正确的 dns')
           return
         }
       }
@@ -114,12 +114,12 @@ export default {
               vm.loading = false
             })
           } else {
-            alert('保存失败')
+            this.$alert('保存失败')
             vm.loading = false
           }
         })
         .catch(function (error) {
-          alert(error)
+          this.$alert(error)
           vm.loading = false
         })
     }
