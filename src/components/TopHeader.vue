@@ -15,6 +15,9 @@
           <a @click="batchControl" class="link-btn" :class="{'active': isActive('BatchControl')}">批量控制</a>
         </li>
         <li class="fl nav-item">
+          <a @click="batchUpgrade" class="link-btn" :class="{'active': isActive('BatchUpgrade')}">批量升级</a>
+        </li>
+        <li class="fl nav-item">
           <a class="link-btn">登录</a>
         </li>
         <li class="fl nav-item">
@@ -42,6 +45,9 @@ export default {
     },
     batchControl () {
       this.$router.push('/batch-control')
+    },
+    batchUpgrade () {
+      this.$router.push('/batch-upgrade')
     }
   }
 }

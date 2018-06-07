@@ -89,7 +89,7 @@ export default {
               vm.loading = false
             })
           })
-          .catch(function (error) {
+          .catch((error) => {
             this.$alert(error)
             vm.loading = false
           })
@@ -104,7 +104,7 @@ export default {
               vm.loading = false
             })
           })
-          .catch(function (error) {
+          .catch((error) => {
             this.$alert(error)
             vm.loading = false
           })
@@ -119,7 +119,7 @@ export default {
               vm.loading = false
             })
           }))
-          .catch(function (error) {
+          .catch((error) => {
             this.$alert(error)
             vm.loading = false
           })

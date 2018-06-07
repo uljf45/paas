@@ -86,7 +86,7 @@ export default {
             this.$alert('发送批量配置矿池请求失败')
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           this.$alert(error)
         })
     }
