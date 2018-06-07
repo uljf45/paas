@@ -157,6 +157,10 @@ function initApi (app) {
     }, 1000)
   })
 
+  apiRoutes.put('/v1/batch/pools', function (req, res) {
+    res.json({result: 'success'})
+  })
+
   app.use(apiRoutes)
 }
 

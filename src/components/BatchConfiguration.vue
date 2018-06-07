@@ -40,9 +40,9 @@
   </el-row>
   <el-card>
     <div slot="header" class="clearfix">
-        <el-checkbox v-model="batchPoosChecked"></el-checkbox>
-        <span class="batch-card-title" >批量配置矿池</span>
+      <el-checkbox v-model="batchPoolsChecked">批量配置矿池</el-checkbox>
     </div>
+    <batch-pools-table :option="batchPoolTableOption" @cancel="closeDialogBatchPools" @save="saveBatchPools"></batch-pools-table>
   </el-card>
   <batch-pools-dialog :visible="dialogBatchPoolsVisible" @cancel="closeDialogBatchPools" @save="saveBatchPools"></batch-pools-dialog>
 </div>
@@ -50,6 +50,7 @@
 
 <script>
 import BatchPoolsDialog from '@/components/BatchPoolsDialog.vue'
+import BatchPoolsTable from '@/components/BatchPoolsTable.vue'
 import MinerList from '@/components/MinerList'
 import {mapGetters} from 'vuex'
 
@@ -69,11 +70,17 @@ export default {
       checkAll: false,
       isIndeterminate: false,
       dialogBatchPoolsVisible: false,
-      batchPoosChecked: false
+      batchPoolsChecked: false,
+      batchPoolTableOption: {
+        cancel: {
+          visible: false
+        }
+      }
     }
   },
   components: {
     BatchPoolsDialog,
+    BatchPoolsTable,
     MinerList
   },
   computed: {
@@ -178,6 +185,14 @@ export default {
       this.dialogBatchPoolsVisible = false
     },
     saveBatchPools (pools) {
+      if (!this.batchPoolsChecked) {
+        alert('请选中批量配置矿池')
+        return
+      }
+      if (this.checkedIps.length === 0) {
+        alert('请添加 IP 范围')
+        return
+      }
       this.$ajax.put('/v1/batch/pools', {
         ips: this.checkedIps,
         pools
