@@ -3,10 +3,10 @@
   <miner-list class="mb" @addIps="addSelectedIps"></miner-list>
   <el-row type="flex" class="common-box mb" style="padding: 20px;">
     <ip-range ref="ipRange"></ip-range>
-    <div>
+    <div v-loading="loading" element-loading-text="发送请求中">
       <div style="padding-left: 40px;">
         <el-button type="primary" @click="reboot">批量重启</el-button>
-        <el-button type="primary" @click="shutdown">批量关机</el-button>
+        <el-button v-if="false" type="primary" @click="shutdown">批量关机</el-button>
       </div>
     </div>
   </el-row>
@@ -22,6 +22,11 @@ export default {
   components: {
     IpRange,
     MinerList
+  },
+  data () {
+    return {
+      loading: false
+    }
   },
   computed: {
     checkedIps () {
@@ -39,6 +44,22 @@ export default {
       }
       this.$confirm('此操作将按选定ip范围 批量重启，是否继续？', '提示').then(() => {
         console.log('reboot')
+        this.loading = true
+        this.$ajax.put('/v1/batch/reboot', {
+          ips: this.checkedIps
+        })
+          .then((response) => {
+            this.loading = false
+            if (response.data.result === 'success') {
+              this.$alert('已发送批量重启请求')
+            } else {
+              this.$alert('发送批量重启请求失败')
+            }
+          })
+          .catch(function (error) {
+            this.loading = false
+            this.$alert(error)
+          })
       }).catch(() => {
         // 取消
       })
@@ -50,6 +71,22 @@ export default {
       }
       this.$confirm('此操作将按选定ip范围 批量关机，是否继续？，是否继续？', '提示').then(() => {
         console.log('shutdown')
+        this.loading = true
+        this.$ajax.put('/v1/batch/shutdown', {
+          ips: this.checkedIps
+        })
+          .then((response) => {
+            this.loading = false
+            if (response.data.result === 'success') {
+              this.$alert('已发送批量关机请求')
+            } else {
+              this.$alert('发送批量关机请求失败')
+            }
+          })
+          .catch(function (error) {
+            this.loading = false
+            this.$alert(error)
+          })
       }).catch(() => {
         // 取消
       })

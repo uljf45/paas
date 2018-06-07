@@ -161,6 +161,10 @@ function initApi (app) {
     res.json({result: 'success'})
   })
 
+  apiRoutes.put('/v1/batch/reboot', function (req, res) {
+    res.json({result: 'success'})
+  })
+
   app.use(apiRoutes)
 }
 
