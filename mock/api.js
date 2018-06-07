@@ -3,6 +3,9 @@ const path = require('path')
 const express = require('express')
 const apiRoutes = express.Router()
 const bodyParser = require('body-parser')
+const busboy = require('connect-busboy')
+
+let filePath = path.join(path.normalize(__dirname) + '/..', 'public', 'upload')
 
 function getJsonBy (fileName) {
   return JSON.parse(fs.readFileSync(path.join(__dirname, fileName)))
@@ -17,6 +20,7 @@ function writeJsonBy (fileName, jsonData) {
 function initApi (app) {
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({extend: false}))
+  app.use(busboy())
 
   apiRoutes.get('/v1/mining', function (req, res) {
     let data = {
@@ -163,6 +167,27 @@ function initApi (app) {
 
   apiRoutes.put('/v1/batch/reboot', function (req, res) {
     res.json({result: 'success'})
+  })
+
+  apiRoutes.post('/v1/upload/firmwareImage', function (req, res) {
+    if (req.busboy) {
+      req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
+        console.log(filename)
+        let savePath = path.join(filePath, filename)
+        file.pipe(fs.createWriteStream(savePath))
+
+        file.on('data', function (data) {
+        })
+        file.on('end', function () {
+          console.log('File [' + fieldname + '] Finished')
+        })
+      })
+      req.busboy.on('finish', function () {
+        console.log('Done parsing form !')
+        res.json({success: 'success'})
+      })
+      return req.pipe(req.busboy)
+    }
   })
 
   app.use(apiRoutes)

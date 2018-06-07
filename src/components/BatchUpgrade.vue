@@ -1,5 +1,20 @@
 <template>
-<div class="batch-control-container">
+<div class="batch-upgrade-container">
+  <div class="common-box mb" style="padding: 20px">
+    <el-upload
+      class="upload-demo"
+      ref="upload"
+      action="/v1/upload/firmwareImage"
+      :limit="1"
+      :on-preview="handlePreview"
+      :on-remove="handleRemove"
+      :file-list="fileList"
+      :auto-upload="false">
+      <el-button slot="trigger" type="primary">选取文件</el-button>
+      <el-button style="margin-left: 10px;" type="success" @click="submitUpload">上传到服务器</el-button>
+      <div slot="tip" class="el-upload__tip">只能上传tar文件</div>
+    </el-upload>
+  </div>
   <miner-list class="mb" @addIps="addSelectedIps"></miner-list>
   <el-row type="flex" class="common-box mb" style="padding: 20px;">
     <ip-range ref="ipRange"></ip-range>
@@ -24,7 +39,8 @@ export default {
   },
   data () {
     return {
-      loading: false
+      loading: false,
+      fileList: []
     }
   },
   computed: {
@@ -33,6 +49,15 @@ export default {
     }
   },
   methods: {
+    submitUpload () {
+      this.$refs.upload.submit()
+    },
+    handleRemove (file, fileList) {
+      console.log(file, fileList)
+    },
+    handlePreview (file) {
+      console.log(file)
+    },
     addSelectedIps (ipList) {
       this.$refs.ipRange.addSelectedIps(ipList)
     },
@@ -69,5 +94,4 @@ export default {
 </script>
 
 <style>
-
 </style>
