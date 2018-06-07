@@ -19,6 +19,7 @@
 
 <script>
 import MinerTableList from '@/components/MinerTableList.vue'
+import {mapGetters} from 'vuex'
 
 export default {
   name: 'MinerList',
@@ -30,6 +31,12 @@ export default {
       allMinerAmount: 0,
       pageSize: 50
     }
+  },
+  computed: {
+    ...mapGetters({
+      batchAlertSelection: 'batchAlertSelection',
+      batchAllSelection: 'batchAllSelection'
+    })
   },
   components: {
     MinerTableList
@@ -71,8 +78,20 @@ export default {
       this.getFullMinerListBy(pageNum, searchText)
     },
     addIps (type) {
-      console.log(type)
-      this.$emit('addIps', type)
+      let ipList = []
+
+      if (type === 'alert') {
+        ipList = this.batchAlertSelection
+      }
+      if (type === 'all') {
+        ipList = this.batchAllSelection
+      }
+
+      ipList = ipList.map((value, index) => {
+        return value.ip
+      })
+
+      this.$emit('addIps', ipList)
     }
   },
   created () {

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import MinerDetail from '@/components/MinerDetail'
 import BatchConfiguration from '@/components/BatchConfiguration'
+import BatchControl from '@/components/BatchControl'
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/batch-configuration',
       name: 'BatchConfiguration',
       component: BatchConfiguration
+    },
+    {
+      path: '/batch-control',
+      name: 'BatchControl',
+      component: BatchControl
     }
   ]
 })
