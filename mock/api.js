@@ -170,6 +170,10 @@ function initApi (app) {
     res.json({result: 'success'})
   })
 
+  apiRoutes.put('/v1/batch/upgrade', function (req, res) {
+    res.json({result: 'success'})
+  })
+
   apiRoutes.post('/v1/upload/firmwareImage', function (req, res) {
     if (req.busboy) {
       req.busboy.on('file', function (fieldname, file, filename, encoding, mimetype) {
@@ -183,7 +187,7 @@ function initApi (app) {
         file.on('end', function () {
           console.log('File [' + fieldname + '] Finished')
           console.log(req)
-          res.json({success: 'success', url: req.headers.origin + '/static/' + filename})
+          res.json({result: 'success', url: req.headers.origin + '/static/' + filename})
         })
       })
       req.busboy.on('finish', function () {

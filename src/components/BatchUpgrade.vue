@@ -56,14 +56,14 @@ export default {
       this.$refs.upload.submit()
     },
     handleRemove (file, fileList) {
-      console.log(file, fileList)
+      this.fileUploadedUrl = ''
     },
     handlePreview (file) {
       console.log(file)
     },
     uploadSuccess (response, file) {
       console.log(response)
-      if (response && response.success === 'success') {
+      if (response && response.result === 'success') {
         this.fileUploadedUrl = response.url
       } else {
         this.$alert('上传失败！', '提示')
@@ -78,11 +78,16 @@ export default {
         this.$alert('请添加 IP 范围', '提示')
         return
       }
+      if (!this.fileUploadedUrl) {
+        this.$alert('请上传固件升级文件', '提示')
+        return
+      }
       this.$confirm('此操作将按选定ip范围 批量升级，是否继续？', '提示').then(() => {
         console.log('reboot')
         this.loading = true
         this.$ajax.put('/v1/batch/upgrade', {
-          ips: this.checkedIps
+          ips: this.checkedIps,
+          url: this.fileUploadedUrl
         })
           .then((response) => {
             this.loading = false
