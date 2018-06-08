@@ -5,7 +5,7 @@ const apiRoutes = express.Router()
 const bodyParser = require('body-parser')
 const busboy = require('connect-busboy')
 
-let filePath = path.join(path.normalize(__dirname) + '/..', 'public', 'upload')
+let filePath = path.join(path.normalize(__dirname) + '/..', 'static')
 
 function getJsonBy (fileName) {
   return JSON.parse(fs.readFileSync(path.join(__dirname, fileName)))
@@ -18,6 +18,7 @@ function writeJsonBy (fileName, jsonData) {
 }
 
 function initApi (app) {
+  // app.use(express.static(filePath))
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({extend: false}))
   app.use(busboy())
@@ -178,13 +179,16 @@ function initApi (app) {
 
         file.on('data', function (data) {
         })
+
         file.on('end', function () {
           console.log('File [' + fieldname + '] Finished')
+          console.log(req)
+          res.json({success: 'success', url: req.headers.origin + '/static/' + filename})
         })
       })
       req.busboy.on('finish', function () {
         console.log('Done parsing form !')
-        res.json({success: 'success'})
+        console.log(req)
       })
       return req.pipe(req.busboy)
     }

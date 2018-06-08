@@ -1,6 +1,7 @@
 <template>
 <div class="batch-upgrade-container">
   <div class="common-box mb" style="padding: 20px">
+    <div class="upload-title">固件升级文件</div>
     <el-upload
       class="upload-demo"
       ref="upload"
@@ -8,11 +9,12 @@
       :limit="1"
       :on-preview="handlePreview"
       :on-remove="handleRemove"
+      :on-success="uploadSuccess"
       :file-list="fileList"
       :auto-upload="false">
       <el-button slot="trigger" type="primary">选取文件</el-button>
       <el-button style="margin-left: 10px;" type="success" @click="submitUpload">上传到服务器</el-button>
-      <div slot="tip" class="el-upload__tip">只能上传tar文件</div>
+      <!-- <div slot="tip" class="el-upload__tip">只能上传tar文件</div> -->
     </el-upload>
   </div>
   <miner-list class="mb" @addIps="addSelectedIps"></miner-list>
@@ -40,7 +42,8 @@ export default {
   data () {
     return {
       loading: false,
-      fileList: []
+      fileList: [],
+      fileUploadedUrl: ''
     }
   },
   computed: {
@@ -57,6 +60,14 @@ export default {
     },
     handlePreview (file) {
       console.log(file)
+    },
+    uploadSuccess (response, file) {
+      console.log(response)
+      if (response && response.success === 'success') {
+        this.fileUploadedUrl = response.url
+      } else {
+        this.$alert('上传失败！', '提示')
+      }
     },
     addSelectedIps (ipList) {
       this.$refs.ipRange.addSelectedIps(ipList)
@@ -94,4 +105,10 @@ export default {
 </script>
 
 <style>
+  .upload-title {
+    font-size: 16px;
+    padding-bottom: 4px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ebeef5;
+  }
 </style>
