@@ -2,7 +2,7 @@
   <div>
     <div class="clearfix">
       <div class="fl">
-        <el-input placeholder="请输入搜索内容" v-model.trim="searchText" class="input-with-select">
+        <el-input placeholder="请输入搜索内容" v-model.trim="searchText" @keyup.enter.native="search" class="input-with-select" >
           <el-select v-model="select" slot="prepend" class="search-select">
             <el-option label="IP" value="ip"></el-option>
             <el-option label="位置" value="position"></el-option>
