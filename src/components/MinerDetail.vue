@@ -39,7 +39,7 @@
       <hashrate-spline :hashrateList="fakeDatas" @switchTimeInterval="switchTimeInterval" title="矿机算力图表"></hashrate-spline>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <temperature-spline :temperatureList="temperatureList"></temperature-spline>
+      <temperature-spline :current="infoData.temperature" :temperatureList="temperatureList"></temperature-spline>
     </el-row>
   </div>
 </template>
@@ -80,12 +80,14 @@ export default {
         status: '',
         duration: '',
         curHashrate: '',
-        avgHashrate: ''
+        avgHashrate: '',
+        temperature: ''
       }
       if (this.tableData && this.tableData.length) {
         let data = this.tableData[0]
         rtn.status = data.status
         rtn.duration = this.$util.formatDuration(data.duration)
+        rtn.temperature = data.temperature
         rtn.curHashrate = this.$util.formatHashrate((data.mhs || 0) * 1024 * 1024)
         rtn.avgHashrate = this.$util.formatHashrate((data.avg_mhs || 0) * 1024 * 1024)
       }

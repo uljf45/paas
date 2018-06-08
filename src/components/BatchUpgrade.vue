@@ -1,29 +1,29 @@
 <template>
 <div class="batch-upgrade-container">
-  <div class="common-box mb" style="padding: 20px">
-    <div class="upload-title">固件升级文件</div>
-    <el-upload
-      class="upload-demo"
-      ref="upload"
-      action="/v1/upload/firmwareImage"
-      :headers="headers"
-      :limit="1"
-      :on-preview="handlePreview"
-      :on-remove="handleRemove"
-      :on-success="uploadSuccess"
-      :file-list="fileList"
-      :auto-upload="false">
-      <el-button slot="trigger" type="primary">选取文件</el-button>
-      <el-button style="margin-left: 10px;" type="success" @click="submitUpload">上传到服务器</el-button>
-      <!-- <div slot="tip" class="el-upload__tip">只能上传tar文件</div> -->
-    </el-upload>
-  </div>
   <miner-list class="mb" @addIps="addSelectedIps"></miner-list>
   <el-row type="flex" class="common-box mb" style="padding: 20px;">
     <ip-range ref="ipRange"></ip-range>
     <div v-loading="loading" element-loading-text="发送请求中">
       <div style="padding-left: 40px;">
-        <el-button type="primary" @click="upgrade">批量升级</el-button>
+        <div class="mb">
+          <div class="upload-title">固件升级文件</div>
+          <el-upload
+            class="upload-demo"
+            ref="upload"
+            action="/v1/upload/firmwareImage"
+            :headers="headers"
+            :limit="1"
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :on-success="uploadSuccess"
+            :file-list="fileList"
+            :auto-upload="false">
+            <el-button slot="trigger" type="primary">选取文件</el-button>
+            <el-button style="margin-left: 10px;" type="success" @click="submitUpload">上传到服务器</el-button>
+            <el-button type="primary" @click="upgrade">批量升级</el-button>
+          </el-upload>
+        </div>
+        <!-- <el-button type="primary" @click="upgrade">批量升级</el-button> -->
       </div>
     </div>
   </el-row>

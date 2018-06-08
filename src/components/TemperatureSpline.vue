@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="chart-title">矿机温度图表  当前温度:<span> 24</span><span style="font-size:14px;">℃</span></div>
+    <div class="chart-title">矿机温度图表  当前温度:<span> {{current}}</span><span style="font-size:14px;">℃</span></div>
     <div class="clearfix">
       <div class="chart-toolBox fr">
         <el-button size="small" @click="exportPic">导出</el-button>
@@ -21,6 +21,9 @@ export default {
   props: {
     temperatureList: {
       type: Array
+    },
+    current: {
+      default: ''
     }
   },
   data () {
