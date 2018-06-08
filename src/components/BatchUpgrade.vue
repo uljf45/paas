@@ -12,15 +12,15 @@
             ref="upload"
             action="/v1/upload/firmwareImage"
             :headers="headers"
-            :limit="1"
+            :limit="2"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :on-success="uploadSuccess"
             :file-list="fileList"
-            :auto-upload="false">
-            <el-button slot="trigger" type="primary">选取文件</el-button>
-            <el-button style="margin-left: 10px;" type="success" @click="submitUpload">上传到服务器</el-button>
-            <el-button type="primary" @click="upgrade">批量升级</el-button>
+            :auto-upload="true">
+            <el-button slot="trigger" type="primary">上传文件</el-button>
+            <!-- <el-button style="margin-left: 10px;" type="success" @click="submitUpload">上传到服务器</el-button> -->
+            <el-button type="success" @click="upgrade">批量升级</el-button>
           </el-upload>
         </div>
         <!-- <el-button type="primary" @click="upgrade">批量升级</el-button> -->
@@ -68,19 +68,21 @@ export default {
     handlePreview (file) {
       console.log(file)
     },
-    uploadSuccess (response, file) {
-      console.log(response)
+    uploadSuccess (response, file, fileList) {
       if (response && response.result === 'success') {
         this.fileUploadedUrl = response.url
       } else {
         this.$alert('上传失败！', '提示')
+      }
+      console.log(fileList)
+      if (fileList.length >= 2) {
+        fileList.shift()
       }
     },
     addSelectedIps (ipList) {
       this.$refs.ipRange.addSelectedIps(ipList)
     },
     upgrade () {
-      console.log('upgrade')
       if (this.checkedIps.length === 0) {
         this.$alert('请添加 IP 范围', '提示')
         return
