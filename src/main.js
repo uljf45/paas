@@ -20,6 +20,10 @@ axios.defaults.xsrfHeaderName = 'x-csrf-token'
 Vue.prototype.$util = util
 window.PublicKeys = config.keys
 
+// router.afterEach((to, from) => {
+//   window.scrollTo(0, 0)
+// })
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
