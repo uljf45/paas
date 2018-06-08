@@ -6,6 +6,7 @@
       class="upload-demo"
       ref="upload"
       action="/v1/upload/firmwareImage"
+      :headers="headers"
       :limit="1"
       :on-preview="handlePreview"
       :on-remove="handleRemove"
@@ -49,6 +50,12 @@ export default {
   computed: {
     checkedIps () {
       return this.$refs.ipRange.checkedIps
+    },
+    headers () {
+      let csrfToken = this.$cookies.get('csrfToken')
+      return {
+        'x-csrf-token': csrfToken
+      }
     }
   },
   methods: {

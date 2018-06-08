@@ -10,9 +10,12 @@ import config from './common/config.js'
 import axios from 'axios'
 import util from './common/util.js'
 import store from './store'
+import VueCookies from 'vue-cookies'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+
+Vue.use(VueCookies)
 
 Vue.prototype.$ajax = axios
 axios.defaults.xsrfCookieName = 'csrfToken'
