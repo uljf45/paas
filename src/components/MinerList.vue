@@ -100,7 +100,6 @@ export default {
       }
       this.$ajax.get(url) // 所有矿机
         .then((response) => {
-          console.log(response)
           this.fullTableData = response.data.miners
           this.allMinerAmount = response.data.total
         })

@@ -28,7 +28,7 @@
       </el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <hashrate-spline ref="spline" :hashrateList="fakeDatas" @switchTimeInterval="getHashrateListBy" title="总算力图表"></hashrate-spline>
+      <hashrate-spline ref="spline" :hashrateList="hashrateList" @switchTimeInterval="getHashrateListBy" title="总算力图表"></hashrate-spline>
     </el-row>
     <el-row>
       <miner-list :multiple-select="false"></miner-list>
@@ -51,12 +51,7 @@ export default {
         normal: 0,
         abnormal: 0
       },
-      errorTableData: [],
-      fullTableData: [],
-      errorMinerAmount: 0,
-      allMinerAmount: 0,
-      pageSize: 50,
-      fakeDatas: {},
+      hashrateList: {},
       timerGetMining: null
     }
   },
@@ -71,41 +66,6 @@ export default {
     TweenNumber
   },
   methods: {
-    getErrorMinerListBy (pageNum, searchText = '') {
-      let url = '/v1/miners/alerts?offset=' + ((pageNum - 1) * this.pageSize) + '&size=' + this.pageSize
-      if (searchText) {
-        url += '&' + searchText
-      }
-      this.$ajax.get(url) // 告警矿机
-        .then((response) => {
-          this.errorTableData = response.data.miners_alerts
-          this.errorMinerAmount = response.data.total
-        })
-    },
-    getFullMinerListBy (pageNum, searchText = '') {
-      let url = '/v1/miners?offset=' + ((pageNum - 1) * this.pageSize) + '&size=' + this.pageSize
-      if (searchText) {
-        url += '&' + searchText
-      }
-      this.$ajax.get(url) // 所有矿机
-        .then((response) => {
-          console.log(response)
-          this.fullTableData = response.data.miners
-          this.allMinerAmount = response.data.total
-        })
-    },
-    searchError (text) {
-      this.getErrorMinerListBy(1, text)
-    },
-    searchFull (text) {
-      this.getFullMinerListBy(1, text)
-    },
-    handleErrorCurrentChange (pageNum, searchText) {
-      this.getErrorMinerListBy(pageNum, searchText)
-    },
-    handleAllCurrentChange (pageNum, searchText) {
-      this.getFullMinerListBy(pageNum, searchText)
-    },
     getHashrateListBy (interval) {
       this.$ajax.get('/v1/mining/mhs?period=' + interval) // 总算力天周月季半年年
         .then((response) => {
@@ -115,7 +75,7 @@ export default {
             let item = miningMhs[i]
             res.push([new Date(item.date).getTime(), item.mhs])
           }
-          this.fakeDatas = { // 暂时都显示一样的数据
+          this.hashrateList = { // 暂时都显示一样的数据
             day: res,
             week: res,
             month: res,
@@ -137,10 +97,6 @@ export default {
     this.timerGetMining = setInterval(() => {
       this.getMiningInfo()
     }, 5000)
-
-    this.getErrorMinerListBy(1, '')
-
-    this.getFullMinerListBy(1, '')
 
     this.getHashrateListBy('day')
   },
