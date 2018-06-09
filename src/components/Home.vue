@@ -31,14 +31,7 @@
       <hashrate-spline ref="spline" :hashrateList="fakeDatas" @switchTimeInterval="getHashrateListBy" title="总算力图表"></hashrate-spline>
     </el-row>
     <el-row>
-      <el-tabs type="border-card">
-        <el-tab-pane label="告警矿机">
-          <miner-table-list :table-data="errorTableData" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange"></miner-table-list>
-        </el-tab-pane>
-        <el-tab-pane label="所有矿机">
-          <miner-table-list :table-data="fullTableData" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange"></miner-table-list>
-        </el-tab-pane>
-      </el-tabs>
+      <miner-list :multiple-select="false"></miner-list>
     </el-row>
   </div>
 </template>
@@ -46,7 +39,8 @@
 <script>
 import TweenNumber from '@/components/TweenNumber.vue'
 import HashrateSpline from '@/components/HashrateSpline.vue'
-import MinerTableList from '@/components/MinerTableList.vue'
+import MinerList from '@/components/MinerList.vue'
+
 export default {
   name: 'Home',
   data () {
@@ -73,7 +67,7 @@ export default {
   },
   components: {
     HashrateSpline,
-    MinerTableList,
+    MinerList,
     TweenNumber
   },
   methods: {

@@ -1,8 +1,8 @@
 <template>
   <el-tabs type="border-card">
     <el-tab-pane label="告警矿机">
-      <miner-table-list miner-type="alert" :multiple-select="true" :show-progress="this.showProgress" :table-data="errorMiners" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange">
-        <template slot="operation">
+      <miner-table-list miner-type="alert" :multiple-select="this.multipleSelect" :show-progress="this.showProgress" :table-data="errorMiners" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange">
+        <template v-if="multipleSelect" slot="operation">
           <el-button type="primary" @click="addIps('alert')">加入选择列表</el-button>
         </template>
       </miner-table-list>
@@ -33,6 +33,10 @@ export default {
       default () {
         return []
       }
+    },
+    multipleSelect: {
+      type: Boolean,
+      default: true
     }
   },
   data () {
