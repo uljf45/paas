@@ -91,7 +91,7 @@ export default {
         return
       }
       this.$confirm('此操作将按选定ip范围 批量升级，是否继续？', '提示').then(() => {
-        console.log('reboot')
+        console.log('upgrade')
         this.loading = true
         this.$ajax.put('/v1/batch/upgrade', {
           ips: this.checkedIps,
@@ -115,6 +115,8 @@ export default {
       })
     },
     upgradeProgress () {
+      let vm = this
+      this.percentageList = []
       let onOpen = function () {
         console.log('Socket opened.')
         socket.send('Hi, Server!')
@@ -124,7 +126,7 @@ export default {
       }
       let onMessage = function (data) {
         console.log('We get signal:')
-        console.log(data)
+        vm.addPercentage(data.data)
       }
       let onError = function () {
         console.log('We got an error.')
@@ -134,6 +136,17 @@ export default {
       socket.onclose = onClose
       socket.onerror = onError
       socket.onmessage = onMessage
+    },
+    addPercentage (str) {
+      let mac = str.split('~')[0] + '~'
+      for (let i = 0; i < this.percentageList.length; i++) {
+        let item = this.percentageList[i]
+        if (item.indexOf(mac) !== -1) {
+          this.percentageList.splice(i, 1, str)
+          return
+        }
+      }
+      this.percentageList.push(str)
     }
   }
 }

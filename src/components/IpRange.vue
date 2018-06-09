@@ -4,10 +4,10 @@
       <div class="mr">
         <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">IP范围:</el-checkbox>
       </div>
-      <el-button size="mini" type="primary" plain @click="addips">+</el-button>
-      <el-button size="mini" type="primary" plain @click="removeips">-</el-button>
+      <el-button v-if="false" size="mini" type="primary" plain @click="addips">+</el-button>
+      <el-button v-if="false" size="mini" type="primary" plain @click="removeips">-</el-button>
     </el-row>
-    <el-row type="flex" style="margin-bottom: 10px;">
+    <el-row v-if="false" type="flex" style=" margin-bottom: 10px;">
       <div>
         起始IP:
         <el-input class="input--ip" @change="handleIpChanged($event, 'startIP0')" @input="handleIpInput($event, 'startIP0')" v-model="startIP0" size="mini"></el-input> .
