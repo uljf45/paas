@@ -1,6 +1,6 @@
 <template>
 <div class="batch-upgrade-container">
-  <miner-list class="mb" @addIps="addSelectedIps"></miner-list>
+  <miner-list class="mb" @addIps="addSelectedIps" :showProgress="true" :percentageList="percentageList"></miner-list>
   <el-row type="flex" class="common-box mb" style="padding: 20px;">
     <ip-range ref="ipRange"></ip-range>
     <div v-loading="loading" element-loading-text="发送请求中">
@@ -19,11 +19,9 @@
             :file-list="fileList"
             :auto-upload="true">
             <el-button slot="trigger" type="primary">上传文件</el-button>
-            <!-- <el-button style="margin-left: 10px;" type="success" @click="submitUpload">上传到服务器</el-button> -->
             <el-button type="success" @click="upgrade">批量升级</el-button>
           </el-upload>
         </div>
-        <!-- <el-button type="primary" @click="upgrade">批量升级</el-button> -->
       </div>
     </div>
   </el-row>
@@ -44,7 +42,8 @@ export default {
     return {
       loading: false,
       fileList: [],
-      fileUploadedUrl: ''
+      fileUploadedUrl: '',
+      percentageList: []
     }
   },
   computed: {
@@ -102,6 +101,7 @@ export default {
             this.loading = false
             if (response.data.result === 'success') {
               this.$alert('已发送批量升级请求')
+              this.upgradeProgress()
             } else {
               this.$alert('发送批量升级请求失败')
             }
@@ -113,6 +113,27 @@ export default {
       }).catch(() => {
         // 取消
       })
+    },
+    upgradeProgress () {
+      let onOpen = function () {
+        console.log('Socket opened.')
+        socket.send('Hi, Server!')
+      }
+      let onClose = function () {
+        console.log('Socket closed.')
+      }
+      let onMessage = function (data) {
+        console.log('We get signal:')
+        console.log(data)
+      }
+      let onError = function () {
+        console.log('We got an error.')
+      }
+      let socket = new WebSocket('ws://192.168.4.191:1884/')
+      socket.onopen = onOpen
+      socket.onclose = onClose
+      socket.onerror = onError
+      socket.onmessage = onMessage
     }
   }
 }

@@ -34,6 +34,11 @@
           <el-button @click="viewMiner(scope.row.ip, scope.row.mac)" type="text" size="small">查看</el-button>
         </template>
       </el-table-column>
+      <el-table-column v-if="showProgress" prop="progress" label="进度">
+        <template slot-scope="scope">
+          <el-progress v-show="scope.row.percentage !== undefined" :text-inside="true" :stroke-width="18" :percentage="scope.row.percentage"></el-progress>
+        </template>
+      </el-table-column>
     </el-table>
     <div class="mtl-pagination-container" v-show="total > 0">
       <el-pagination :current-page="currentPage" @size-change="handleSizeChange" @current-change="handleCurrentChange" :page-size="pageSize" :page-count="11" layout="prev, pager, next, jumper" :total="total"></el-pagination>
@@ -62,6 +67,10 @@ export default {
       default: 0
     },
     multipleSelect: {
+      type: Boolean,
+      default: false
+    },
+    showProgress: {
       type: Boolean,
       default: false
     }

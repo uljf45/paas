@@ -1,14 +1,14 @@
 <template>
   <el-tabs type="border-card">
     <el-tab-pane label="告警矿机">
-      <miner-table-list miner-type="alert" :multiple-select="true" :table-data="errorTableData" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange">
+      <miner-table-list miner-type="alert" :multiple-select="true" :show-progress="this.showProgress" :table-data="errorMiners" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange">
         <template slot="operation">
           <el-button type="primary" @click="addIps('alert')">加入选择列表</el-button>
         </template>
       </miner-table-list>
     </el-tab-pane>
     <el-tab-pane label="所有矿机">
-      <miner-table-list miner-type="all" :multiple-select="true" :table-data="fullTableData" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange">
+      <miner-table-list miner-type="all" :multiple-select="true"  :show-progress="true" :table-data="fullMiners" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange">
         <template slot="operation">
           <el-button type="primary" @click="addIps('all')">加入选择列表</el-button>
         </template>
@@ -23,6 +23,18 @@ import {mapGetters} from 'vuex'
 
 export default {
   name: 'MinerList',
+  props: {
+    showProgress: {
+      type: Boolean,
+      default: false
+    },
+    percentageList: {
+      type: Array,
+      default () {
+        return []
+      }
+    }
+  },
   data () {
     return {
       errorTableData: [],
@@ -36,7 +48,31 @@ export default {
     ...mapGetters({
       batchAlertSelection: 'batchAlertSelection',
       batchAllSelection: 'batchAllSelection'
-    })
+    }),
+    percentageMap () {
+      let map = {}
+      this.percentageList.forEach((item) => {
+        let mac = item.split('~')[0]
+        let val = Number(item.split('~')[1])
+        map[mac] = val
+      })
+      return map
+    },
+    errorMiners () {
+      let rtn = this.errorTableData.concat()
+
+      rtn.forEach((item) => {
+        item.percentage = this.percentageMap[item.mac]
+      })
+      return rtn
+    },
+    fullMiners () {
+      let rtn = this.fullTableData.concat()
+      rtn.forEach((item) => {
+        item.percentage = this.percentageMap[item.mac]
+      })
+      return rtn
+    }
   },
   components: {
     MinerTableList
