@@ -2,15 +2,21 @@
   <div>
     <div class="clearfix">
       <div class="fl">
-        <el-input placeholder="请输入搜索内容" v-model.trim="searchText" @keyup.enter.native="search" class="input-with-select" >
-          <el-select v-model="select" slot="prepend" class="search-select">
+        <el-input :placeholder="searchTextPlaceholder" v-model.trim="searchText" @keyup.enter.native="search" class="input-with-select" >
+          <el-select v-model="select" slot="prepend" class="search-select" @change="selectChange">
             <el-option label="IP" value="ip"></el-option>
             <el-option label="位置" value="position"></el-option>
             <el-option label="编号" value="number"></el-option>
             <el-option label="状态" value="status"></el-option>
             <el-option label="版本" value="version"></el-option>
           </el-select>
-          <el-button slot="append" icon="el-icon-search" @click="search"></el-button>
+          <div slot="append" style="display: flex;">
+            <span v-if="multipleSelect && isIpSelected" v-show="!showSearchTextNext" class="el-icon-d-arrow-right" @click="arrowRight"></span>
+            <span v-if="multipleSelect && isIpSelected" v-show="showSearchTextNext" class="el-icon-d-arrow-left" @click="arrowLeft"></span>
+            <el-input v-if="isIpSelected" placeholder="请输入结束IP" v-show="showSearchTextNext" class="search-text-next" v-model.trim="searchTextNext"></el-input>
+            <el-button v-show="!(isIpSelected && showSearchTextNext)" class="search-btn" icon="el-icon-search" @click="search"></el-button>
+            <el-button v-show="isIpSelected && showSearchTextNext" class="search-btn" icon="el-icon-plus" @click="addIpRange"></el-button>
+          </div>
         </el-input>
       </div>
       <div class="fr">
@@ -78,10 +84,13 @@ export default {
   data () {
     return {
       searchText: '',
+      searchTextNext: '',
+      showSearchTextNext: false,
       minerStatusMap: window.PublicKeys.minerStatus,
       select: 'ip',
       currentPage: 1,
-      multipleSelection: []
+      multipleSelection: [],
+      isIpSelected: true
     }
   },
   computed: {
@@ -90,6 +99,13 @@ export default {
         return this.select + '=' + this.searchText
       }
       return ''
+    },
+    searchTextPlaceholder () {
+      let text = '请输入搜索内容'
+      if (this.showSearchTextNext) {
+        text = '请输入起始IP'
+      }
+      return text
     }
   },
   methods: {
@@ -99,13 +115,47 @@ export default {
     viewMiner (ip, mac) {
       this.$router.push(`/miner-detail?mac=${mac}`)
     },
+    selectChange (val) {
+      console.log(val)
+      if (val !== 'ip') {
+        this.isIpSelected = false
+      } else {
+        this.isIpSelected = true
+      }
+    },
     search () {
-      // if (!this.searchText) {
-      //   console.log('empty')
-      //   return
-      // }
+      if (this.isIpSelected && this.showSearchTextNext) { // 如果是选择IP 且点开了ip范围 则不搜索
+        return
+      }
       this.currentPage = 1
       this.$emit('search', this.searchQueryText)
+    },
+    arrowRight () {
+      this.showSearchTextNext = true
+    },
+    arrowLeft () {
+      this.showSearchTextNext = false
+    },
+    addIpRange () {
+      let startIp = this.searchText
+      let endIp = this.searchTextNext
+      let startIpLegal = this.$util.checkip(startIp)
+      let endIpLegal = this.$util.checkip(endIp)
+      if (!startIpLegal || !endIpLegal) {
+        let msg1 = !startIpLegal ? '起始IP' : ''
+        let msg2 = !endIpLegal ? '结束IP' : ''
+        let msg = msg1 + (msg1 === '' ? '' : '和') + msg2 + '格式错误!'
+
+        this.$alert(msg, '提示')
+        return
+      }
+
+      let compareResult = this.$util.compareIP(startIp, endIp)
+      let result = startIp
+      if (compareResult < 0) result += '~' + endIp
+      else if (compareResult > 0) result = endIp + '~' + startIp
+
+      this.$emit('addIpRange', result)
     },
     reset () {
       this.searchText = ''
@@ -145,7 +195,24 @@ export default {
   .input-with-select .el-input-group__prepend {
     background: #fff;
   }
+  .input-with-select .el-input-group__append {
+    padding: 0;
+  }
+  .input-with-select .el-input-group__append .search-btn {
+    margin: 0 0 0 -1px;
+    border-left: 1px solid #dcdfe6;
+    border-radius: 0;
+  }
+  .input-with-select .el-input-group__append .el-icon-d-arrow-right,
+  .input-with-select .el-input-group__append .el-icon-d-arrow-left {
+    padding: 12px 5px;
+    cursor: pointer;
+  }
   .search-select {
     width: 80px;
+  }
+  .input-with-select .el-input-group__append .search-text-next {
+    width: 146px;
+    margin: -1px;
   }
 </style>
