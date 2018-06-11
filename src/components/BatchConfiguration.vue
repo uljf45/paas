@@ -3,32 +3,33 @@
   <miner-list class="mb" @addIps="addSelectedIps"></miner-list>
   <el-row type="flex" class="common-box mb">
     <ip-range ref="ipRange"></ip-range>
-    <div>
-      <div style="padding-left: 40px;">
-        <el-button type="primary" size="mini" @click="openDialogBatchPools">批量配置矿池</el-button>
-      </div>
-    </div>
   </el-row>
-  <el-card class="batch-pools-card">
-    <div slot="header" class="clearfix">
-      <el-checkbox v-model="batchPoolsChecked">批量配置矿池</el-checkbox>
-    </div>
-    <batch-pools-table :option="batchPoolTableOption" @cancel="closeDialogBatchPools" @save="saveBatchPools"></batch-pools-table>
-  </el-card>
-  <batch-pools-dialog :visible="dialogBatchPoolsVisible" @cancel="closeDialogBatchPools" @save="saveBatchPoolsByDialog"></batch-pools-dialog>
+  <el-tabs type="border-card">
+    <el-tab-pane label="矿池">
+      <batch-pools-table :option="batchPoolTableOption" @save="saveBatchPools"></batch-pools-table>
+    </el-tab-pane>
+    <el-tab-pane label="网络">
+    </el-tab-pane>
+    <el-tab-pane label="风扇">
+    </el-tab-pane>
+    <el-tab-pane label="告警门限">
+    </el-tab-pane>
+    <el-tab-pane label="工作频率">
+    </el-tab-pane>
+    <el-tab-pane label="上报周期">
+    </el-tab-pane>
+  </el-tabs>
 </div>
 </template>
 
 <script>
-import BatchPoolsDialog from '@/components/BatchPoolsDialog.vue'
-import BatchPoolsTable from '@/components/BatchPoolsTable.vue'
 import MinerList from '@/components/MinerList'
 import IpRange from '@/components/IpRange'
+import BatchPoolsTable from '@/components/BatchPoolsTable.vue'
 
 export default {
   data () {
     return {
-      dialogBatchPoolsVisible: false,
       batchPoolsChecked: false,
       batchPoolTableOption: {
         cancel: {
@@ -38,7 +39,6 @@ export default {
     }
   },
   components: {
-    BatchPoolsDialog,
     BatchPoolsTable,
     MinerList,
     IpRange
@@ -52,24 +52,7 @@ export default {
     addSelectedIps (ipList) {
       this.$refs.ipRange.addSelectedIps(ipList)
     },
-    openDialogBatchPools () {
-      if (this.checkedIps.length === 0) {
-        this.$alert('请添加 IP 范围')
-        return
-      }
-      this.dialogBatchPoolsVisible = true
-    },
-    closeDialogBatchPools () {
-      this.dialogBatchPoolsVisible = false
-    },
-    saveBatchPoolsByDialog (pools) {
-      this.saveBatchPools(pools, true)
-    },
     saveBatchPools (pools, openByDialog) {
-      if (!openByDialog && !this.batchPoolsChecked) {
-        this.$alert('请选中批量配置矿池')
-        return
-      }
       if (this.checkedIps.length === 0) {
         this.$alert('请添加 IP 范围')
         return

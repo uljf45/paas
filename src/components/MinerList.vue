@@ -8,7 +8,7 @@
       </miner-table-list>
     </el-tab-pane>
     <el-tab-pane label="所有矿机">
-      <miner-table-list miner-type="all" :multiple-select="true"  :show-progress="true" :table-data="fullMiners" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange" @addIpRange="addIpRange">
+      <miner-table-list miner-type="all" :multiple-select="this.multipleSelect"  :show-progress="this.showProgress" :table-data="fullMiners" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange" @addIpRange="addIpRange">
         <template slot="operation">
           <el-button type="primary" @click="addIps('all')">加入选择列表</el-button>
         </template>
