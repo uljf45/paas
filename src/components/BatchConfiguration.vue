@@ -9,14 +9,18 @@
       <batch-pools-table :option="batchPoolTableOption" @save="saveBatchPools"></batch-pools-table>
     </el-tab-pane>
     <el-tab-pane label="网络">
+      <batch-network-table @save="saveBatchNetwork"></batch-network-table>
     </el-tab-pane>
     <el-tab-pane label="风扇">
+      <batch-fan-table @save="saveBatchFan"></batch-fan-table>
     </el-tab-pane>
     <el-tab-pane label="告警门限">
+      <batch-threshold @save="saveBatchThreshold"></batch-threshold>
     </el-tab-pane>
     <el-tab-pane label="工作频率">
     </el-tab-pane>
     <el-tab-pane label="上报周期">
+      <batch-period @save="saveBatchPeriod"></batch-period>
     </el-tab-pane>
   </el-tabs>
 </div>
@@ -26,8 +30,13 @@
 import MinerList from '@/components/MinerList'
 import IpRange from '@/components/IpRange'
 import BatchPoolsTable from '@/components/BatchPoolsTable.vue'
+import BatchNetworkTable from '@/components/BatchNetworkTable.vue'
+import BatchFanTable from '@/components/BatchFanTable.vue'
+import BatchThreshold from '@/components/BatchThreshold.vue'
+import BatchPeriod from '@/components/BatchPeriod.vue'
 
 export default {
+  name: 'BatchConfiguration',
   data () {
     return {
       batchPoolsChecked: false,
@@ -40,6 +49,10 @@ export default {
   },
   components: {
     BatchPoolsTable,
+    BatchNetworkTable,
+    BatchFanTable,
+    BatchThreshold,
+    BatchPeriod,
     MinerList,
     IpRange
   },
@@ -52,26 +65,36 @@ export default {
     addSelectedIps (ipList) {
       this.$refs.ipRange.addSelectedIps(ipList)
     },
-    saveBatchPools (pools, openByDialog) {
+    sendBatch (url, params, name) {
       if (this.checkedIps.length === 0) {
         this.$alert('请添加 IP 范围')
         return
       }
-      this.$ajax.put('/v1/batch/pools', {
-        ips: this.checkedIps,
-        pools
+      let payload = Object.assign({}, {ips: this.checkedIps}, params)
+      this.$ajax.put(url, payload).then((response) => {
+        if (response.data.result === 'success') {
+          this.$alert(`已发送批量配置${name}请求`)
+        } else {
+          this.$alert(`发送批量配置${name}请求失败`)
+        }
+      }).catch((error) => {
+        this.$alert(error)
       })
-        .then((response) => {
-          if (response.data.result === 'success') {
-            this.$alert('已发送批量配置矿池请求')
-            this.dialogBatchPoolsVisible = false
-          } else {
-            this.$alert('发送批量配置矿池请求失败')
-          }
-        })
-        .catch((error) => {
-          this.$alert(error)
-        })
+    },
+    saveBatchPools (pools) {
+      this.sendBatch('/v1/batch/pools', {pools}, '矿池')
+    },
+    saveBatchNetwork (network) {
+      this.sendBatch('/v1/batch/network', {network}, '网络')
+    },
+    saveBatchFan (fans) {
+      this.sendBatch('/v1/batch/fans', {fans}, '风扇')
+    },
+    saveBatchThreshold (temperatureThreshould) {
+      this.sendBatch('/v1/batch/threshold', {temperature_threshould: temperatureThreshould}, '告警门限')
+    },
+    saveBatchPeriod (period) {
+      this.sendBatch('/v1/batch/period', {periodic_time: period}, '上报周期')
     }
   }
 }
