@@ -198,6 +198,12 @@ function initApi (app) {
     }
   })
 
+  apiRoutes.get('/v1/websocket/host', function (req, res) {
+    let config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json')))
+    let websocket = config.websocket
+    res.json(Object.assign({result: 'success', host: websocket.ip + ':' + websocket.port, ip: websocket.ip, port: websocket.port}))
+  })
+
   app.use(apiRoutes)
 }
 
