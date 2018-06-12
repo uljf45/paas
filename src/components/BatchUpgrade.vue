@@ -131,7 +131,8 @@ export default {
       let onError = function () {
         console.log('We got an error.')
       }
-      let socket = new WebSocket('ws://192.168.4.191:1884/')
+      let hostname = document.location.hostname
+      let socket = new WebSocket('ws://' +  hostname + ':1884/')
       socket.onopen = onOpen
       socket.onclose = onClose
       socket.onerror = onError
