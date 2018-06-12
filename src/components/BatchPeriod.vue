@@ -24,7 +24,7 @@ export default {
       this.periodic_time = ''
     },
     save () {
-      this.$emit('save', Number(this.periodic_time))
+      this.$emit('save', {periodic_time: Number(this.periodic_time)})
     }
   }
 }

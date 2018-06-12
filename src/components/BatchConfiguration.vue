@@ -18,6 +18,7 @@
       <batch-threshold @save="saveBatchThreshold"></batch-threshold>
     </el-tab-pane>
     <el-tab-pane label="工作频率">
+      <batch-frequency @save="saveBatchFrequency"></batch-frequency>
     </el-tab-pane>
     <el-tab-pane label="上报周期">
       <batch-period @save="saveBatchPeriod"></batch-period>
@@ -34,6 +35,7 @@ import BatchNetworkTable from '@/components/BatchNetworkTable.vue'
 import BatchFanTable from '@/components/BatchFanTable.vue'
 import BatchThreshold from '@/components/BatchThreshold.vue'
 import BatchPeriod from '@/components/BatchPeriod.vue'
+import BatchFrequency from '@/components/BatchFrequency.vue'
 
 export default {
   name: 'BatchConfiguration',
@@ -52,6 +54,7 @@ export default {
     BatchNetworkTable,
     BatchFanTable,
     BatchThreshold,
+    BatchFrequency,
     BatchPeriod,
     MinerList,
     IpRange
@@ -85,16 +88,19 @@ export default {
       this.sendBatch('/v1/batch/pools', {pools}, '矿池')
     },
     saveBatchNetwork (network) {
-      this.sendBatch('/v1/batch/network', {network}, '网络')
+      this.sendBatch('/v1/batch/network', {data: network}, '网络')
     },
     saveBatchFan (fans) {
-      this.sendBatch('/v1/batch/fans', {fans}, '风扇')
+      this.sendBatch('/v1/batch/fans', {data: fans}, '风扇')
     },
-    saveBatchThreshold (temperatureThreshould) {
-      this.sendBatch('/v1/batch/threshold', {temperature_threshould: temperatureThreshould}, '告警门限')
+    saveBatchThreshold (threshold) {
+      this.sendBatch('/v1/batch/threshold', {data: threshold}, '告警门限')
     },
     saveBatchPeriod (period) {
-      this.sendBatch('/v1/batch/period', {periodic_time: period}, '上报周期')
+      this.sendBatch('/v1/batch/period', {data: period}, '上报周期')
+    },
+    saveBatchFrequency (freqs) {
+      this.sendBatch('/v1/batch/frequency', {data: freqs}, '频率')
     }
   }
 }

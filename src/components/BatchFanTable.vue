@@ -39,16 +39,10 @@ export default {
       this.fans[1].speed = ''
     },
     save () {
-      let payload = [
-        {
-          name: 'fan1',
-          speed: Number(this.fans[0].speed)
-        },
-        {
-          name: 'fan2',
-          speed: Number(this.fans[1].speed)
-        }
-      ]
+      let payload = {
+        fan1_speed: Number(this.fans[0].speed),
+        fan2_speed: Number(this.fans[1].speed)
+      }
 
       this.$emit('save', payload)
     }
