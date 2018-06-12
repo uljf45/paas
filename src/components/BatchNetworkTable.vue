@@ -91,7 +91,18 @@ export default {
           this.$alert('请输入正确的 dns')
           return
         }
-        payload = this.network
+        payload = {
+          ip_type: this.network.ip_type
+        }
+        if (this.network.netmask !== '') {
+          payload.netmask = this.network.netmask
+        }
+        if (this.network.gateway !== '') {
+          payload.gateway = this.network.gateway
+        }
+        if (this.network.dns !== '') {
+          payload.dns = this.network.dns
+        }
       }
 
       this.$emit('save', payload)

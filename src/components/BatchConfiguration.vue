@@ -4,7 +4,7 @@
   <el-row type="flex" class="common-box mb">
     <ip-range ref="ipRange"></ip-range>
   </el-row>
-  <el-tabs type="border-card">
+  <el-tabs type="border-card" v-loading="loading" element-loading-text="发送请求中">
     <el-tab-pane label="矿池">
       <batch-pools-table :option="batchPoolTableOption" @save="saveBatchPools"></batch-pools-table>
     </el-tab-pane>
@@ -46,7 +46,8 @@ export default {
         cancel: {
           visible: false
         }
-      }
+      },
+      loading: false
     }
   },
   components: {
@@ -74,14 +75,17 @@ export default {
         return
       }
       let payload = Object.assign({}, {ips: this.checkedIps}, params)
+      this.loading = true
       this.$ajax.put(url, payload).then((response) => {
         if (response.data.result === 'success') {
           this.$alert(`已发送批量配置${name}请求`)
         } else {
           this.$alert(`发送批量配置${name}请求失败`)
         }
+        this.loading = false
       }).catch((error) => {
         this.$alert(error)
+        this.loading = false
       })
     },
     saveBatchPools (pools) {
