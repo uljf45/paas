@@ -115,7 +115,7 @@ export default {
           {
             name: '算力',
             type: 'line',
-            smooth: true,
+            smooth: 0.3,
             data: this.temperatureList,
             yAxisIndex: 0,
             symbol: 'emptyCircle',

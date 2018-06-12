@@ -48,5 +48,7 @@ export default {
   }
   .config-input-text {
     margin-right: 100px;
+    display: inline-block;
+    width: 160px;
   }
 </style>

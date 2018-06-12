@@ -157,7 +157,7 @@ export default {
           {
             name: '算力',
             type: 'line',
-            smooth: true,
+            smooth: 0.3,
             data: data,
             yAxisIndex: 0,
             symbol: 'emptyCircle',
