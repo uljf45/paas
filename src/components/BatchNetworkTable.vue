@@ -76,15 +76,15 @@ export default {
 
       const checkip = this.$util.checkip
       if (this.network.ip_type === 'static') {
-        if (!checkip(this.network.netmask)) {
+        if (this.network.netmask !== '' && !checkip(this.network.netmask)) {
           this.$alert('请输入正确的 netmask')
           return
         }
-        if (!checkip(this.network.gateway)) {
+        if (this.network.gateway !== '' && !checkip(this.network.gateway)) {
           this.$alert('请输入正确的 gateway')
           return
         }
-        if (!checkip(this.network.dns)) {
+        if (this.network.dns !== '' && !checkip(this.network.dns)) {
           this.$alert('请输入正确的 dns')
           return
         }
