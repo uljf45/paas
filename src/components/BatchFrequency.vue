@@ -66,10 +66,12 @@ export default {
       let payload = {}
       if (this.isAllChecked) {
         payload = {
+          use_frequency_all: this.isAllChecked,
           frequency: this.freqs.frequency
         }
       } else {
         payload = {
+          use_frequency_all: this.isAllChecked,
           frequency1: this.freqs.frequency1,
           frequency2: this.freqs.frequency2,
           frequency3: this.freqs.frequency3,

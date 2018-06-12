@@ -85,7 +85,7 @@ export default {
       })
     },
     saveBatchPools (pools) {
-      this.sendBatch('/v1/batch/pools', {pools}, '矿池')
+      this.sendBatch('/v1/batch/pools', {data: pools}, '矿池')
     },
     saveBatchNetwork (network) {
       this.sendBatch('/v1/batch/network', {data: network}, '网络')

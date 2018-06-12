@@ -11,7 +11,7 @@
   </el-table>
   <div style="text-align: center; margin-top: 15px;">
     <el-button @click="empty">清空</el-button>
-    <el-button type="primary" @click="save">保存</el-button>
+    <el-button :disabled="fans[0].speed === '' && fans[1].speed === ''" type="primary" @click="save">保存</el-button>
   </div>
 </div>
 </template>
@@ -39,9 +39,12 @@ export default {
       this.fans[1].speed = ''
     },
     save () {
-      let payload = {
-        fan1_speed: Number(this.fans[0].speed),
-        fan2_speed: Number(this.fans[1].speed)
+      let payload = {}
+      if (this.fans[0].speed !== '') {
+        payload.fan1_speed = Number(this.fans[0].speed)
+      }
+      if (this.fans[1].speed !== '') {
+        payload.fan2_speed = Number(this.fans[1].speed)
       }
 
       this.$emit('save', payload)

@@ -31,7 +31,7 @@
   </el-table>
   <div style="text-align: center; margin-top: 15px;">
     <el-button @click="empty">清空</el-button>
-    <el-button type="primary" @click="save">保存</el-button>
+    <el-button :disabled="isSaveDisabled" type="primary" @click="save">保存</el-button>
   </div>
 </div>
 </template>
@@ -59,6 +59,9 @@ export default {
   computed: {
     isStatic () {
       return this.network.ip_type === 'static'
+    },
+    isSaveDisabled () {
+      return this.isStatic && this.network.netmask === '' && this.network.gateway === '' && this.network.dns === ''
     }
   },
   methods: {

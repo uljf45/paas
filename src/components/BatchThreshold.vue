@@ -10,7 +10,7 @@
     </div>
     <div style="text-align: center; margin-top: 15px;">
       <el-button @click="empty">清空</el-button>
-      <el-button type="primary" @click="save">保存</el-button>
+      <el-button :disabled="temperature_threshould === '' && mhs_threshould === ''" type="primary" @click="save">保存</el-button>
     </div>
   </div>
 </template>
@@ -30,9 +30,12 @@ export default {
       this.mhs_threshould = ''
     },
     save () {
-      let payload = {
-        temperature_threshould: Number(this.temperature_threshould),
-        mhs_threshould: Number(this.mhs_threshould)
+      let payload = {}
+      if (this.temperature_threshould !== '') {
+        payload.temperature_threshould = Number(this.temperature_threshould)
+      }
+      if (this.mhs_threshould !== '') {
+        payload.mhs_threshould = Number(this.mhs_threshould)
       }
       this.$emit('save', payload)
     }

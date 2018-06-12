@@ -6,7 +6,7 @@
     </div>
     <div style="text-align: center; margin-top: 15px;">
       <el-button @click="empty">清空</el-button>
-      <el-button type="primary" @click="save">保存</el-button>
+      <el-button :disabled="periodic_time === ''" type="primary" @click="save">保存</el-button>
     </div>
   </div>
 </template>
