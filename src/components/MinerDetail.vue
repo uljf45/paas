@@ -1,20 +1,20 @@
 <template>
   <div class="miner-detail">
     <el-row type="flex" class="mb" justify="space-between" align="bottom">
-      <el-col><div class="">矿机状态: <span v-text="infoData.status"></span></div></el-col>
+      <el-col><div class="clr-black-light">矿机状态: <span v-text="infoData.status"></span></div></el-col>
       <el-col>
-        <div class="">实时算力:
+        <div class=""><span class="clr-black-light">实时算力:</span>
           <tween-number :precision="2" :number="Number(infoData.curHashrate.value)"></tween-number>
-          <span v-text="infoData.curHashrate.unit"></span>
+          <span class="clr-black-light" v-text="infoData.curHashrate.unit"></span>
         </div>
       </el-col>
       <el-col>
-        <div class="">平均算力:
+        <div class=""><span class="clr-black-light">平均算力:</span>
           <tween-number :precision="2" :number="Number(infoData.avgHashrate.value)"></tween-number>
-          <span v-text="infoData.avgHashrate.unit"></span>
+          <span class="clr-black-light" v-text="infoData.avgHashrate.unit"></span>
         </div>
       </el-col>
-      <el-col><div class="">运行时间: <span v-text="infoData.duration"></span></div></el-col>
+      <el-col><div class="clr-black-light">运行时间: <span v-text="infoData.duration"></span></div></el-col>
     </el-row>
     <el-row style="margin-bottom: 20px;">
       <el-tabs type="border-card">

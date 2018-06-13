@@ -4,25 +4,25 @@
       <el-col :span="16">
         <div class="fl mr">
           <tween-number :precision="2" :number="Number(curHashrate.value)"></tween-number>
-          <span v-text="curHashrate.unit"></span>&nbsp;
+          <span v-text="curHashrate.unit" class="clr-black-light"></span>&nbsp;
         </div>
         <div class="fl mr">
-          <tween-number :number="mining.total"></tween-number> 在线矿机
+          <tween-number :number="mining.total"></tween-number> <span class="clr-black-light">在线矿机</span>
         </div>
         <div class="fl mr">
-          <tween-number :number="mining.normal"></tween-number> 正常
+          <tween-number :number="mining.normal"></tween-number> <span class="clr-black-light">正常</span>
         </div>
         <div>
-          <tween-number class="clr-danger" :number="mining.abnormal"></tween-number> 异常
+          <tween-number class="clr-danger" :number="mining.abnormal"></tween-number> <span class="clr-black-light">异常</span>
         </div>
       </el-col>
       <el-col :span="8">
         <div class="fr">
-          <div class="fl mr">温度:
-            <tween-number :number="mining.temperature"></tween-number><span style="font-size: 14px; margin-left: 1px;">℃</span>
+          <div class="fl mr"><span class="clr-black-light">温度:</span>
+            <tween-number :number="mining.temperature"></tween-number><span class="clr-black-light" style="font-size: 14px; margin-left: 1px;">℃</span>
           </div>
-          <div class="fl">湿度:
-            <tween-number :number="mining.humidity"></tween-number><span style="margin-left: 1px;">%</span>
+          <div class="fl"><span class="clr-black-light">湿度:</span>
+            <tween-number :number="mining.humidity"></tween-number><span class="clr-black-light" style="margin-left: 1px;">%</span>
           </div>
         </div>
       </el-col>
