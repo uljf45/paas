@@ -28,7 +28,7 @@
       </el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <hashrate-spline ref="spline" :hashrateList="hashrateList" @switchTimeInterval="getHashrateListBy" title="总算力图表"></hashrate-spline>
+      <hashrate-spline ref="spline" :hashrateList="hashrateList" @switchTimeInterval="switchTimeInterval" title="总算力图表"></hashrate-spline>
     </el-row>
     <el-row>
       <miner-list :multiple-select="false"></miner-list>
@@ -52,7 +52,9 @@ export default {
         abnormal: 0
       },
       hashrateList: {},
-      timerGetMining: null
+      timerGetMining: null,
+      timerGetHashrateList: null,
+      hashrateInterval: 'day'
     }
   },
   computed: {
@@ -66,6 +68,16 @@ export default {
     TweenNumber
   },
   methods: {
+    switchTimeInterval (interval) {
+      clearInterval(this.timerGetHashrateList)
+      this.hashrateInterval = interval
+
+      this.getHashrateListBy(this.hashrateInterval)
+
+      this.timerGetHashrateList = setInterval(() => {
+        this.getHashrateListBy(this.hashrateInterval)
+      }, 60000)
+    },
     getHashrateListBy (interval) {
       this.$ajax.get('/v1/mining/mhs?period=' + interval) // 总算力天周月季半年年
         .then((response) => {
@@ -96,12 +108,17 @@ export default {
     this.getMiningInfo()
     this.timerGetMining = setInterval(() => {
       this.getMiningInfo()
-    }, 5000)
+    }, 10000)
 
-    this.getHashrateListBy('day')
+    this.timerGetHashrateList = setInterval(() => {
+      this.getHashrateListBy(this.hashrateInterval)
+    }, 60000)
+
+    this.getHashrateListBy(this.hashrateInterval)
   },
   beforeDestroy () {
     clearInterval(this.timerGetMining)
+    clearInterval(this.timerGetHashrateList)
   }
 }
 </script>

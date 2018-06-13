@@ -61,7 +61,9 @@ export default {
       temperatureList: null,
       tableData: null,
       fakeDatas: null,
-      timerInfo: null
+      timerInfo: null,
+      timerTemperatureList: null,
+      timerHashrateList: null
     }
   },
   components: {
@@ -149,7 +151,7 @@ export default {
           doneFn()
         })
     },
-    switchTimeInterval (interval) {
+    getHashrateList (interval) {
       this.$ajax.get('/v1/miner/mhs?period=' + interval + '&mac=' + this.$route.query.mac) // 总算力天周月季半年年
         .then((response) => {
           let minerMhs = response.data.miner_mhs
@@ -168,6 +170,13 @@ export default {
           }
         })
     },
+    switchTimeInterval (interval) {
+      clearInterval(this.timerHashrateList)
+      this.getHashrateList(interval)
+      this.timerHashrateList = setInterval(() => {
+        this.getHashrateList(interval)
+      }, 60000)
+    },
     fetchTemperautreList () {
       this.$ajax.get('/v1/miner/temperature?period=day&mac=' + this.$route.query.mac)
         .then(response => {
@@ -185,16 +194,23 @@ export default {
     this.fetchData()
     this.timerInfo = setInterval(() => {
       this.fetchData()
-    }, 5000)
+    }, 10000)
     this.switchTimeInterval('day')
+
     setTimeout(() => {
       this.fetchTemperautreList()
     }, 1000)
+
+    this.timerTemperatureList = setInterval(() => {
+      this.fetchTemperautreList()
+    }, 60000)
   },
   mounted () {
   },
   beforeDestroy () {
     clearInterval(this.timerInfo)
+    clearInterval(this.timerTemperatureList)
+    clearInterval(this.timerHashrateList)
   }
 }
 </script>
