@@ -1,10 +1,10 @@
 <template>
 <div class="batch-upgrade-container">
   <miner-list class="mb" @addIps="addSelectedIps" :showProgress="true" :percentageList="percentageList" :export-visible="false"></miner-list>
-  <el-row type="flex" class="common-box mb" style="padding: 20px;">
+  <el-row class="common-box mb" style="padding: 20px;">
     <ip-range ref="ipRange"></ip-range>
     <div v-loading="loading" element-loading-text="发送请求中">
-      <div style="padding-left: 40px;">
+      <div style="padding-top: 20px;">
         <div class="mb">
           <div class="upload-title">固件升级文件</div>
           <el-upload
@@ -18,7 +18,7 @@
             :on-success="uploadSuccess"
             :file-list="fileList"
             :auto-upload="true">
-            <el-button slot="trigger" type="primary">上传文件</el-button>
+            <el-button slot="trigger" type="primary">选择固件文件</el-button>
             <el-button type="success" @click="upgrade">批量升级</el-button>
           </el-upload>
         </div>
