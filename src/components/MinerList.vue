@@ -3,14 +3,14 @@
     <el-tab-pane label="告警矿机">
       <miner-table-list miner-type="alert" :export-visible="exportVisible" :multiple-select="multipleSelect" :show-progress="showProgress" :table-data="errorMiners" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange" @addIpRange="addIpRange">
         <template v-if="multipleSelect" slot="operation">
-          <el-button type="primary" @click="addIps('alert')">加入选择列表</el-button>
+          <el-button type="primary" @click="addIps('alert')">加入待配置矿机列表</el-button>
         </template>
       </miner-table-list>
     </el-tab-pane>
     <el-tab-pane label="所有矿机">
       <miner-table-list miner-type="all" :export-visible="exportVisible" :multiple-select="multipleSelect" :show-progress="showProgress" :table-data="fullMiners" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange" @addIpRange="addIpRange">
         <template v-if="multipleSelect" slot="operation">
-          <el-button type="primary" @click="addIps('all')">加入选择列表</el-button>
+          <el-button type="primary" @click="addIps('all')">加入待配置矿机列表</el-button>
         </template>
       </miner-table-list>
     </el-tab-pane>

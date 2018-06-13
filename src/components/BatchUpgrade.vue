@@ -90,7 +90,7 @@ export default {
         this.$alert('请上传固件升级文件', '提示')
         return
       }
-      this.$confirm('此操作将按选定ip范围 批量升级，是否继续？', '提示').then(() => {
+      this.$confirm('此操作将按选定待配置矿机 批量升级，是否继续？', '提示').then(() => {
         console.log('upgrade')
         this.loading = true
         this.$ajax.put('/v1/batch/upgrade', {

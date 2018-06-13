@@ -11,7 +11,7 @@
     <el-tab-pane label="网络">
       <batch-network-table @save="saveBatchNetwork"></batch-network-table>
     </el-tab-pane>
-    <el-tab-pane label="风扇">
+    <el-tab-pane v-if="false" label="风扇">
       <batch-fan-table @save="saveBatchFan"></batch-fan-table>
     </el-tab-pane>
     <el-tab-pane label="告警门限">

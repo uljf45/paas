@@ -2,7 +2,7 @@
   <div class="batch-ip-range">
     <el-row type="flex" style="margin-bottom: 10px;" align="middle">
       <div class="mr">
-        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">IP范围:</el-checkbox>
+        <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">待配置矿机列表:</el-checkbox>
       </div>
       <el-button v-if="false" size="mini" type="primary" plain @click="addips">+</el-button>
       <el-button v-if="false" size="mini" type="primary" plain @click="removeips">-</el-button>

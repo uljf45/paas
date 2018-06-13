@@ -42,7 +42,7 @@ export default {
         this.$alert('请添加 IP 范围', '提示')
         return
       }
-      this.$confirm('此操作将按选定ip范围 批量重启，是否继续？', '提示').then(() => {
+      this.$confirm('此操作将按选定待配置矿机 批量重启，是否继续？', '提示').then(() => {
         console.log('reboot')
         this.loading = true
         this.$ajax.put('/v1/batch/reboot', {
@@ -69,7 +69,7 @@ export default {
         this.$alert('请添加 IP 范围', '提示')
         return
       }
-      this.$confirm('此操作将按选定ip范围 批量关机，是否继续？，是否继续？', '提示').then(() => {
+      this.$confirm('此操作将按选定待配置矿机 批量关机，是否继续？，是否继续？', '提示').then(() => {
         console.log('shutdown')
         this.loading = true
         this.$ajax.put('/v1/batch/shutdown', {
