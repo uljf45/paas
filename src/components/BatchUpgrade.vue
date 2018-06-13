@@ -1,6 +1,6 @@
 <template>
 <div class="batch-upgrade-container">
-  <miner-list class="mb" @addIps="addSelectedIps" :showProgress="true" :percentageList="percentageList"></miner-list>
+  <miner-list class="mb" @addIps="addSelectedIps" :showProgress="true" :percentageList="percentageList" :export-visible="false"></miner-list>
   <el-row type="flex" class="common-box mb" style="padding: 20px;">
     <ip-range ref="ipRange"></ip-range>
     <div v-loading="loading" element-loading-text="发送请求中">

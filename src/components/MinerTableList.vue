@@ -22,7 +22,7 @@
       <div class="fr">
         <slot name="operation"></slot>
         <el-button type="primary" @click="reset">重置</el-button>
-        <el-button type="primary" @click="exportTable">导出</el-button>
+        <el-button v-if="exportVisible" type="primary" @click="exportTable">导出</el-button>
       </div>
     </div>
 
@@ -86,6 +86,10 @@ export default {
     showProgress: {
       type: Boolean,
       default: false
+    },
+    exportVisible: {
+      type: Boolean,
+      default: true
     }
   },
   data () {

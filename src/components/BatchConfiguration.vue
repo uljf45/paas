@@ -1,6 +1,6 @@
 <template>
 <div class="batch-container">
-  <miner-list class="mb" @addIps="addSelectedIps"></miner-list>
+  <miner-list class="mb" @addIps="addSelectedIps" :export-visible="false"></miner-list>
   <el-row type="flex" class="common-box mb">
     <ip-range ref="ipRange"></ip-range>
   </el-row>
