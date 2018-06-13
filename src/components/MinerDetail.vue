@@ -144,6 +144,10 @@ export default {
           this.tableData = [response.data.miner]
           doneFn()
         })
+        .catch((error) => {
+          this.$alert(error.message)
+          doneFn()
+        })
     },
     switchTimeInterval (interval) {
       this.$ajax.get('/v1/miner/mhs?period=' + interval + '&mac=' + this.$route.query.mac) // 总算力天周月季半年年

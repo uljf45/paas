@@ -108,7 +108,7 @@ export default {
           })
           .catch((error) => {
             this.loading = false
-            this.$alert(error)
+            this.$alert(error.message)
           })
       }).catch(() => {
         // 取消

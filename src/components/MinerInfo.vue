@@ -90,7 +90,7 @@ export default {
             })
           })
           .catch((error) => {
-            this.$alert(error)
+            this.$alert(error.message)
             vm.loading = false
           })
       }
@@ -105,7 +105,7 @@ export default {
             })
           })
           .catch((error) => {
-            this.$alert(error)
+            this.$alert(error.message)
             vm.loading = false
           })
       }
@@ -120,7 +120,7 @@ export default {
             })
           }))
           .catch((error) => {
-            this.$alert(error)
+            this.$alert(error.message)
             vm.loading = false
           })
       }
