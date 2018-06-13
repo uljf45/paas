@@ -1,15 +1,16 @@
 <template>
 <div class="batch-control-container">
   <miner-list class="mb" @addIps="addSelectedIps" :export-visible="false"></miner-list>
-  <el-row type="flex" class="common-box mb" style="padding: 20px;">
+  <el-row class="common-box mb" style="padding: 20px;">
     <ip-range ref="ipRange"></ip-range>
     <div v-loading="loading" element-loading-text="发送请求中">
-      <div style="padding-left: 40px;">
+    <div style="padding-top: 20px;">
         <el-button type="primary" @click="reboot">批量重启</el-button>
         <el-button v-if="false" type="primary" @click="shutdown">批量关机</el-button>
       </div>
     </div>
   </el-row>
+
 </div>
 </template>
 
@@ -39,7 +40,7 @@ export default {
     },
     reboot () {
       if (this.checkedIps.length === 0) {
-        this.$alert('请添加 IP 范围', '提示')
+        this.$alert('请添加待配置矿机', '提示')
         return
       }
       this.$confirm('此操作将按选定待配置矿机 批量重启，是否继续？', '提示').then(() => {
@@ -66,7 +67,7 @@ export default {
     },
     shutdown () {
       if (this.checkedIps.length === 0) {
-        this.$alert('请添加 IP 范围', '提示')
+        this.$alert('请添加待配置矿机', '提示')
         return
       }
       this.$confirm('此操作将按选定待配置矿机 批量关机，是否继续？，是否继续？', '提示').then(() => {

@@ -83,7 +83,7 @@ export default {
     },
     upgrade () {
       if (this.checkedIps.length === 0) {
-        this.$alert('请添加 IP 范围', '提示')
+        this.$alert('请添加待配置矿机', '提示')
         return
       }
       if (!this.fileUploadedUrl) {

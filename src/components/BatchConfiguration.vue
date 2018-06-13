@@ -71,7 +71,7 @@ export default {
     },
     sendBatch (url, params, name) {
       if (this.checkedIps.length === 0) {
-        this.$alert('请添加 IP 范围')
+        this.$alert('请添加待配置矿机')
         return
       }
       let payload = Object.assign({}, {ips: this.checkedIps}, params)

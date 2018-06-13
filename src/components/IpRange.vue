@@ -129,16 +129,19 @@ export default {
 </script>
 
 <style>
+  .batch-ip-range {
+    width: 100%;
+  }
   .batch-ip-range-list {
     height: 120px;
     border: 1px solid #dcdfe6;
-    width: 618px;
+    width: 100%;
     padding-left: 2px;
     overflow: scroll;
   }
   .batch-ip-range-list .fl {
     box-sizing: border-box;
-    width: 50%;
+    width: 25%;
   }
   .input--ip {
     width: 54px;
