@@ -84,7 +84,7 @@ export default {
         }
         this.loading = false
       }).catch((error) => {
-        this.$alert(error)
+        this.$alert(error.message)
         this.loading = false
       })
     },
