@@ -44,14 +44,4 @@ export default {
 </script>
 
 <style>
-  .config-input-line {
-    border-bottom: 1px solid #ebeef5;
-    padding: 12px 0;
-    text-align: center;
-  }
-  .config-input-text {
-    margin-right: 100px;
-    display: inline-block;
-    width: 160px;
-  }
 </style>

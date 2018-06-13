@@ -134,3 +134,15 @@ body {
 .chart-toolBox {
   margin-right: 2%;
 }
+
+.config-input-line {
+  border-bottom: 1px solid #ebeef5;
+  padding: 12px 0;
+  text-align: center;
+}
+.config-input-text {
+  display: inline-block;
+  width: 160px;
+  text-align: right;
+  margin-right: 4px;
+}
