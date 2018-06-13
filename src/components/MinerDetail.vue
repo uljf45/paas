@@ -1,7 +1,7 @@
 <template>
   <div class="miner-detail">
     <el-row type="flex" class="mb" justify="space-between" align="bottom">
-      <el-col><div class="clr-black-light">矿机状态: <span v-text="infoData.status"></span></div></el-col>
+      <el-col><div class="clr-black-light">矿机状态: <span :class="{'clr-danger': infoData.status !== 'running'}" v-text="infoData.status"></span></div></el-col>
       <el-col>
         <div class=""><span class="clr-black-light">实时算力:</span>
           <tween-number :precision="2" :number="Number(infoData.curHashrate.value)"></tween-number>

@@ -5,7 +5,11 @@
     <el-table-column prop="type" label="型号"></el-table-column>
     <el-table-column prop="version" label="版本"></el-table-column>
     <el-table-column prop="ip" label="IP"></el-table-column>
-    <el-table-column prop="status" label="状态"></el-table-column>
+    <el-table-column prop="status" label="状态">
+      <template slot-scope="scope">
+        <span v-text="scope.row.status" :class="{'clr-danger': scope.row.status !== 'running'}"></span>
+      </template>
+    </el-table-column>
     <el-table-column prop="number" label="编号">
       <template slot-scope="scope">
         <span v-show="!isEdit">{{ scope.row.number }}</span>
