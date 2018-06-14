@@ -20,9 +20,9 @@
         <li class="fl nav-item">
           <a class="link-btn">登录</a>
         </li>
-        <li class="fl nav-item">
+        <!-- <li class="fl nav-item">
           <a class="link-btn">注册</a>
-        </li>
+        </li> -->
       </ul>
     </nav>
   </div>

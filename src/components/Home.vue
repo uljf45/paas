@@ -16,7 +16,7 @@
           <tween-number class="clr-danger" :number="mining.abnormal"></tween-number> <span class="clr-black-light">异常</span>
         </div>
       </el-col>
-      <el-col :span="8">
+      <!-- <el-col :span="8">
         <div class="fr">
           <div class="fl mr"><span class="clr-black-light">温度:</span>
             <tween-number :number="mining.temperature"></tween-number><span class="clr-black-light" style="font-size: 14px; margin-left: 1px;">℃</span>
@@ -25,7 +25,7 @@
             <tween-number :number="mining.humidity"></tween-number><span class="clr-black-light" style="margin-left: 1px;">%</span>
           </div>
         </div>
-      </el-col>
+      </el-col> -->
     </el-row>
     <el-row class="mb30 spline-wrap">
       <hashrate-spline ref="spline" :hashrateList="hashrateList" @switchTimeInterval="switchTimeInterval" title="总算力图表" @export="exportHashrateList"></hashrate-spline>
