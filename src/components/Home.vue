@@ -28,7 +28,7 @@
       </el-col>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <hashrate-spline ref="spline" :hashrateList="hashrateList" @switchTimeInterval="switchTimeInterval" title="总算力图表"></hashrate-spline>
+      <hashrate-spline ref="spline" :hashrateList="hashrateList" @switchTimeInterval="switchTimeInterval" title="总算力图表" @export="exportHashrateList"></hashrate-spline>
     </el-row>
     <el-row>
       <miner-list :multiple-select="false"></miner-list>
@@ -102,6 +102,9 @@ export default {
         .then((response) => {
           this.mining = response.data.mining[0]
         })
+    },
+    exportHashrateList () {
+      window.open('/v1/excel/hashrate/all/' + this.hashrateInterval)
     }
   },
   created () {

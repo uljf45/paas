@@ -11,7 +11,7 @@
         <el-button size="small" @click="filter('year')" :type="btnTypeBy('year')">年</el-button>
       </el-button-group>
       <div class="chart-toolBox fr">
-        <el-button size="small" @click="exportPic">导出</el-button>
+        <el-button size="small" @click="exportExcel">导出</el-button>
       </div>
     </div>
     <div class="flex-center">
@@ -191,6 +191,9 @@ export default {
     },
     exportPic () {
       chart.exportPic(this.myChart, 'hashrate_spline')
+    },
+    exportExcel () {
+      this.$emit('export')
     }
   },
   watch: {

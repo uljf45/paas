@@ -4,6 +4,8 @@ const express = require('express')
 const apiRoutes = express.Router()
 const bodyParser = require('body-parser')
 const busboy = require('connect-busboy')
+const xlsx = require('node-xlsx')
+const excel = require('exceljs')
 
 let filePath = path.join(path.normalize(__dirname) + '/..', 'static')
 
@@ -15,6 +17,49 @@ function writeJsonBy (fileName, jsonData) {
   let filePath = path.join(__dirname, fileName)
   let jsonStr = JSON.stringify(jsonData)
   fs.writeFileSync(filePath, jsonStr)
+}
+
+function pad0 (num) {
+  let len = num.toString().length
+  if (len === 1) {
+    num = '0' + num
+  }
+  return num
+}
+
+function fmtDate (dateString) {
+  let date = new Date(dateString)
+  let y = pad0(date.getFullYear())
+  let M = pad0(date.getMonth() + 1)
+  let d = pad0(date.getDate())
+  let h = pad0(date.getHours())
+  let m = pad0(date.getMonth())
+  let s = pad0(date.getSeconds())
+  return `${y}-${M}-${d} ${h}:${m}:${s}`
+}
+
+const pool = {
+  rate: 1000
+}
+
+function formatHashrate (hashrate) {
+  let i = -1
+  var byteUnits = ['KH/S', 'MH/S', 'GH/S', 'TH/S', 'PH/S']
+  do {
+    hashrate = hashrate / pool.rate
+    i++
+  } while (hashrate > pool.rate)
+
+  let value = hashrate.toFixed(2)
+  let unit = byteUnits[i]
+  let text = value + ' ' + unit
+  let totalRate = Math.pow(pool.rate, i + 1)
+  return {
+    value,
+    unit,
+    text,
+    totalRate
+  }
 }
 
 function initApi (app) {
@@ -202,6 +247,67 @@ function initApi (app) {
     let config = JSON.parse(fs.readFileSync(path.join(__dirname, 'config.json')))
     let websocket = config.websocket
     res.json(Object.assign({result: 'success', host: websocket.ip + ':' + websocket.port, ip: websocket.ip, port: websocket.port}))
+  })
+
+  apiRoutes.get('/v1/excel/hashrate/all/:interval', function (req, res) {
+    let datas = {
+      'mining_mhs': [
+        {'date': '2018-05-03T02:18:06.000Z', 'mhs': 11681500},
+        {'date': '2018-05-04T02:18:06.000Z', 'mhs': 12681500},
+        {'date': '2018-05-05T02:18:06.000Z', 'mhs': 13681500},
+        {'date': '2018-05-07T02:18:06.000Z', 'mhs': 12681500},
+        {'date': '2018-05-08T02:18:06.000Z', 'mhs': 13681500},
+        {'date': '2018-05-09T02:18:06.000Z', 'mhs': 11881500},
+        {'date': '2018-05-10T02:18:06.000Z', 'mhs': 12681500},
+        {'date': '2018-05-11T02:18:06.000Z', 'mhs': 11881500},
+        {'date': '2018-05-12T02:18:06.000Z', 'mhs': 11181500},
+        {'date': '2018-05-13T02:18:06.000Z', 'mhs': 13681500}
+      ]
+    }
+
+    let interval = req.params.interval
+
+    let data = []
+    data.push(['时间', '算力'])
+
+    let mhsList = datas.mining_mhs.map((item) => {
+      return [fmtDate(item.date), formatHashrate(item.mhs * 1024 * 1024).text]
+    })
+
+    data = data.concat(mhsList)
+
+    let mySheetName = 'hashrate_' + interval
+    // var buffer = xlsx.build([{name: mySheetName, data: data}]) // Returns a buffer
+
+    let xlsxContentType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
+    res.setHeader('Content-Type', xlsxContentType)
+    res.setHeader('Content-Disposition', `attachment; filename=${mySheetName}.xlsx`)
+
+    let options = {
+      stream: res,
+      userStyles: true,
+      useSharedStrings: true
+    }
+
+    let workbook = new excel.stream.xlsx.WorkbookWriter(options)
+    let worksheet = workbook.addWorksheet(mySheetName)
+    let headers = [
+      {header: '时间', width: 20},
+      {header: '算力', width: 15}
+    ]
+    worksheet.columns = headers
+
+    console.log(worksheet)
+
+    mhsList.forEach(item => {
+      worksheet.addRow(item)
+    })
+
+    worksheet.commit()
+    workbook.commit()
+    // res.writeHead(200)
+    // res.end(buffer)
   })
 
   app.use(apiRoutes)
