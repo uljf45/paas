@@ -91,7 +91,16 @@ export default {
         this.$alert('pool1的矿工名不能为空!')
         return
       }
-      this.$emit('save', this.pools)
+      const h = this.$createElement
+      let pool1 = this.pools[0]
+      let pool2 = this.pools[1]
+      let pool3 = this.pools[2]
+      let confirmMessage = h('div', null, [
+        h('p', null, `pool1 地址: ${pool1.addr} 矿工名: ${pool1.minerAddr} 密码: ${pool1.password}`),
+        h('p', null, `pool2 地址: ${pool2.addr} 矿工名: ${pool2.minerAddr} 密码: ${pool2.password}`),
+        h('p', null, `pool3 地址: ${pool3.addr} 矿工名: ${pool3.minerAddr} 密码: ${pool3.password}`)
+      ])
+      this.$emit('save', this.pools, confirmMessage)
     },
     empty () {
       this.pools.forEach((pool) => {

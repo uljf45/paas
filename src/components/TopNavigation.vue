@@ -5,6 +5,7 @@
     <el-breadcrumb-item v-if="isVisible('BatchConfiguration')">批量配置</el-breadcrumb-item>
     <el-breadcrumb-item v-if="isVisible('BatchControl')">批量控制</el-breadcrumb-item>
     <el-breadcrumb-item v-if="isVisible('BatchUpgrade')">批量升级</el-breadcrumb-item>
+    <el-breadcrumb-item v-if="isVisible('PlatformConfiguration')">平台配置</el-breadcrumb-item>
   </el-breadcrumb>
 </template>
 

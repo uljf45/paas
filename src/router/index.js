@@ -5,6 +5,7 @@ import MinerDetail from '@/components/MinerDetail'
 import BatchConfiguration from '@/components/BatchConfiguration'
 import BatchControl from '@/components/BatchControl'
 import BatchUpgrade from '@/components/BatchUpgrade'
+import PlatformConfiguration from '@/components/PlatformConfiguration'
 
 Vue.use(Router)
 
@@ -37,6 +38,11 @@ export default new Router({
       path: '/batch-upgrade',
       name: 'BatchUpgrade',
       component: BatchUpgrade
+    },
+    {
+      path: '/platform-configuration',
+      name: 'PlatformConfiguration',
+      component: PlatformConfiguration
     }
   ]
 })

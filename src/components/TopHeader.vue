@@ -18,6 +18,9 @@
           <a @click="batchUpgrade" class="link-btn" :class="{'active': isActive('BatchUpgrade')}">批量升级</a>
         </li>
         <li class="fl nav-item">
+          <a @click="platformConfiguration" class="link-btn" :class="{'active': isActive('PlatformConfiguration')}">平台配置</a>
+        </li>
+        <li class="fl nav-item">
           <a class="link-btn">登录</a>
         </li>
         <!-- <li class="fl nav-item">
@@ -48,6 +51,9 @@ export default {
     },
     batchUpgrade () {
       this.$router.push('/batch-upgrade')
+    },
+    platformConfiguration () {
+      this.$router.push('/platform-configuration')
     }
   }
 }

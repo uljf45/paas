@@ -7,20 +7,29 @@
       <div style="padding-top: 20px;">
         <div class="mb">
           <div class="upload-title">固件升级文件</div>
-          <el-upload
-            class="upload-demo"
-            ref="upload"
-            action="/v1/upload/firmwareImage"
-            :headers="headers"
-            :limit="2"
-            :on-preview="handlePreview"
-            :on-remove="handleRemove"
-            :on-success="uploadSuccess"
-            :file-list="fileList"
-            :auto-upload="true">
-            <el-button slot="trigger" type="primary">选择固件文件</el-button>
-            <el-button type="success" @click="upgrade">批量升级</el-button>
-          </el-upload>
+          <el-row type="flex">
+            <div style="width: 200px; margin-right: 4px;">
+              <el-input v-model.trim="fileName" readonly="ture"></el-input>
+              <p class="clr-danger" v-text="tip"></p>
+            </div>
+            <el-col>
+              <el-upload
+                class="upload-demo"
+                ref="upload"
+                action="/v1/upload/firmwareImage"
+                :headers="headers"
+                :limit="2"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :on-success="uploadSuccess"
+                :before-upload="beforeUpload"
+                :file-list="fileList"
+                :auto-upload="true" style="display:inline-block;">
+                <el-button slot="trigger" type="primary">选择固件文件</el-button>
+                <el-button type="success" @click="upgrade">批量升级</el-button>
+              </el-upload>
+            </el-col>
+          </el-row>
         </div>
       </div>
     </div>
@@ -43,7 +52,9 @@ export default {
       loading: false,
       fileList: [],
       fileUploadedUrl: '',
-      percentageList: []
+      percentageList: [],
+      fileName: '',
+      tip: ''
     }
   },
   computed: {
@@ -63,9 +74,13 @@ export default {
     },
     handleRemove (file, fileList) {
       this.fileUploadedUrl = ''
+      this.fileName = ''
     },
     handlePreview (file) {
       console.log(file)
+    },
+    beforeUpload (file) {
+      console.log(file.name)
     },
     uploadSuccess (response, file, fileList) {
       if (response && response.result === 'success') {
@@ -77,6 +92,7 @@ export default {
       if (fileList.length >= 2) {
         fileList.shift()
       }
+      this.fileName = file.name
     },
     addSelectedIps (ipList) {
       this.$refs.ipRange.addSelectedIps(ipList)
