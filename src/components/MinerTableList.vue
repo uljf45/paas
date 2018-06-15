@@ -39,9 +39,21 @@
       </el-table-column>
       <el-table-column prop="number" label="编号"></el-table-column>
       <el-table-column prop="position" label="位置"></el-table-column>
-      <el-table-column label="当前算力"></el-table-column>
-      <el-table-column label="平均算力"></el-table-column>
-      <el-table-column label="运行时间"></el-table-column>
+      <el-table-column label="当前算力">
+        <template slot-scope="scope">
+          <span v-text="$util.formatHashrate(scope.row.mhs * 1024 * 1024).text"></span>
+        </template>
+      </el-table-column>
+      <el-table-column label="平均算力">
+        <template slot-scope="scope">
+          <span v-text="$util.formatHashrate(scope.row.avg_mhs * 1024 * 1024).text"></span>
+        </template>
+      </el-table-column>
+      <el-table-column label="运行时间">
+        <template slot-scope="scope">
+          <span v-text="$util.formatDuration(scope.row.duration)"></span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button @click="viewMiner(scope.row.ip, scope.row.mac)" type="text" size="small">查看</el-button>
