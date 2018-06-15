@@ -73,6 +73,10 @@ export default {
       this.$refs.upload.submit()
     },
     handleRemove (file, fileList) {
+      console.log('remove')
+      if (fileList.length >= 1) {
+        fileList.shift()
+      }
       this.fileUploadedUrl = ''
       this.fileName = ''
     },
@@ -81,6 +85,13 @@ export default {
     },
     beforeUpload (file) {
       console.log(file.name)
+      let reg = /^FSFW.*[.]tar[.]gz$/
+      if (!reg.test(file.name)) {
+        this.tip = '文件名错误！正确格式应 FWFW开头 .tar.gz结尾!'
+        return false
+      } else {
+        this.tip = ''
+      }
     },
     uploadSuccess (response, file, fileList) {
       if (response && response.result === 'success') {
