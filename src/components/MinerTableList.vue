@@ -3,12 +3,14 @@
     <div class="clearfix">
       <div class="fl">
         <el-input :placeholder="searchTextPlaceholder" v-model.trim="searchText" @keyup.enter.native="search" class="input-with-select" >
-          <el-select v-model="select" slot="prepend" class="search-select" @change="selectChange">
+          <el-select v-model="select" slot="prepend" :class="{'search-select': !isMhsSelected, 'search-select-mhs':isMhsSelected}" @change="selectChange">
             <el-option label="IP" value="ip"></el-option>
             <el-option label="位置" value="position"></el-option>
             <el-option label="编号" value="number"></el-option>
             <el-option label="状态" value="status"></el-option>
             <el-option label="版本" value="version"></el-option>
+            <el-option label="当前算力(mhs) >" value="mhsg"></el-option>
+            <el-option label="当前算力(mhs) <" value="mhsl"></el-option>
           </el-select>
           <div slot="append" style="display: flex;">
             <span v-if="multipleSelect && isIpSelected" v-show="!showSearchTextNext" class="el-icon-d-arrow-right" @click="arrowRight"></span>
@@ -129,6 +131,9 @@ export default {
         text = '请输入起始IP'
       }
       return text
+    },
+    isMhsSelected () {
+      return this.select === 'mhsg' || this.select === 'mhsl'
     }
   },
   methods: {
@@ -233,6 +238,9 @@ export default {
   }
   .search-select {
     width: 80px;
+  }
+  .search-select-mhs {
+    width: 160px;
   }
   .input-with-select .el-input-group__append .search-text-next {
     width: 146px;
