@@ -1,8 +1,8 @@
 <template>
 <div class="platform-configuration">
-  <div class="common-box mb">
+  <div class="common-box mb" v-loading="loadingMineName" element-loading-text="保存中">
     <p class="platform-title">矿场名字</p>
-    <el-input placeholder="请输入矿场名字" v-model.trim="platformName" style="width:300px;"></el-input>
+    <el-input placeholder="请输入矿场名字" v-model.trim="mineNameCopy" style="width:300px;"></el-input>
     <el-button size="medium" @click="cancelName">取消</el-button>
     <el-button size="medium" type="primary" @click="saveName">保存</el-button>
   </div>
@@ -55,7 +55,8 @@ export default {
   name: 'PlatformConfiguration',
   data () {
     return {
-      platformName: '',
+      mineName: '',
+      mineNameCopy: '',
       smtpOrigin: {
         host: '',
         port: '',
@@ -80,12 +81,38 @@ export default {
         to: '',
         period: ''
       },
-      loadingSmtp: false
+      loadingSmtp: false,
+      loadingMineName: false
     }
   },
   methods: {
-    cancelName () {},
-    saveName () {},
+    cancelName () {
+      this.mineNameCopy = this.mineName
+    },
+    saveName () {
+      this.loadingMineName = true
+      this.$ajax.put('/v1/system/mineName', {
+        mineName: this.mineNameCopy
+      })
+        .then((response) => {
+          if (response.data.result === 'success') {
+            this.mineName = response.data.mineName
+            this.mineNameCopy = this.mineName
+            this.$message({
+              message: '保存矿场名字成功',
+              type: 'success'
+            })
+            document.getElementsByTagName('title')[0].innerHTML = this.mineName + '管理系统'
+          } else {
+            this.$alert('保存矿场名字失败')
+          }
+          this.loadingMineName = false
+        })
+        .catch((error) => {
+          this.$alert(error.message)
+          this.loadingMineName = false
+        })
+    },
     saveSmtp () {
       let {host, port, secure, auth, from, to, period} = this.smtpCopy
       this.loadingSmtp = true
@@ -108,7 +135,7 @@ export default {
               type: 'success'
             })
           } else {
-            this.$alert('保存失败')
+            this.$alert('保存smtp配置失败')
           }
           this.loadingSmtp = false
         })
@@ -128,7 +155,18 @@ export default {
         this.smtpCopy = JSON.parse(JSON.stringify(this.smtpOrigin))
       })
       .catch((error) => {
-        this.$alert(error.message)
+        console.log(error)
+        this.$alert('获取smtp配置失败')
+      })
+
+    this.$ajax.get(`/v1/system/mineName`)
+      .then((response) => {
+        this.mineName = response.data.mineName
+        this.mineNameCopy = this.mineName
+      })
+      .catch((error) => {
+        console.log(error)
+        this.$alert('获取矿场名字失败')
       })
   }
 }
