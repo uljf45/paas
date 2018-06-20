@@ -2,38 +2,38 @@
 <div class="platform-configuration">
   <div class="common-box mb">
     <p class="platform-title">矿场名字</p>
-    <el-input v-model.trim="platformName" style="width:300px;"></el-input>
+    <el-input placeholder="请输入矿场名字" v-model.trim="platformName" style="width:300px;"></el-input>
   </div>
-  <div class="common-box smtp-box">
+  <div class="common-box smtp-box" v-loading="loadingSmtp" element-loading-text="保存中">
     <p class="platform-title">SMTP配置</p>
     <div>
       <div class="smtp-item-wrap">
         <span class="smtp-item-name">host:</span>
-        <el-input size="small" placeholder="请输入host"></el-input>
+        <el-input size="small" v-model.trim="smtpCopy.host" placeholder="请输入host"></el-input>
       </div>
       <div class="smtp-item-wrap">
         <span class="smtp-item-name">port:</span>
-        <el-input size="small" placeholder="请输入port"></el-input>
+        <el-input size="small" v-model.trim="smtpCopy.port" placeholder="请输入port"></el-input>
       </div>
       <div class="smtp-item-wrap">
         <span class="smtp-item-name">secure:</span>
-        <el-input size="small" placeholder="请输入secure"></el-input>
+        <el-input size="small" v-model.trim="smtpCopy.secure" placeholder="请输入secure"></el-input>
       </div>
       <div class="smtp-item-wrap">
         <span class="smtp-item-name">auth username:</span>
-        <el-input size="small" placeholder="请输入auth username"></el-input>
+        <el-input size="small" v-model.trim="smtpCopy.auth.user" placeholder="请输入auth username"></el-input>
       </div>
       <div class="smtp-item-wrap">
         <span class="smtp-item-name">auth password:</span>
-        <el-input size="small" placeholder="请输入auth password"></el-input>
+        <el-input size="small" v-model.trim="smtpCopy.auth.pass" placeholder="请输入auth password"></el-input>
       </div>
       <div class="smtp-item-wrap">
         <span class="smtp-item-name">from</span>
-        <el-input size="small" placeholder="请输入from"></el-input>
+        <el-input size="small" v-model.trim="smtpCopy.from" placeholder="请输入from"></el-input>
       </div>
       <div class="smtp-item-wrap">
         <span class="smtp-item-name  --to">to</span>
-        <el-input type="textarea" size="small" placeholder="请输入to 多个邮件地址以逗号隔开"></el-input>
+        <el-input type="textarea" v-model.trim="smtpCopy.to" size="small" placeholder="请输入to 多个邮件地址以逗号隔开"></el-input>
       </div>
     </div>
     <div>
@@ -49,16 +49,76 @@ export default {
   name: 'PlatformConfiguration',
   data () {
     return {
-      platformName: ''
+      platformName: '',
+      smtpOrigin: {
+        host: '',
+        port: '',
+        secure: '',
+        auth: {
+          user: '',
+          pass: ''
+        },
+        from: '',
+        to: ''
+      },
+      smtpCopy: {
+        host: '',
+        port: '',
+        secure: '',
+        auth: {
+          user: '',
+          pass: ''
+        },
+        from: '',
+        to: ''
+      },
+      loadingSmtp: false
     }
   },
   methods: {
     save () {
-      console.log('save')
+      let {host, port, secure, auth, from, to} = this.smtpCopy
+      this.loadingSmtp = true
+      this.$ajax.put('/v1/system/smtp', {
+        host,
+        port,
+        secure,
+        user: auth.user,
+        pass: auth.pass,
+        from,
+        to
+      })
+        .then((response) => {
+          if (response.data.result === 'success') {
+            this.smtpOrigin = response.data.smtp
+            this.smtpCopy = JSON.parse(JSON.stringify(this.smtpOrigin))
+            this.$message({
+              message: '保存smtp配置成功',
+              type: 'success'
+            })
+          } else {
+            this.$alert('保存失败')
+          }
+          this.loadingSmtp = false
+        })
+        .catch((error) => {
+          this.$alert(error.message)
+          this.loadingSmtp = false
+        })
     },
     cancel () {
-      console.log('cancel')
+      this.smtpCopy = JSON.parse(JSON.stringify(this.smtpOrigin))
     }
+  },
+  created () {
+    this.$ajax.get(`/v1/system/smtp`)
+      .then((response) => {
+        this.smtpOrigin = response.data.smtp
+        this.smtpCopy = JSON.parse(JSON.stringify(this.smtpOrigin))
+      })
+      .catch((error) => {
+        this.$alert(error.message)
+      })
   }
 }
 </script>

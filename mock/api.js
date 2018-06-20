@@ -4,7 +4,6 @@ const express = require('express')
 const apiRoutes = express.Router()
 const bodyParser = require('body-parser')
 const busboy = require('connect-busboy')
-const xlsx = require('node-xlsx')
 const excel = require('exceljs')
 
 let filePath = path.join(path.normalize(__dirname) + '/..', 'static')
@@ -241,6 +240,29 @@ function initApi (app) {
       })
       return req.pipe(req.busboy)
     }
+  })
+
+  apiRoutes.get('/v1/system/smtp', function (req, res) {
+    let smtp = getJsonBy('config.json').smtp
+    res.json({smtp, result: 'success'})
+  })
+
+  apiRoutes.put('/v1/system/smtp', function (req, res) {
+    let body = req.body
+    let {host, port, secure, user, pass, from, to} = body
+    let config = getJsonBy('config.json')
+    config.smtp.host = host
+    config.smtp.port = port
+    config.smtp.secure = secure
+    config.smtp.host = host
+    config.smtp.from = from
+    config.smtp.to = to
+    config.smtp.auth.user = user
+    config.smtp.auth.pass = pass
+    writeJsonBy('config.json', config)
+    setTimeout(() => {
+      res.json({result: 'success', smtp: config.smtp})
+    })
   })
 
   apiRoutes.get('/v1/websocket/host', function (req, res) {
