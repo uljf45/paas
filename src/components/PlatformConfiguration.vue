@@ -87,7 +87,7 @@ export default {
     cancelName () {},
     saveName () {},
     saveSmtp () {
-      let {host, port, secure, auth, from, to} = this.smtpCopy
+      let {host, port, secure, auth, from, to, period} = this.smtpCopy
       this.loadingSmtp = true
       this.$ajax.put('/v1/system/smtp', {
         host,
@@ -96,7 +96,8 @@ export default {
         user: auth.user,
         pass: auth.pass,
         from,
-        to
+        to,
+        period
       })
         .then((response) => {
           if (response.data.result === 'success') {
