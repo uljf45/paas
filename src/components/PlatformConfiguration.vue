@@ -3,12 +3,16 @@
   <div class="common-box mb" v-loading="loadingMineName" element-loading-text="保存中">
     <p class="platform-title">矿场名字</p>
     <el-input placeholder="请输入矿场名字" v-model.trim="mineNameCopy" style="width:300px;"></el-input>
-    <el-button size="medium" @click="cancelName">取消</el-button>
+    <el-button style="margin-left: 20px;" size="medium" @click="cancelName">取消</el-button>
     <el-button size="medium" type="primary" @click="saveName">保存</el-button>
   </div>
   <div class="common-box smtp-box" v-loading="loadingSmtp" element-loading-text="保存中">
     <p class="platform-title">SMTP配置</p>
     <div>
+      <div class="smtp-item-wrap">
+        <span class="smtp-item-name">enable:</span>
+        <el-checkbox v-model="smtpCopy.enable"></el-checkbox>
+      </div>
       <div class="smtp-item-wrap">
         <span class="smtp-item-name">host:</span>
         <el-input size="small" v-model.trim="smtpCopy.host" placeholder="请输入host"></el-input>
@@ -42,7 +46,7 @@
         <el-input v-model.trim="smtpCopy.period" type="number" size="small"></el-input>
       </div>
     </div>
-    <div>
+    <div style="margin-top: 10px;">
       <el-button size="medium" @click="cancelSmtp">取消</el-button>
       <el-button size="medium" type="primary" @click="saveSmtp">保存</el-button>
     </div>
@@ -67,7 +71,8 @@ export default {
         },
         from: '',
         to: '',
-        period: ''
+        period: '',
+        enable: false
       },
       smtpCopy: {
         host: '',
@@ -79,7 +84,8 @@ export default {
         },
         from: '',
         to: '',
-        period: ''
+        period: '',
+        enable: false
       },
       loadingSmtp: false,
       loadingMineName: false
@@ -114,7 +120,7 @@ export default {
         })
     },
     saveSmtp () {
-      let {host, port, secure, auth, from, to, period} = this.smtpCopy
+      let {host, port, secure, auth, from, to, period, enable} = this.smtpCopy
       this.loadingSmtp = true
       this.$ajax.put('/v1/system/smtp', {
         host,
@@ -124,7 +130,8 @@ export default {
         pass: auth.pass,
         from,
         to,
-        period
+        period,
+        enable
       })
         .then((response) => {
           if (response.data.result === 'success') {

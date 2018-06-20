@@ -265,7 +265,7 @@ function initApi (app) {
 
   apiRoutes.put('/v1/system/smtp', function (req, res) {
     let body = req.body
-    let {host, port, secure, user, pass, from, to, period} = body
+    let {host, port, secure, user, pass, from, to, period, enable} = body
     let config = getJsonBy('config.json')
     config.smtp.host = host
     config.smtp.port = port
@@ -273,6 +273,7 @@ function initApi (app) {
     config.smtp.host = host
     config.smtp.from = from
     config.smtp.to = to
+    config.smtp.enable = enable
     config.smtp.auth.user = user
     config.smtp.auth.pass = pass
     config.smtp.period = period

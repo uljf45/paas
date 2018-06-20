@@ -6,6 +6,7 @@ import BatchConfiguration from '@/components/BatchConfiguration'
 import BatchControl from '@/components/BatchControl'
 import BatchUpgrade from '@/components/BatchUpgrade'
 import PlatformConfiguration from '@/components/PlatformConfiguration'
+import AdvancedConfiguration from '@/components/AdvancedConfiguration'
 
 Vue.use(Router)
 
@@ -43,6 +44,11 @@ export default new Router({
       path: '/platform-configuration',
       name: 'PlatformConfiguration',
       component: PlatformConfiguration
+    },
+    {
+      path: '/advanced-configuration',
+      name: 'AdvancedConfiguration',
+      component: AdvancedConfiguration
     }
   ]
 })
