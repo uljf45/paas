@@ -3,6 +3,8 @@
   <div class="common-box mb">
     <p class="platform-title">矿场名字</p>
     <el-input placeholder="请输入矿场名字" v-model.trim="platformName" style="width:300px;"></el-input>
+    <el-button size="medium" @click="cancelName">取消</el-button>
+    <el-button size="medium" type="primary" @click="saveName">保存</el-button>
   </div>
   <div class="common-box smtp-box" v-loading="loadingSmtp" element-loading-text="保存中">
     <p class="platform-title">SMTP配置</p>
@@ -35,10 +37,14 @@
         <span class="smtp-item-name  --to">to</span>
         <el-input type="textarea" v-model.trim="smtpCopy.to" size="small" placeholder="请输入to 多个邮件地址以逗号隔开"></el-input>
       </div>
+      <div class="smtp-item-wrap">
+        <span class="smtp-item-name">period(minutes)</span>
+        <el-input v-model.trim="smtpCopy.period" type="number" size="small"></el-input>
+      </div>
     </div>
     <div>
-      <el-button size="medium" @click="cancel">取消</el-button>
-      <el-button size="medium" type="primary" @click="save">保存</el-button>
+      <el-button size="medium" @click="cancelSmtp">取消</el-button>
+      <el-button size="medium" type="primary" @click="saveSmtp">保存</el-button>
     </div>
   </div>
 </div>
@@ -59,7 +65,8 @@ export default {
           pass: ''
         },
         from: '',
-        to: ''
+        to: '',
+        period: ''
       },
       smtpCopy: {
         host: '',
@@ -70,13 +77,16 @@ export default {
           pass: ''
         },
         from: '',
-        to: ''
+        to: '',
+        period: ''
       },
       loadingSmtp: false
     }
   },
   methods: {
-    save () {
+    cancelName () {},
+    saveName () {},
+    saveSmtp () {
       let {host, port, secure, auth, from, to} = this.smtpCopy
       this.loadingSmtp = true
       this.$ajax.put('/v1/system/smtp', {
@@ -106,7 +116,7 @@ export default {
           this.loadingSmtp = false
         })
     },
-    cancel () {
+    cancelSmtp () {
       this.smtpCopy = JSON.parse(JSON.stringify(this.smtpOrigin))
     }
   },

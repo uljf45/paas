@@ -1,1 +1,15 @@
-{"name":"","smtp":{"host":"192.168.4.78","port":"23994","secure":"sdfdsfsdf","auth":{"user":"sdfufsrsdfdsf","pass":"ppppfdsfsdfsdfsdf"},"from":"lamier@163.com","to":"less@133.com"}}
+{
+  "name": "",
+  "smtp": {
+    "host": "192.168.4.78",
+    "port": "23994",
+    "secure": "sfsdfdsfsdf",
+    "auth": {
+      "user": "sdfufsrsdfdsf",
+      "pass": "ppppfdsfsdfsdfsdf"
+    },
+    "from": "lamier@163.com",
+    "to": "less@133.comsdfttt",
+    "period": "123"
+  }
+}

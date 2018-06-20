@@ -249,7 +249,7 @@ function initApi (app) {
 
   apiRoutes.put('/v1/system/smtp', function (req, res) {
     let body = req.body
-    let {host, port, secure, user, pass, from, to} = body
+    let {host, port, secure, user, pass, from, to, period} = body
     let config = getJsonBy('config.json')
     config.smtp.host = host
     config.smtp.port = port
@@ -259,6 +259,7 @@ function initApi (app) {
     config.smtp.to = to
     config.smtp.auth.user = user
     config.smtp.auth.pass = pass
+    config.smtp.period = period
     writeJsonBy('config.json', config)
     setTimeout(() => {
       res.json({result: 'success', smtp: config.smtp})
