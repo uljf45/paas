@@ -11,6 +11,18 @@
       </template>
     </el-table-column>
 
+    <el-table-column v-if="isStatic" prop="ip_start" label="起始IP">
+      <template slot-scope="scope">
+        <el-input placeholder="请输入起始IP" v-model.trim="scope.row.ip_start" size="small"></el-input>
+      </template>
+    </el-table-column>
+
+    <el-table-column v-if="isStatic" prop="ip_end" label="结束IP">
+      <template slot-scope="scope">
+        <el-input placeholder="请输入结束IP" v-model.trim="scope.row.ip_end" size="small"></el-input>
+      </template>
+    </el-table-column>
+
     <el-table-column v-if="isStatic" prop="netmask" label="Netmask">
       <template slot-scope="scope">
         <el-input placeholder="请输入netmask" v-model.trim="scope.row.netmask" size="small"></el-input>
@@ -50,6 +62,8 @@ export default {
       ],
       network: {
         ip_type: 'dhcp',
+        ip_start: '',
+        ip_end: '',
         netmask: '',
         gateway: '',
         dns: ''

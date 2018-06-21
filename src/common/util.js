@@ -1,4 +1,5 @@
 function pad0 (num) {
+  num = Number(num)
   return num < 10 ? '0' + num : num
 }
 
@@ -39,24 +40,24 @@ function formatHashrate (hashrate) {
 
 function formatDuration (seconds = 0) {
   if (seconds < 60) {
-    return seconds + '秒'
+    return '00:00:' + pad0(seconds) + ''
   }
 
   let s = seconds % 60
   let mins = (seconds - s) / 60
   if (mins < 60) {
-    return mins + '分' + s + '秒'
+    return '00:' + pad0(mins) + ':' + pad0(s) + ''
   }
 
   let m = mins % 60
   let hours = (mins - m) / 60
   if (hours < 24) {
-    return hours + '小时' + m + '分' + s + '秒'
+    return pad0(hours) + ':' + pad0(m) + ':' + pad0(s) + ''
   }
 
   let h = hours % 24
   let days = (hours - h) / 24
-  return days + '天' + h + '小时' + m + '分' + s + '秒'
+  return days + 'd ' + pad0(h) + ':' + pad0(m) + ':' + pad0(s) + ''
 }
 
 function checkip (ipaddr) {

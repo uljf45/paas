@@ -38,7 +38,7 @@
       "version": "x86_muti_v0.2",
       "ip_type": "static",
       "netmask": "255.255.255.0",
-      "duration": 31536000,
+      "duration": 31536436,
       "mhs": 360,
       "gateway": "192.168.6.254",
       "dns": "202.96.134.133",
