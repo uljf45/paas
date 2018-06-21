@@ -36,7 +36,7 @@
       </el-tabs>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <hashrate-spline :hashrateList="fakeDatas" @switchTimeInterval="switchTimeInterval" title="矿机算力图表"></hashrate-spline>
+      <hashrate-spline :hashrateList="fakeDatas" @export="exportHashrate" @switchTimeInterval="switchTimeInterval" title="矿机算力图表"></hashrate-spline>
     </el-row>
     <el-row class="mb30 spline-wrap">
       <temperature-spline :current="infoData.temperature" :temperatureList="temperatureList"></temperature-spline>
@@ -63,7 +63,8 @@ export default {
       fakeDatas: null,
       timerInfo: null,
       timerTemperatureList: null,
-      timerHashrateList: null
+      timerHashrateList: null,
+      hashrateInterval: 'day'
     }
   },
   components: {
@@ -130,6 +131,10 @@ export default {
     }
   },
   methods: {
+    exportHashrate () {
+      let mac = this.$route.query.mac
+      window.open('/v1/excel/hashrate/single/' + this.hashrateInterval + '/' + mac)
+    },
     fetchData () {
       // let ip = this.$route.query.ip
       let mac = this.$route.query.mac
@@ -172,6 +177,7 @@ export default {
     },
     switchTimeInterval (interval) {
       clearInterval(this.timerHashrateList)
+      this.hashrateInterval = interval
       this.getHashrateList(interval)
       this.timerHashrateList = setInterval(() => {
         this.getHashrateList(interval)
