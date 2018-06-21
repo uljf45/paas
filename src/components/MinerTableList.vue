@@ -6,15 +6,15 @@
           <el-select v-model="select" slot="prepend" :class="{'search-select': !isMhsSelected, 'search-select-mhs':isMhsSelected}" @change="selectChange">
             <el-option label="IP" value="ip"></el-option>
             <el-option label="位置" value="position"></el-option>
-            <el-option label="编号" value="number"></el-option>
+            <el-option label="设备条码" value="number"></el-option>
             <el-option label="状态" value="status"></el-option>
             <el-option label="版本" value="version"></el-option>
             <el-option label="当前算力(mhs) >" value="mhsg"></el-option>
             <el-option label="当前算力(mhs) <" value="mhsl"></el-option>
           </el-select>
           <div slot="append" style="display: flex;">
-            <span v-if="multipleSelect && isIpSelected" v-show="!showSearchTextNext" class="el-icon-d-arrow-right" @click="arrowRight"></span>
-            <span v-if="multipleSelect && isIpSelected" v-show="showSearchTextNext" class="el-icon-d-arrow-left" @click="arrowLeft"></span>
+            <span v-if="multipleSelect && isIpSelected" v-show="!showSearchTextNext" class="el-icon-d-arrow-right clr-danger" @click="arrowRight"></span>
+            <span v-if="multipleSelect && isIpSelected" v-show="showSearchTextNext" class="el-icon-d-arrow-left clr-danger" @click="arrowLeft"></span>
             <el-input v-if="isIpSelected" placeholder="请输入结束IP" v-show="showSearchTextNext" class="search-text-next" v-model.trim="searchTextNext"></el-input>
             <el-button v-show="!(isIpSelected && showSearchTextNext)" class="search-btn" icon="el-icon-search" @click="search"></el-button>
             <el-button v-show="isIpSelected && showSearchTextNext" class="search-btn" icon="el-icon-plus" @click="addIpRange"></el-button>
@@ -39,7 +39,7 @@
           <span :class="{'clr-danger': scope.row.status !== 'running'}" v-text="scope.row.status"></span>
         </template>
       </el-table-column>
-      <el-table-column prop="number" label="编号"></el-table-column>
+      <el-table-column prop="number" label="设备条码"></el-table-column>
       <el-table-column prop="position" label="位置"></el-table-column>
       <el-table-column label="当前算力">
         <template slot-scope="scope">
@@ -221,6 +221,9 @@ export default {
   .mtl-pagination-container {
     text-align: center;
   }
+  .input-with-select .el-input__inner {
+    width: 220px;
+  }
   .input-with-select .el-input-group__prepend {
     background: #fff;
   }
@@ -244,7 +247,6 @@ export default {
     width: 160px;
   }
   .input-with-select .el-input-group__append .search-text-next {
-    width: 146px;
     margin: -1px;
   }
 </style>

@@ -87,7 +87,7 @@ export default {
       console.log(file.name)
       let reg = /^FSFW.*[.]tar[.]gz$/
       if (!reg.test(file.name)) {
-        this.tip = '文件名错误！正确格式应 FWFW开头 .tar.gz结尾!'
+        this.tip = '文件名错误！正确格式应以FSFW开头 .tar.gz结尾!'
         return false
       } else {
         this.tip = ''

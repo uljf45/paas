@@ -3,8 +3,8 @@
   <div class="common-box mb" v-loading="loadingMineName" element-loading-text="保存中">
     <p class="platform-title">矿场名字</p>
     <el-input placeholder="请输入矿场名字" v-model.trim="mineNameCopy" style="width:300px;"></el-input>
-    <el-button style="margin-left: 20px;" size="medium" @click="cancelName">取消</el-button>
-    <el-button size="medium" type="primary" @click="saveName">保存</el-button>
+    <!-- <el-button style="margin-left: 20px;" size="medium" @click="cancelName">取消</el-button> -->
+    <el-button style="margin-left: 20px;" size="medium" type="primary" @click="saveName">保存</el-button>
   </div>
   <div class="common-box smtp-box" v-loading="loadingSmtp" element-loading-text="保存中">
     <p class="platform-title">SMTP配置</p>
@@ -42,12 +42,12 @@
         <el-input type="textarea" v-model.trim="smtpCopy.to" size="small" placeholder="请输入to 多个邮件地址以逗号隔开"></el-input>
       </div>
       <div class="smtp-item-wrap">
-        <span class="smtp-item-name">period(minutes)</span>
+        <span class="smtp-item-name">send interval(minutes)</span>
         <el-input v-model.trim="smtpCopy.period" type="number" size="small"></el-input>
       </div>
     </div>
-    <div style="margin-top: 10px;">
-      <el-button size="medium" @click="cancelSmtp">取消</el-button>
+    <div style="margin-top: 10px; text-align: center;">
+      <!-- <el-button size="medium" @click="cancelSmtp">取消</el-button> -->
       <el-button size="medium" type="primary" @click="saveSmtp">保存</el-button>
     </div>
   </div>

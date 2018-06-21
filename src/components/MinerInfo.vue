@@ -10,10 +10,10 @@
         <span v-text="scope.row.status" :class="{'clr-danger': scope.row.status !== 'running'}"></span>
       </template>
     </el-table-column>
-    <el-table-column prop="number" label="编号">
+    <el-table-column prop="number" label="设备条码">
       <template slot-scope="scope">
-        <span v-show="!isEdit">{{ scope.row.number }}</span>
-        <el-input v-show="isEdit" placeholder="请输入矿机编号" v-model.trim="scope.row.number" size="small"></el-input>
+        <span>{{ scope.row.number }}</span>
+        <!-- <el-input v-show="isEdit" placeholder="请输入矿机设备条码" v-model.trim="scope.row.number" size="small"></el-input> -->
       </template>
     </el-table-column>
     <el-table-column prop="position" label="位置">
@@ -99,7 +99,7 @@ export default {
           })
       }
 
-      if (!isNumberNotChange && isPositionNotChange) { // 只修改了编号
+      if (!isNumberNotChange && isPositionNotChange) { // 只修改了设备条码
         params.patchAction = 'setNumber'
         this.$ajax.patch('/v1/miner', params)
           .then((response) => {
