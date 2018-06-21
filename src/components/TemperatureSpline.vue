@@ -3,7 +3,7 @@
     <div class="chart-title">矿机温度图表  当前温度:<span> {{current}}</span><span style="font-size:14px;">℃</span></div>
     <div class="clearfix">
       <div class="chart-toolBox fr">
-        <el-button size="small" @click="exportPic">导出</el-button>
+        <el-button size="small" @click="exportExcel">导出</el-button>
       </div>
     </div>
     <div class="flex-center">
@@ -158,6 +158,9 @@ export default {
     },
     exportPic () {
       chart.exportPic(this.myChart, 'miner_temperature_spline')
+    },
+    exportExcel () {
+      this.$emit('export')
     }
   },
   watch: {

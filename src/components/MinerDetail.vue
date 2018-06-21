@@ -39,7 +39,7 @@
       <hashrate-spline :hashrateList="fakeDatas" @export="exportHashrate" @switchTimeInterval="switchTimeInterval" title="矿机算力图表"></hashrate-spline>
     </el-row>
     <el-row class="mb30 spline-wrap">
-      <temperature-spline :current="infoData.temperature" :temperatureList="temperatureList"></temperature-spline>
+      <temperature-spline :current="infoData.temperature" :temperatureList="temperatureList" @export="exportTemperature"></temperature-spline>
     </el-row>
   </div>
 </template>
@@ -134,6 +134,10 @@ export default {
     exportHashrate () {
       let mac = this.$route.query.mac
       window.open('/v1/excel/hashrate/single/' + this.hashrateInterval + '/' + mac)
+    },
+    exportTemperature () {
+      let mac = this.$route.query.mac
+      window.open(`/v1/excel/temperature/${mac}`)
     },
     fetchData () {
       // let ip = this.$route.query.ip
