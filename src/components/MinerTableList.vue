@@ -3,7 +3,7 @@
     <div class="clearfix">
       <div class="fl">
         <el-input :placeholder="searchTextPlaceholder" v-model.trim="searchText" @keyup.enter.native="search" class="input-with-select" >
-          <el-select v-model="select" slot="prepend" :class="{'search-select': !isMhsSelected, 'search-select-mhs':isMhsSelected}" @change="selectChange">
+          <el-select v-model="select" slot="prepend" :class="{'search-select': !isMhsSelected, 'search-select-number':isNumberSelected, 'search-select-mhs':isMhsSelected}" @change="selectChange">
             <el-option label="IP" value="ip"></el-option>
             <el-option label="位置" value="position"></el-option>
             <el-option label="设备条码" value="number"></el-option>
@@ -31,7 +31,7 @@
     <el-table :fit="true" :data="tableData" stripe class="mtl-table-container" @selection-change="handleSelectionChange">
       <el-table-column v-if="multipleSelect" type="selection" width="30"></el-table-column>
       <el-table-column type="index" width="38px"></el-table-column>
-      <el-table-column prop="type" label="型号" width="60"></el-table-column>
+      <el-table-column prop="type" label="型号" width="70"></el-table-column>
       <el-table-column prop="version" label="版本" width="120"></el-table-column>
       <el-table-column prop="ip" label="IP" width="110"></el-table-column>
       <el-table-column prop="status" label="状态" width="76">
@@ -39,24 +39,24 @@
           <span :class="{'clr-danger': scope.row.status !== 'running'}" v-text="scope.row.status"></span>
         </template>
       </el-table-column>
-      <el-table-column prop="number" label="设备条码"></el-table-column>
-      <el-table-column prop="position" label="位置"></el-table-column>
-      <el-table-column label="当前算力" width="100">
+       <el-table-column prop="mhs" label="当前算力" width="100">
         <template slot-scope="scope">
           <span v-text="$util.formatHashrate(scope.row.mhs * 1024 * 1024).text"></span>
         </template>
       </el-table-column>
-      <el-table-column label="平均算力" width="100">
+      <el-table-column prop="avg_mhs" label="平均算力" width="100">
         <template slot-scope="scope">
           <span v-text="$util.formatHashrate(scope.row.avg_mhs * 1024 * 1024).text"></span>
         </template>
       </el-table-column>
+      <el-table-column prop="number" label="设备条码"></el-table-column>
+      <el-table-column prop="position" label="位置"></el-table-column>
       <el-table-column label="运行时间">
         <template slot-scope="scope">
           <span v-text="$util.formatDuration(scope.row.duration)"></span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="40">
+      <el-table-column label="操作" width="50">
         <template slot-scope="scope">
           <el-button @click="viewMiner(scope.row.ip, scope.row.mac)" type="text" size="small">查看</el-button>
         </template>
@@ -134,6 +134,9 @@ export default {
     },
     isMhsSelected () {
       return this.select === 'mhsg' || this.select === 'mhsl'
+    },
+    isNumberSelected () {
+      return this.select === 'number'
     }
   },
   methods: {
@@ -246,6 +249,9 @@ export default {
   }
   .search-select-mhs {
     width: 160px;
+  }
+  .search-select-number {
+    width: 120px;
   }
   .input-with-select .el-input-group__append .search-text-next {
     margin: -1px;
