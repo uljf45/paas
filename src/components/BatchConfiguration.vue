@@ -17,9 +17,9 @@
     <el-tab-pane label="告警门限">
       <batch-threshold @save="saveBatchThreshold"></batch-threshold>
     </el-tab-pane>
-    <el-tab-pane label="工作频率">
+    <!-- <el-tab-pane label="工作频率">
       <batch-frequency @save="saveBatchFrequency"></batch-frequency>
-    </el-tab-pane>
+    </el-tab-pane> -->
     <el-tab-pane label="上报周期">
       <batch-period @save="saveBatchPeriod"></batch-period>
     </el-tab-pane>

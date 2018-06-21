@@ -1,14 +1,14 @@
 <template>
   <el-tabs type="border-card">
     <el-tab-pane label="告警矿机">
-      <miner-table-list miner-type="alert" :export-visible="exportVisible" :multiple-select="multipleSelect" :show-progress="showProgress" :table-data="errorMiners" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange" @addIpRange="addIpRange">
+      <miner-table-list miner-type="alert" v-loading="loadingError" element-loading-text="请求中" :export-visible="exportVisible" :multiple-select="multipleSelect" :show-progress="showProgress" :table-data="errorMiners" :page-size="pageSize" :total="errorMinerAmount" @search="searchError" @handleCurrentChange="handleErrorCurrentChange" @addIpRange="addIpRange">
         <template v-if="multipleSelect" slot="operation">
           <el-button type="primary" @click="addIps('alert')">加入待配置矿机列表</el-button>
         </template>
       </miner-table-list>
     </el-tab-pane>
     <el-tab-pane label="所有矿机">
-      <miner-table-list miner-type="all" :export-visible="exportVisible" :multiple-select="multipleSelect" :show-progress="showProgress" :table-data="fullMiners" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange" @addIpRange="addIpRange">
+      <miner-table-list miner-type="all" v-loading="loadingFull" element-loading-text="请求中" :export-visible="exportVisible" :multiple-select="multipleSelect" :show-progress="showProgress" :table-data="fullMiners" :page-size="pageSize" :total="allMinerAmount" @search="searchFull" @handleCurrentChange="handleAllCurrentChange" @addIpRange="addIpRange">
         <template v-if="multipleSelect" slot="operation">
           <el-button type="primary" @click="addIps('all')">加入待配置矿机列表</el-button>
         </template>
@@ -49,7 +49,9 @@ export default {
       fullTableData: [],
       errorMinerAmount: 0,
       allMinerAmount: 0,
-      pageSize: 50
+      pageSize: 50,
+      loadingError: false,
+      loadingFull: false
     }
   },
   computed: {
@@ -93,8 +95,13 @@ export default {
       }
       this.$ajax.get(url) // 告警矿机
         .then((response) => {
+          this.loadingError = false
           this.errorTableData = response.data.miners_alerts
           this.errorMinerAmount = response.data.total
+        })
+        .catch((error) => {
+          this.$alert(error.message)
+          this.loadingError = false
         })
     },
     getFullMinerListBy (pageNum, searchText = '') {
@@ -104,14 +111,21 @@ export default {
       }
       this.$ajax.get(url) // 所有矿机
         .then((response) => {
+          this.loadingFull = false
           this.fullTableData = response.data.miners
           this.allMinerAmount = response.data.total
         })
+        .catch((error) => {
+          this.$alert(error.message)
+          this.loadingFull = false
+        })
     },
     searchError (text) {
+      this.loadingError = true
       this.getErrorMinerListBy(1, text)
     },
     searchFull (text) {
+      this.loadingFull = true
       this.getFullMinerListBy(1, text)
     },
     handleErrorCurrentChange (pageNum, searchText) {

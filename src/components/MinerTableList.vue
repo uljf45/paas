@@ -221,7 +221,8 @@ export default {
   .mtl-pagination-container {
     text-align: center;
   }
-  .input-with-select .el-input__inner {
+  .input-with-select > .el-input__inner,
+  .search-text-next .el-input__inner {
     width: 220px;
   }
   .input-with-select .el-input-group__prepend {
