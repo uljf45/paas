@@ -28,6 +28,17 @@ export default {
     TopHeader,
     BottomFooter,
     TopNavigation
+  },
+  created () {
+    this.$ajax.get(`/v1/system/mineName`)
+      .then((response) => {
+        let mineName = response.data.mineName
+        document.getElementsByTagName('title')[0].innerHTML = mineName + '管理系统'
+      })
+      .catch((error) => {
+        console.log(error)
+        this.$alert('获取矿场名字失败')
+      })
   }
 }
 </script>

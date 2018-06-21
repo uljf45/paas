@@ -2,7 +2,7 @@
   <div class="advanced-configuration">
     <div class="common-box">
       <p class="platform-title">日志</p>
-      <el-button type="primary">导出</el-button>
+      <el-button @click="exportLogs" type="primary">导出</el-button>
     </div>
   </div>
 </template>
@@ -12,6 +12,11 @@ export default {
   name: 'AdvancedConfiguration',
   data () {
     return {
+    }
+  },
+  methods: {
+    exportLogs () {
+      window.open('/v1/system/logs')
     }
   }
 }
