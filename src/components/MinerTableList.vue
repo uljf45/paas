@@ -190,7 +190,8 @@ export default {
       this.search()
     },
     exportTable () {
-      console.log(this.tableData)
+      let type = this.minerType
+      window.open(`/v1/excel/miners/${type}/`)
     },
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)
