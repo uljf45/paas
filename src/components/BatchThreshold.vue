@@ -37,7 +37,16 @@ export default {
       if (this.mhs_threshould !== '') {
         payload.mhs_threshould = Number(this.mhs_threshould)
       }
-      this.$emit('save', payload)
+      const h = this.$createElement
+      let hs = []
+      if (payload.temperature_threshould) {
+        hs.push(h('p', null, `温度告警门限(℃): ${payload.temperature_threshould}`))
+      }
+      if (payload.mhs_threshould) {
+        hs.push(h('p', null, `算力告警门限(MHS): ${payload.mhs_threshould}`))
+      }
+      let confirmMessage = h('div', null, hs)
+      this.$emit('save', payload, confirmMessage)
     }
   }
 }

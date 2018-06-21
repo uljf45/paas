@@ -24,7 +24,12 @@ export default {
       this.periodic_time = ''
     },
     save () {
-      this.$emit('save', {periodic_time: Number(this.periodic_time)})
+      const h = this.$createElement
+      let hs = [
+        h('p', null, `上报周期(分钟): ${this.periodic_time}`)
+      ]
+      let confirmMessage = h('div', null, hs)
+      this.$emit('save', {periodic_time: Number(this.periodic_time)}, confirmMessage)
     }
   }
 }
