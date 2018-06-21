@@ -108,7 +108,7 @@ function initApi (app) {
     let miners = getJsonBy('miners.json').list
     let minersAlerts = []
     miners.forEach((item) => {
-      if (item.status === 'inactive') {
+      if (item.status !== 'active') {
         minersAlerts.push(item)
       }
     })

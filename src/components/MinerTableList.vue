@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="miner-talbe-list">
     <div class="clearfix">
       <div class="fl">
         <el-input :placeholder="searchTextPlaceholder" v-model.trim="searchText" @keyup.enter.native="search" class="input-with-select" >
@@ -9,8 +9,8 @@
             <el-option label="设备条码" value="number"></el-option>
             <el-option label="状态" value="status"></el-option>
             <el-option label="版本" value="version"></el-option>
-            <el-option label="当前算力(mhs) >" value="mhsg"></el-option>
-            <el-option label="当前算力(mhs) <" value="mhsl"></el-option>
+            <el-option label="平均算力(mhs) >" value="mhsg"></el-option>
+            <el-option label="平均算力(mhs) <" value="mhsl"></el-option>
           </el-select>
           <div slot="append" style="display: flex;">
             <span v-if="multipleSelect && isIpSelected" v-show="!showSearchTextNext" class="el-icon-d-arrow-right clr-danger" @click="arrowRight"></span>
@@ -28,25 +28,25 @@
       </div>
     </div>
 
-    <el-table :data="tableData" stripe class="mtl-table-container" @selection-change="handleSelectionChange">
-      <el-table-column v-if="multipleSelect" type="selection" width="55"></el-table-column>
-      <el-table-column type="index"></el-table-column>
-      <el-table-column prop="type" label="型号"></el-table-column>
-      <el-table-column prop="version" label="版本"></el-table-column>
+    <el-table :fit="true" :data="tableData" stripe class="mtl-table-container" @selection-change="handleSelectionChange">
+      <el-table-column v-if="multipleSelect" type="selection" width="30"></el-table-column>
+      <el-table-column type="index" width="38px"></el-table-column>
+      <el-table-column prop="type" label="型号" width="60"></el-table-column>
+      <el-table-column prop="version" label="版本" width="120"></el-table-column>
       <el-table-column prop="ip" label="IP" width="110"></el-table-column>
-      <el-table-column prop="status" label="状态">
+      <el-table-column prop="status" label="状态" width="76">
         <template slot-scope="scope">
           <span :class="{'clr-danger': scope.row.status !== 'running'}" v-text="scope.row.status"></span>
         </template>
       </el-table-column>
       <el-table-column prop="number" label="设备条码"></el-table-column>
       <el-table-column prop="position" label="位置"></el-table-column>
-      <el-table-column label="当前算力">
+      <el-table-column label="当前算力" width="100">
         <template slot-scope="scope">
           <span v-text="$util.formatHashrate(scope.row.mhs * 1024 * 1024).text"></span>
         </template>
       </el-table-column>
-      <el-table-column label="平均算力">
+      <el-table-column label="平均算力" width="100">
         <template slot-scope="scope">
           <span v-text="$util.formatHashrate(scope.row.avg_mhs * 1024 * 1024).text"></span>
         </template>
@@ -56,7 +56,7 @@
           <span v-text="$util.formatDuration(scope.row.duration)"></span>
         </template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="操作" width="40">
         <template slot-scope="scope">
           <el-button @click="viewMiner(scope.row.ip, scope.row.mac)" type="text" size="small">查看</el-button>
         </template>
@@ -249,5 +249,17 @@ export default {
   }
   .input-with-select .el-input-group__append .search-text-next {
     margin: -1px;
+  }
+
+  .miner-talbe-list .el-table .cell,
+  .miner-talbe-list .el-table th div,
+  .miner-talbe-list .el-table--border td:first-child .cell,
+  .miner-talbe-list .el-table--border th:first-child .cell {
+    padding-left: 5px;
+  }
+
+  .miner-talbe-list .el-table .cell,
+  .miner-talbe-list .el-table th div{
+    padding-right: 5px;
   }
 </style>
