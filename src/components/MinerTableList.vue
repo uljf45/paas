@@ -31,20 +31,20 @@
     <el-table :fit="true" :data="tableData" stripe class="mtl-table-container" @selection-change="handleSelectionChange">
       <el-table-column v-if="multipleSelect" type="selection" width="30"></el-table-column>
       <el-table-column type="index" width="38px"></el-table-column>
-      <el-table-column prop="type" label="型号" width="70"></el-table-column>
-      <el-table-column prop="version" label="版本" width="120"></el-table-column>
-      <el-table-column prop="ip" label="IP" width="110"></el-table-column>
-      <el-table-column prop="status" label="状态" width="76">
+      <el-table-column prop="type" label="型号" width="76"></el-table-column>
+      <el-table-column prop="version" label="版本" width="102"></el-table-column>
+      <el-table-column prop="ip" label="IP" width="116"></el-table-column>
+      <el-table-column prop="status" label="状态" width="82">
         <template slot-scope="scope">
           <span :class="{'clr-danger': scope.row.status !== 'running'}" v-text="scope.row.status"></span>
         </template>
       </el-table-column>
-       <el-table-column prop="mhs" label="当前算力" width="100">
+       <el-table-column prop="mhs" label="当前算力" width="106">
         <template slot-scope="scope">
           <span v-text="$util.formatHashrate(scope.row.mhs * 1024 * 1024).text"></span>
         </template>
       </el-table-column>
-      <el-table-column prop="avg_mhs" label="平均算力" width="100">
+      <el-table-column prop="avg_mhs" label="平均算力" width="106">
         <template slot-scope="scope">
           <span v-text="$util.formatHashrate(scope.row.avg_mhs * 1024 * 1024).text"></span>
         </template>
