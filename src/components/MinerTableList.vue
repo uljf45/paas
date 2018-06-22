@@ -15,7 +15,7 @@
           <div slot="append" style="display: flex;">
             <span v-if="multipleSelect && isIpSelected" v-show="!showSearchTextNext" class="el-icon-d-arrow-right clr-danger" @click="arrowRight"></span>
             <span v-if="multipleSelect && isIpSelected" v-show="showSearchTextNext" class="el-icon-d-arrow-left clr-danger" @click="arrowLeft"></span>
-            <el-input v-if="isIpSelected" placeholder="请输入结束IP" v-show="showSearchTextNext" class="search-text-next" v-model.trim="searchTextNext"></el-input>
+            <el-input v-if="isIpSelected" placeholder="192.168.6.241" v-show="showSearchTextNext" class="search-text-next" v-model.trim="searchTextNext"></el-input>
             <el-button v-show="!(isIpSelected && showSearchTextNext)" class="search-btn" icon="el-icon-search" @click="search"></el-button>
             <el-button v-show="isIpSelected && showSearchTextNext" class="search-btn" icon="el-icon-plus" @click="addIpRange"></el-button>
           </div>
@@ -126,9 +126,34 @@ export default {
       return ''
     },
     searchTextPlaceholder () {
+      // ip position number status version mhsg mhsl
       let text = '请输入搜索内容'
       if (this.showSearchTextNext) {
         text = '请输入起始IP'
+      }
+      console.log(this.select)
+      switch (this.select) {
+        case 'position':
+          text = '1-10-1'
+          break
+        case 'number':
+          text = '1234567'
+          break
+        case 'status':
+          text = `offline (状态有'offline', 'running', 'error', 'low mhs', 'ip conflict')`
+          break
+        case 'version':
+          text = 'L21'
+          break
+        case 'mhsg':
+          text = '123'
+          break
+        case 'mhsl':
+          text = '123'
+          break
+        case 'ip':
+          text = '192.168.6.42'
+          break
       }
       return text
     },
@@ -224,9 +249,11 @@ export default {
   .mtl-pagination-container {
     text-align: center;
   }
-  .input-with-select > .el-input__inner,
+  .input-with-select > .el-input__inner {
+    width: 440px;
+  }
   .search-text-next .el-input__inner {
-    width: 220px;
+    width: 200px;
   }
   .input-with-select .el-input-group__prepend {
     background: #fff;

@@ -119,19 +119,19 @@ export default {
           this.$alert('请输入正确的 netmask')
           return
         }
-        // if (this.network.ip_start !== '' && !checkip(this.network.ip_start)) {
-        //   this.$alert('请输入正确的 起始IP')
-        //   return
-        // }
-        // if (this.network.ip_end !== '' && !checkip(this.network.ip_end)) {
-        //   this.$alert('请输入正确的 结束IP')
-        //   return
-        // }
+        if (this.network.ip_start !== '' && !checkip(this.network.ip_start)) {
+          this.$alert('请输入正确的 起始IP')
+          return
+        }
+        if (this.network.ip_end !== '' && !checkip(this.network.ip_end)) {
+          this.$alert('请输入正确的 结束IP')
+          return
+        }
 
-        // if (this.checkIpRange(this.network.ip_start, this.network.ip_end)) {
-        //   this.$alert('起始IP和结束IP需在同一网段, 比如 192.168.4.2  192.168.4.253')
-        //   return
-        // }
+        if (this.checkIpRange(this.network.ip_start, this.network.ip_end)) {
+          this.$alert('起始IP和结束IP需在同一网段, 比如 192.168.4.2  192.168.4.253')
+          return
+        }
 
         if (this.network.gateway !== '' && !checkip(this.network.gateway)) {
           this.$alert('请输入正确的 gateway')
