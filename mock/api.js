@@ -247,6 +247,11 @@ function initApi (app) {
     res.json({smtp, result: 'success'})
   })
 
+  apiRoutes.get('/v1/system/log', function (req, res) {
+    let log = getJsonBy('config.json').log
+    res.json({log, result: 'success'})
+  })
+
   apiRoutes.get('/v1/system/mineName', function (req, res) {
     let mineName = getJsonBy('config.json').mineName
     res.json({mineName, result: 'success'})
@@ -260,6 +265,19 @@ function initApi (app) {
     writeJsonBy('config.json', config)
     setTimeout(() => {
       res.json({result: 'success', mineName: config.mineName})
+    })
+  })
+
+  apiRoutes.put('/v1/system/log', function (req, res) {
+    let body = req.body
+    let logLevel = body.logLevel
+    let outToConsole = body.outToConsole
+    let config = getJsonBy('config.json')
+    config.log.outToConsole = outToConsole
+    config.log.logLevel = logLevel
+    writeJsonBy('config.json', config)
+    setTimeout(() => {
+      res.json({result: 'success', log: config.log})
     })
   })
 

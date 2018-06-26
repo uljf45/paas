@@ -1,1 +1,1 @@
-{"mineName":"qq","smtp":{"host":"192.168.4.78","port":"23994","secure":"sfsdfdsfsdf","auth":{"user":"sdfufsrsdfdsf","pass":"ppppfdsfsdfsdfsdf"},"from":"lamier@163.com","to":"less@133.comsdfttt23","period":"2343423423","enable":true}}
+{"mineName":"mine name","smtp":{"host":"smtp.qq.com","port":"465","secure":"true","auth":{"user":"781277528@qq.com","pass":"odiyufrlajxebfjc"},"from":"781277528@qq.com","to":"781277528@qq.com","period":"600","enable":true},"log":{"outToConsole":true,"logLevel":1}}
