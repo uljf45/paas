@@ -21,11 +21,11 @@
           <a @click="platformConfiguration" class="link-btn" :class="{'active': isActive('PlatformConfiguration')}">平台配置</a>
         </li>
         <li class="fl nav-item">
-          <a @click="advancedConfiguration" class="link-btn" :class="{'active': isActive('AdvancedConfiguration')}">高级</a>
+          <a @click="advancedConfiguration" class="link-btn" :class="{'active': isActive('AdvancedConfiguration')}">其他</a>
         </li>
-        <li class="fl nav-item">
+        <!-- <li class="fl nav-item">
           <a class="link-btn">登录</a>
-        </li>
+        </li> -->
         <!-- <li class="fl nav-item">
           <a class="link-btn">注册</a>
         </li> -->
